@@ -16,6 +16,7 @@ import {
     DrawerContentComponentProps
 } from '@react-navigation/drawer'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+Icon.loadFont();
 
 import { useAuth } from '../contexts/auth'
 
@@ -75,7 +76,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="account-outline" 
+                                name="scoreboard-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -86,7 +87,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="bookmark-outline" 
+                                name="soccer" 
                                 color={color}
                                 size={size}
                                 />
@@ -97,7 +98,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="weather-partly-snowy-rainy" 
+                                name="trophy-outline" 
                                 color={color}
                                 size={size}
                                 />
