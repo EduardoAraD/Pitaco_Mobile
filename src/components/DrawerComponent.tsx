@@ -17,10 +17,18 @@ import {
 } from '@react-navigation/drawer'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { useAuth } from '../contexts/auth'
+
 export default function DrawerComponent(props: DrawerContentComponentProps) {
+    const { signOut } = useAuth()
+
     const [isDarkTheme, setIsDarkTheme] = React.useState(false)
     const toggleTheme = () => {
         setIsDarkTheme(!isDarkTheme)
+    }
+
+    function handleSignOut(){
+        signOut()
     }
 
     return (
@@ -120,7 +128,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                         />
                     )}
                     label="Sign Out"
-                    onPress={() => {}}
+                    onPress={handleSignOut}
                 />
             </Drawer.Section>
         </View>
