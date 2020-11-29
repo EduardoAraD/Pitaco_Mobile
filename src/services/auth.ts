@@ -19,7 +19,7 @@ function signIn(email: string, password: string): Response {
         console.log( error.response?.data.errors)
     })
 
-    const token = ''
+    const token = 'Taidbjasd'
     const user = { name: 'SourhT', email, points: 2, cravados: 0 }
 
     return { token, user };
@@ -29,11 +29,12 @@ function register(name:string, email: string, password: string, confirmPassword:
     
     //api.post("/signIn")
 
+    const token = 'Taidbjasd'
     const user = { name, email, points: 0, cravados: 0 }
     
     console.log(user)
 
-    return user;
+    return { token, user };
 }
 
 

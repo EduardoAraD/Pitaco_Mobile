@@ -9,7 +9,8 @@ interface AuthContextData {
     user: object | null;
     loading: boolean;
 
-    signIn(): Promise<void>;
+    signIn(email: string, password: string): Promise<void>;
+    signUp(name: string, email: string, password: string, confirmPassword: string): Promise<void>;
     signOut(): void
 }
 
@@ -35,8 +36,20 @@ export const AuthProvider: React.FC = ({children}) => {
         loadStorageData();
     }, [])
 
-    async function signIn() {
-        const response = auth.signIn('', '');
+    async function signIn(email: string, password: string) {
+        const response = auth.signIn(email, password);
+
+        setUser(response.user)
+        setToken(response.token)
+
+        api.defaults.headers.Authorization = `Bearer ${response.token}`
+
+        await AsyncStorage.setItem('@Pitaco:user', JSON.stringify(response.user))
+        await AsyncStorage.setItem('@Pitaco:token', response.token)
+    }
+
+    async function signUp(name: string, email: string, password: string, confirmPassword: string){
+        const response = auth.register(name, email, password, confirmPassword)
 
         setUser(response.user)
         setToken(response.token)
@@ -55,7 +68,7 @@ export const AuthProvider: React.FC = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{signed: !!user, user: {}, loading, signIn, signOut}}>
+        <AuthContext.Provider value={{signed: !!user, user: {}, loading, signIn, signUp, signOut}}>
             {children}
         </AuthContext.Provider>
     );
