@@ -4,10 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 Icon.loadFont();
 
-import DashboardScreen from '../screens/app/Dashboard';
-import PitacoScreen from '../screens/app/Pitaco';
-import ChampionshipScreen from '../screens/app/Championship';
-import LeagueScreen from '../screens/app/League';
+import DashboardRoute from './app/dashboard.routes';
+import PitacoRoute from './app/pitaco.routes';
+import ChampionshipRoute from './app/championship.routes';
+import LeagueRoute from './app/league.routes';
 
 import DrawerComponent from '../components/DrawerComponent';
 
@@ -21,28 +21,28 @@ function TabNavigation() {
       tabBarOptions={{
         activeTintColor: colors.greenPrimary
       }}>
-      <Tab.Screen name="Dashboard" component={DashboardScreen}
+      <Tab.Screen name="Dashboard" component={DashboardRoute}
         options={{
           tabBarLabel: 'Dashboard',
           tabBarIcon: ({ color, size }) => (
             <Icon name="home-account" color={color} size={size} />
           ),
         }} />
-      <Tab.Screen name="Pitaco" component={PitacoScreen}
+      <Tab.Screen name="Pitaco" component={PitacoRoute}
         options={{
           tabBarLabel: 'Pitaco',
           tabBarIcon: ({ color, size }) => (
             <Icon name="scoreboard" color={color} size={size} />
           ),
         }} />
-      <Tab.Screen name="Championship" component={ChampionshipScreen}
+      <Tab.Screen name="Championship" component={ChampionshipRoute}
         options={{
           tabBarLabel: 'Championship',
           tabBarIcon: ({ color, size }) => (
             <Icon name="soccer" color={color} size={size} />
           ),
         }} />
-      <Tab.Screen name="League" component={LeagueScreen} 
+      <Tab.Screen name="League" component={LeagueRoute} 
         options={{
           tabBarLabel: 'League',
           tabBarIcon: ({ color, size }) => (
