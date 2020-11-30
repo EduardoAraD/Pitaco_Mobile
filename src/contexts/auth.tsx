@@ -4,21 +4,25 @@ import AsyncStorage from '@react-native-community/async-storage'
 import * as auth from '../services/auth'
 import api from '../services/api'
 
+import { User } from '../models/User'
+
 interface AuthContextData {
     signed: boolean;
-    user: object | null;
+    user: User | null;
     loading: boolean;
 
     signIn(email: string, password: string): Promise<void>;
     signUp(name: string, email: string, password: string, confirmPassword: string): Promise<void>;
-    signOut(): void
+    signOut(): void;
+    forgotPassword(email: string): Promise<void>;
+    resetPassword(codig: string, password: string, confirmPassword: string): Promise<void>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export const AuthProvider: React.FC = ({children}) => {
     const [token, setToken] = useState("")
-    const [user, setUser] = useState<Object | null>(null)
+    const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -67,8 +71,18 @@ export const AuthProvider: React.FC = ({children}) => {
         })
     }
 
+    async function forgotPassword(email: string) {
+        const response = await auth.forgotPassword(email)
+    }
+
+    async function resetPassword( email: string, password: string, confirmPassword: string) {
+        const response = await auth.resetPassword(email, password, confirmPassword)
+    }
+
     return (
-        <AuthContext.Provider value={{signed: !!user, user: {}, loading, signIn, signUp, signOut}}>
+        <AuthContext.Provider
+            value={{signed: !!user, user, loading,
+                signIn, signUp, signOut, forgotPassword, resetPassword}}>
             {children}
         </AuthContext.Provider>
     );
