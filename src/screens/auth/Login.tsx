@@ -15,6 +15,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
 
     function handleSignIn() {
+        console.log(email, password)
         signIn(email, password)
     }
 
@@ -25,7 +26,7 @@ export default function Login() {
             <InputComponent label={"E-mail"} value={email} onChange={setEmail} />
             <InputComponent label={"Senha"} value={password} onChange={setPassword} />
             <View style={styles.linkContainer}>
-                <Link to=''>
+                <Link to='/ForgotPassword'>
                     <Text style={styles.linkText}>Esqueceu a senha?</Text>
                 </Link>
                 <Link to='/SignUp'>

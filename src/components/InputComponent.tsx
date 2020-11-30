@@ -15,7 +15,7 @@ export default function InputComponent (props: PropsInput) {
         <View style={styles.container}>
             <Text style={styles.label}>{props.label}</Text>
             <TextInput style={styles.input} value={props.value}
-                onChange={(text) => props.onChange(text)} />
+                onChangeText={text => props.onChange(text)} />
         </View>
     )
 }
