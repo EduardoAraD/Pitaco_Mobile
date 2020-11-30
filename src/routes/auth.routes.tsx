@@ -3,6 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Login from '../screens/auth/Login'
 import SignUp from '../screens/auth/SignUp'
+import ForgotPassword from '../screens/auth/ForgotPassword'
+import ResetPassword from '../screens/auth/ResetPassword'
 
 import colors from '../assets/colors'
 
@@ -22,11 +24,14 @@ export default function AuhtRoutes() {
                 },
             }}
         >
-            <Stack.Screen name="Login" component={Login}
+            <Stack.Screen name='Login' component={Login}
                 options={{ headerShown: false }} />
-            <Stack.Screen name="SignUp" component={SignUp} 
-                options={{ title: 'Cadastre-se' }} 
-            />
+            <Stack.Screen name='SignUp' component={SignUp} 
+                options={{ title: 'Cadastre-se' }} />
+            <Stack.Screen name='ForgotPassword' component={ForgotPassword}
+                options={{ title: 'Redefinir a senha' }} />
+            <Stack.Screen name='ResetPassword' component={ResetPassword}
+                options={{ title: 'Redefinir a senha' }} />
         </Stack.Navigator>
     );
 }
