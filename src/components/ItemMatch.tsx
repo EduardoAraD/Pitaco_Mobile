@@ -32,10 +32,9 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingVertical: 2,
         alignItems: 'center',
-        backgroundColor: colors.whitePrimary,
 
         borderColor: colors.textGray4,
-        borderBottomWidth: 1,
+        borderTopWidth: 1,
     },
     cardGame: {
         flexDirection: 'row',

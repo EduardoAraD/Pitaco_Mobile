@@ -16,7 +16,7 @@ export default function HeaderComponent ({title, back = false, border = false} :
     const navigation = useNavigation()
     
     return (
-        <View style={[styles.header, border ? {} : { elevation: 3 }]}>
+        <View style={[styles.header, border ? { elevation: 3 }: {} ]}>
             {back ? <BorderlessButton onPress={navigation.goBack}>
                     <Icon name="arrow-left" size={30} color={colors.whitePrimary} />
                 </BorderlessButton> :

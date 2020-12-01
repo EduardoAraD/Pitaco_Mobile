@@ -14,7 +14,7 @@ export default function CardTitle ({ title, children }: Props) {
     return (
         <View style={styles.card}>
             <View style={styles.cardTitle}>
-    <Text style={styles.cardText}>{title}</Text>
+                <Text style={styles.cardText}>{title}</Text>
                 <Link to='/League' >
                     <TouchableOpacity style={styles.cardButton} >
                         <Text style={styles.cardButtonText}>Ver Mais</Text>

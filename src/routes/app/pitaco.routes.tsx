@@ -10,7 +10,7 @@ export default function PitacoRoute() {
     return(
         <Stack.Navigator>
             <Stack.Screen name='PitacoScreen' component={Pitaco}
-                options={{ header: () => <Header title='Pitaco' border={true} /> }} />
+                options={{ header: () => <Header title='Pitaco' /> }} />
         </Stack.Navigator>
     )
 }
