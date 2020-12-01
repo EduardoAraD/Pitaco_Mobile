@@ -6,16 +6,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import CardTitle from '../../components/CardTitle'
 import ItemStanding from '../../components/ItemStanding'
+import ItemMatch from '../../components/ItemMatch'
+import CardTitlePage from '../../components/CardTitlePage'
 
 import colors from '../../assets/colors'
-import ItemMatch from '../../components/ItemMatch'
 
 export default function Dashboard() {
     return (
         <View style={styles.container}>
-            <View style={styles.titleCard}>
-                <Text style={styles.textTitle}>25° Rodada - Fecha as 02/12/2020</Text>
-            </View>
+            <CardTitlePage title='25° Rodada - Fecha as 02/12/2020' />
             <ScrollView style={styles.scroll}>
                 <View style={styles.card}>
                     <View style={styles.cardPerfil}>
@@ -52,8 +51,11 @@ export default function Dashboard() {
                         saldo={10} golsDone={40} matchs={21} variacao={1} />
                     <ItemStanding position={3} name='Ferroviário AC' points={37} wins={11}
                         saldo={12} golsDone={45} matchs={21} variacao={-1} />
+                    <View style={{ height: 20, justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon name='dots-vertical' color={colors.textGray3} />
+                    </View>
                 </CardTitle>
-                <CardTitle title='Jogos'>
+                <CardTitle title='Jogos de Hoje'>
                     <ItemMatch />
                     <ItemMatch />
                     <ItemMatch />
@@ -67,18 +69,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.backgroundWhite
-    },
-    titleCard: {
-        backgroundColor: colors.whitePrimary,
-        height: 50,
-        elevation: 5,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    textTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: colors.textGray2
     },
     scroll: {
         paddingHorizontal: 20
