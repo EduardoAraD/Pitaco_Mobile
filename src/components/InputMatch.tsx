@@ -3,32 +3,31 @@ import { View, Text, StyleSheet, Image, TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import { Match } from '../models/Match'
+
 import colors from '../assets/colors'
 
-export default function InputMatch() {
-    const [visible, setVisible] = useState(false)
-    const [golsHome, setGolsHome] = useState('')
-    const [golsAway, setGolsAway] = useState('')
+interface Props {
+    index: number,
+    golsHome: string,
+    setGolsHome: Function,
+    golsAway: string,
+    setGolsAway: Function
+    match: Match
+}
 
-    function updateNumber(text: string, type: number){
-        if(text.length <= 2) {
-            if(text.length === 0){
-                if(type === 0) setGolsHome('')
-                else setGolsAway('')
-            } else {
-                if(type === 0) setGolsHome(text.replace(/[^0-9]/g, ''))
-                else setGolsAway(text.replace(/[^0-9]/g, ''))
-            }
-        }
-    }
+export default function InputMatch({ index, golsHome, setGolsHome, golsAway, setGolsAway, match}: Props) {
+    const [visible, setVisible] = useState(false)
 
     function visibleView(visible: boolean) {
         if(visible) {
             return (
             <View style={styles.cardVisible}>
-                <Text style={[styles.cardVisibleName, { textAlign: 'right'}]}>Athetico Paranaense</Text>
-                <Text style={styles.cardVisiblePlacar}> - </Text>
-                <Text style={[styles.cardVisibleName]}>Ceará SC</Text>
+                <Text style={[styles.cardVisibleName, { textAlign: 'right'}]}>{match.clubeHome.name}</Text>
+                <Text style={styles.cardVisiblePlacar}>{ match.status === 'finish' ? 
+                    `${match.golsHome} - ${match.golsAway}` : ' - '}</Text>
+                <Text style={[styles.cardVisibleName]}>{match.clubeAway.name}</Text>
+                <View style={{ width: 25}} />
             </View>
         )}
     }
@@ -37,24 +36,28 @@ export default function InputMatch() {
         <View style={styles.card}>
             <View style={styles.cardContainer}>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Text style={styles.textCardStadium}>Arena Castelão - 13/12 - 20:00</Text>
+                    <Text style={styles.textCardStadium}>{`${match.stadium} - ${match.date} - ${match.hour}`}</Text>
                     <View style={styles.cardInput}>
                         <View style={[styles.cardClube, { justifyContent: 'flex-end'}]}>
-                            <Text style={styles.cardClubeText}>CAP</Text>
+                            <Text style={styles.cardClubeText}>{match.clubeHome.shortName}</Text>
                             <Image style={styles.cardClubeImg} resizeMode='contain'
-                                source={require('../assets/images/logoPitaco.png')} />
+                                source={{ uri: match.clubeHome.logo }} />
                         </View>
-                        <TextInput value={golsHome} keyboardType='numeric'
-                            style={[styles.input,{ borderBottomColor: golsHome.length > 0 ? colors.greenSecundary: colors.textGray3 }]}
-                            onChangeText={text => updateNumber(text, 0)} />
+                        <TextInput style={ match.status !== 'finish' ?
+                            [styles.input,{ borderBottomColor: golsHome.length > 0 ? colors.greenSecundary: colors.textGray3 }] : 
+                            styles.inputDisable }  editable={match.status !== 'finish' ? true : false }
+                            value={golsHome} keyboardType='numeric'
+                            onChangeText={text => setGolsHome(text, index)} />
                         <Text style={styles.textCardPlacar}>-</Text>
-                        <TextInput style={styles.inputDisable} value={golsAway}
-                            keyboardType='numeric' editable={false}
-                            onChangeText={(text) => updateNumber(text, 1)} />
+                        <TextInput style={ match.status !== 'finish' ?
+                            [styles.input,{ borderBottomColor: golsAway.length > 0 ? colors.greenSecundary: colors.textGray3 }] : 
+                            styles.inputDisable }  editable={match.status !== 'finish' ? true : false }
+                            value={golsAway} keyboardType='numeric'
+                            onChangeText={(text) => setGolsAway(text, index)} />
                         <View style={[styles.cardClube, { justifyContent: 'flex-start'}]}>
                             <Image style={styles.cardClubeImg} resizeMode='contain'
-                                source={require('../assets/images/logoPitaco.png')} />
-                            <Text style={styles.cardClubeText}>CEA</Text>
+                                source={{ uri: match.clubeAway.logo }} />
+                            <Text style={styles.cardClubeText}>{match.clubeAway.shortName}</Text>
                         </View>       
                     </View>
                 </View>
