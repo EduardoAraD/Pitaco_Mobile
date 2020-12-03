@@ -6,6 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import CardTitlePage from '../../components/CardTitlePage'
 import InputMatch from '../../components/InputMatch'
 import ButtomConfirm from '../../components/buttons/BottonConfirmComponent'
+import DoubleConfirm from '../../components/buttons/DoubleButton'
 import { Match } from '../../models/Match'
 
 import colors from '../../assets/colors'
@@ -109,20 +110,8 @@ export default function Pitaco() {
         <View style={styles.container}>
             <CardTitlePage title='Pitacos encerram 2h antes do jogo' />
             <ScrollView style={styles.scroll}>
-                <View style={styles.scrollButtonContainer}>
-                    <TouchableOpacity style={[styles.scrollButtonLeft,
-                        {backgroundColor: viewRodada ? colors.whitePrimary : colors.greenPrimary }]}
-                        onPress={() => setViewRodada(false)} >
-                        <Text style={[styles.scrollButtonText,
-                            { color: viewRodada? colors.textGray3 : colors.textWhite }]}>Hoje</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.scrollButtonRight,
-                        {backgroundColor: viewRodada ? colors.greenPrimary : colors.whitePrimary }]}
-                        onPress={() => setViewRodada(true)} >
-                        <Text style={[styles.scrollButtonText,
-                        { color: viewRodada? colors.textWhite : colors.textGray3 }]}>Rodada</Text>
-                    </TouchableOpacity>
-                </View>
+                <DoubleConfirm nameOption1='Hoje' nameOption2='Rodada'
+                    option={viewRodada} setOption={setViewRodada} />
                 <View style={styles.card}>
                     { titleCard() }
                     { arrayMatchs.map( (match, index) => (
@@ -148,7 +137,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.backgroundWhite
     },
     scroll: {
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
     },
     scrollButtonContainer: {
         marginTop: 10,
