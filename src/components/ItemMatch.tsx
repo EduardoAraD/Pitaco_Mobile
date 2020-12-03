@@ -1,26 +1,32 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 
+import { Match } from '../models/Match'
+
 import colors from '../assets/colors'
 
-export default function ItemMatch() {
+interface Props {
+    match: Match
+}
+
+export default function ItemMatch({ match }: Props) {
     return (
         <View style={styles.cardContainer}>
-            <Text style={styles.textCardStadium}>Campeonato Brasileiro A 2020 - Arena Castelão</Text>
+            <Text style={styles.textCardStadium}>Campeonato Brasileiro A 2020 - {match.stadium}</Text>
             <View style={styles.cardGame}>
                 <View style={styles.cardGameItem}>
                     <Image style={styles.cardGameImg} resizeMode='contain'
-                        source={require('../assets/images/logoPitaco.png')} />
-                    <Text style={styles.textCardName}>Athetico Paranaense</Text>
+                        source={{ uri: match.clubeHome.logo }} />
+                    <Text style={styles.textCardName}>{match.clubeHome.name}</Text>
                 </View>
                 <View style={styles.cardGamePlacar}>
-                    <Text style={styles.textCardHora}>27/08 - 18:00</Text>
-                    <Text style={styles.textCardPlacar}>0 - 3</Text>
+                    <Text style={styles.textCardHora}>{`${match.date} - ${match.hour}`}</Text>
+                    <Text style={styles.textCardPlacar}>{`${match.golsHome} - ${match.golsAway}`}</Text>
                 </View>
                 <View style={[styles.cardGameItem, { alignItems: 'flex-start' }]}>
                     <Image style={styles.cardGameImg} resizeMode='contain'
-                        source={require('../assets/images/logoPitaco.png')} />
-                    <Text style={styles.textCardName}>CEARÀ SC</Text>
+                        source={{ uri: match.clubeAway.logo }} />
+                    <Text style={styles.textCardName}>{match.clubeAway.name}</Text>
                 </View>
             </View>
         </View>

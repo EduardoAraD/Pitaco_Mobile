@@ -9,7 +9,36 @@ import ItemStanding from '../../components/ItemStanding'
 import ItemMatch from '../../components/ItemMatch'
 import CardTitlePage from '../../components/CardTitlePage'
 
+import { Match } from '../../models/Match'
+
 import colors from '../../assets/colors'
+
+const data2 = [
+    {   idMatch: 102,
+        clubeHome: { name: 'Ferroviário AC', shortName: 'FER',
+            logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
+        clubeAway: { name: 'Ceará SC', shortName: 'CEA',
+            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
+        date: '27/02/2020', hour: '16:00', golsHome: 0,
+        golsAway: 1, stadium: 'Arena Castelão', status: 'init'
+    } as Match,
+    {   idMatch: 102,
+        clubeHome: { name: 'Ferroviário AC', shortName: 'FER',
+            logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
+        clubeAway: { name: 'Ceará SC', shortName: 'CEA',
+            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
+        date: '27/02/2020', hour: '16:00', golsHome: 0,
+        golsAway: 1, stadium: 'Arena Castelão', status: 'init'
+    } as Match,
+    {   idMatch: 102,
+        clubeHome: { name: 'Ferroviário AC', shortName: 'FER',
+            logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
+        clubeAway: { name: 'Ceará SC', shortName: 'CEA',
+            logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
+        date: '27/02/2020', hour: '16:00', golsHome: 0,
+        golsAway: 1, stadium: 'Arena Castelão', status: 'init'
+    } as Match
+]
 
 export default function Dashboard() {
     return (
@@ -56,9 +85,9 @@ export default function Dashboard() {
                     </View>
                 </CardTitle>
                 <CardTitle title='Jogos de Hoje'>
-                    <ItemMatch />
-                    <ItemMatch />
-                    <ItemMatch />
+                    { data2.map( (match, index) => 
+                        <ItemMatch key={index} match={match} />
+                    )}
                 </CardTitle>
             </ScrollView>
         </View>
