@@ -1,8 +1,4 @@
-interface Clube {
-    name: string,
-    logo: string,
-    shortName: string
-}
+import { Clube } from './Clube'
 
 export interface Match {
     idMatch: number,
