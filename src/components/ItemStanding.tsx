@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     img: {
         margin: 3,
         height: 34,
-        width: 32,
+        width: 34,
         alignSelf: 'center',
     },
     areaValor: {
