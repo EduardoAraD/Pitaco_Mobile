@@ -10,7 +10,7 @@ export default function ChampionshipRoute() {
     return(
         <Stack.Navigator>
             <Stack.Screen name='ChampionshipScreen' component={Championship}
-                options={{ header: () => <Header title='Championship' /> }} />
+                options={{ header: () => <Header title='Championship' border={true} /> }} />
         </Stack.Navigator>
     )
 }

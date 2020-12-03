@@ -10,7 +10,7 @@ export default function LeagueRoute() {
     return(
         <Stack.Navigator>
             <Stack.Screen name='LeagueScreen' component={League}
-                options={{ header: () => <Header title='League' /> }} />
+                options={{ header: () => <Header title='League' border={true} /> }} />
         </Stack.Navigator>
     )
 }
