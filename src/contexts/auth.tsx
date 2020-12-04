@@ -10,12 +10,14 @@ interface AuthContextData {
     signed: boolean;
     user: User | null;
     loading: boolean;
+    themeDark: boolean;
 
     signIn(email: string, password: string): Promise<void>;
     signUp(name: string, email: string, password: string, confirmPassword: string): Promise<void>;
     signOut(): void;
     forgotPassword(email: string): Promise<void>;
-    resetPassword(codig: string, password: string, confirmPassword: string): Promise<void>
+    resetPassword(codig: string, password: string, confirmPassword: string): Promise<void>;
+    onChangeThemeDark(): Promise<void>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -24,15 +26,22 @@ export const AuthProvider: React.FC = ({children}) => {
     const [token, setToken] = useState("")
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
+    const [themeDark, setThemeDark] = useState(false)
 
     useEffect(() => {
         async function loadStorageData() {
             const storageUser = await AsyncStorage.getItem('@Pitaco:user')
             const storageToken = await AsyncStorage.getItem('@Pitaco:token')
+            const theme = await AsyncStorage.getItem('@Pitaco:theme')
 
             if(storageUser && storageToken) {
                 setUser(JSON.parse(storageUser))
                 api.defaults.headers.Authorization = `Bearer ${storageToken}`
+                if(theme === 'true'){
+                    setThemeDark(true)
+                } else{
+                    setThemeDark(false)
+                }
             }
             setLoading(false)
         }
@@ -50,6 +59,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
         await AsyncStorage.setItem('@Pitaco:user', JSON.stringify(response.user))
         await AsyncStorage.setItem('@Pitaco:token', response.token)
+        await AsyncStorage.setItem('@Pitaco:theme', 'false')
     }
 
     async function signUp(name: string, email: string, password: string, confirmPassword: string){
@@ -62,6 +72,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
         await AsyncStorage.setItem('@Pitaco:user', JSON.stringify(response.user))
         await AsyncStorage.setItem('@Pitaco:token', response.token)
+        await AsyncStorage.setItem('@Pitaco:theme', 'false')
     }
 
     function signOut(){
@@ -69,6 +80,17 @@ export const AuthProvider: React.FC = ({children}) => {
             setUser(null)
             setToken('')
         })
+    }
+
+    async function onChangeThemeDark() {
+        const theme = !themeDark
+        setThemeDark(theme)
+        if(theme){
+            await AsyncStorage.setItem('@Pitaco:theme', 'true')
+        } else {
+            await AsyncStorage.setItem('@Pitaco:theme', 'false')
+        }
+        
     }
 
     async function forgotPassword(email: string) {
@@ -81,8 +103,8 @@ export const AuthProvider: React.FC = ({children}) => {
 
     return (
         <AuthContext.Provider
-            value={{signed: !!user, user, loading,
-                signIn, signUp, signOut, forgotPassword, resetPassword}}>
+            value={{signed: !!user, user, loading, themeDark,
+                signIn, signUp, signOut, forgotPassword, resetPassword, onChangeThemeDark}}>
             {children}
         </AuthContext.Provider>
     );
