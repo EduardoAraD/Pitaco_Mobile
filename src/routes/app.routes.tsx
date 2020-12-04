@@ -19,7 +19,10 @@ function TabNavigation() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: colors.greenPrimary
+        activeTintColor: colors.greenPrimary,
+        activeBackgroundColor: colors.whitePrimary,
+        inactiveTintColor: colors.textGray2,
+        inactiveBackgroundColor: colors.whitePrimary
       }}>
       <Tab.Screen name="Dashboard" component={DashboardRoute}
         options={{
