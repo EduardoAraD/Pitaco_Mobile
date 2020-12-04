@@ -52,8 +52,7 @@ export default function CardLeague({ league } : Props) {
         <TouchableOpacity style={styles.card}
             onPress={handleNavigateLeague}>
             <Image style={styles.cardImg} resizeMode='contain'
-                source={ league.logo === 'logoPitaco' ? require('../assets/images/logoPitaco.png') :
-                    {uri: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'}} />
+                source={league.logo} />
             <View style={styles.cardInfo}>
                 <Text style={styles.cardInfoTitle}>{league.name}</Text>
                 { viewDono() }

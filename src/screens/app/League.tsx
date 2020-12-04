@@ -10,22 +10,25 @@ import { League } from '../../models/League'
 import colors from '../../assets/colors'
 
 const data = [
-    {   name: 'Pitaco', logo: 'logoPitaco',
+    {   name: 'Pitaco', logo: require('../../assets/images/logoPitaco.png'),
+        description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)',
         points: [
             { point: 240, exactScore: 10, user: { name: 'SourhT', email: '123' }},
             { point: 203, exactScore: 12, user: { name: 'Edut', email: 'tan@' }},
             { point: 196, exactScore: 8, user: { name: 'SourhT', email: 'teste@g' }},
         ]
     } as League,
-    {   name: 'Dashboard', logo: 'logoPitaco',
+    {   name: 'Dashboard', logo: require('../../assets/images/trophy1.png'),
         dono: { name: 'Edut', email: 'tan@' },
+        description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)',
         points: [
             { point: 240, exactScore: 10, user: { name: 'SourhT', email: '123' }},
             { point: 203, exactScore: 12, user: { name: 'Edut', email: 'tan@' }},
             { point: 196, exactScore: 8, user: { name: 'SourhT', email: 'teste@g' }},
         ]
     } as League,
-    {   name: 'Eupaminondas', logo: 'logoPitaco',
+    {   name: 'Eupaminondas', logo: require('../../assets/images/trophy3.png'),
+        description: 'Brincando aqui na rua, alou mãe',
         dono: { name: 'SourhT', email: '123' },
         points: [
             { point: 240, exactScore: 10, user: { name: 'SourhT', email: '123' }},
@@ -36,7 +39,7 @@ const data = [
 ]
 
 export default function LeagueScreen() {
-    const [hasLeague, setHasLeague] = useState(true)
+    const [hasLeague, setHasLeague] = useState(false)
     const [hasClubeFavorite, setClubeFavorite] = useState(false)
 
     function createLeagueView(){
@@ -45,7 +48,7 @@ export default function LeagueScreen() {
                     <Text style={[styles.buttomText, { color: colors.textGray3 }]}>Você possui uma liga</Text>
             </View>
         ) : (
-            <Link to='/Dashboard'>
+            <Link to='/LeagueCreateScreen'>
                 <TouchableOpacity style={styles.buttom}>
                     <Text style={styles.buttomText}>Criar Liga</Text>
                 </TouchableOpacity>

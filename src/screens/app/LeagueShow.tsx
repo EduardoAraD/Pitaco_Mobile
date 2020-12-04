@@ -37,10 +37,9 @@ export default function LeagueShow() {
             <ScrollView style={styles.scroll}>
                 <View style={styles.cardLeague}>
                     <Image style={styles.cardLeagueImg} resizeMode='contain'
-                        source={ league.logo === 'logoPitaco' ? require('../../assets/images/logoPitaco.png') :
-                            {uri: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'}} />
+                        source={ league.logo} />
                     <View style={styles.cardLeagueInfo}>
-                        <Text style={styles.cardLeagueInfoDescrip}>{league.name}</Text>
+                        <Text style={styles.cardLeagueInfoDescrip}>{league.description}</Text>
                         { viewDono() }
                     </View>
                 </View>
