@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/auth'
 
 import TitleComponent from '../../components/TitleComponent'
 import InputComponent from '../../components/InputComponent'
+import ContinuarComponent from '../../components/buttons/ContinuarComponent'
 
 import colors from '../../assets/colors'
 
@@ -29,10 +30,7 @@ export default function ForgotPassword() {
                 <InputComponent label='E-mail' onChange={setEmail} value={email} />
             </View>
             <Text style={styles.text}>Assim que receber, pressione "Continuar"</Text>
-            <TouchableOpacity style={styles.buttonContinuar} 
-                onPress={handleForgotPassword}>
-                <Text style={styles.textbutton}>Continuar</Text>
-            </TouchableOpacity>
+            <ContinuarComponent onPress={handleForgotPassword} />
         </View>
     )
 }
@@ -55,20 +53,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
 
         backgroundColor: colors.bluePrimary
-    },
-    textbutton: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.whitePrimary
-    },
-    buttonContinuar: {
-        height: 64,
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 20,
-
-        backgroundColor: colors.greenPrimary
     },
     text: {
         fontSize: 18,
