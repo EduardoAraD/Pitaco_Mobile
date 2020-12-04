@@ -3,17 +3,23 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import League from '../../screens/app/League'
 import LeagueShow from '../../screens/app/LeagueShow'
+import LeagueCreate from '../../screens/app/LeagueCreate'
+import LeagueCreatePreView from '../../screens/app/LeagueCreatePreView'
 import Header from '../../components/HeaderComponent'
 
 const Stack = createStackNavigator()
 
 export default function LeagueRoute() {
     return(
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='LeagueScreen'>
             <Stack.Screen name='LeagueScreen' component={League}
-                options={{ header: () => <Header title='League' border={true} /> }} />
+                options={{ header: () => <Header title='Ligas' border={true} /> }} />
             <Stack.Screen name='LeagueShowScreen' component={LeagueShow}
                 options={{ headerShown: false }} />
+            <Stack.Screen name='LeagueCreateScreen' component={LeagueCreate}
+                options={{ header: () => <Header title='Criar Liga' back={true} border={true} /> }} />
+            <Stack.Screen name='LeagueCreatePreScreen' component={LeagueCreatePreView}
+                options={{ header: () => <Header title='Pré view Liga' back={true} border={true} /> }} />
         </Stack.Navigator>
     )
 }
