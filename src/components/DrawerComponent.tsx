@@ -1,31 +1,23 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import {
-    Avatar,
-    Title,
-    Caption,
-    Paragraph,
-    Drawer,
-    Text,
-    TouchableRipple,
-    Switch
-} from 'react-native-paper';
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { 
     DrawerContentScrollView,
     DrawerItem,
     DrawerContentComponentProps
 } from '@react-navigation/drawer'
+import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 Icon.loadFont();
 
 import { useAuth } from '../contexts/auth'
 
-export default function DrawerComponent(props: DrawerContentComponentProps) {
-    const { signOut } = useAuth()
+import colors from '../assets/colors'
 
-    const [isDarkTheme, setIsDarkTheme] = React.useState(false)
-    const toggleTheme = () => {
-        setIsDarkTheme(!isDarkTheme)
+export default function DrawerComponent(props: DrawerContentComponentProps) {
+    const { user, themeDark, signOut, onChangeThemeDark } = useAuth()
+
+    const toggleTheme = async () => {
+        await onChangeThemeDark()
     }
 
     function handleSignOut(){
@@ -33,11 +25,17 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
     }
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: colors.backgroundWhite }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <View style={{flexDirection:'row',marginTop: 15}}>
+                        <Image source={{ uri: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png' }}
+                            resizeMode='contain' style={styles.userInfoImg} />
+                        <View style={styles.userInfo}>
+                            <Text style={styles.userInfoName}>{user?.name}</Text>
+                            <Text style={styles.userInfoClube}>Flamengo</Text>
+                        </View>
+                        {/*<View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image 
                                 source={{
                                     uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
@@ -59,79 +57,57 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                                 <Paragraph style={[styles.paragraph, styles.caption]}>100</Paragraph>
                                 <Caption style={styles.caption}>Followers</Caption>
                             </View>
-                        </View>
+                            </View>*/}
                     </View>
-                <Drawer.Section style={styles.drawerSection}>
-                        <DrawerItem 
+                    <View style={styles.drawerSection}>
+                        <DrawerItem label="Dashboard" inactiveTintColor={colors.textGray2}
                             icon={({color, size}) => (
-                                <Icon 
-                                name="home-outline" 
-                                color={color}
-                                size={size}
-                                />
+                                <Icon name="home-outline" color={color} size={size} />
                             )}
-                            label="Dashboard"
                             onPress={() => {props.navigation.navigate('Dashboard')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem label="Pitaco" inactiveTintColor={colors.textGray2}
                             icon={({color, size}) => (
-                                <Icon 
-                                name="scoreboard-outline" 
-                                color={color}
-                                size={size}
-                                />
+                                <Icon name="scoreboard-outline" color={color} size={size} />
                             )}
-                            label="Pitaco"
                             onPress={() => {props.navigation.navigate('Pitaco')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem label="Championship" inactiveTintColor={colors.textGray2}
                             icon={({color, size}) => (
-                                <Icon 
-                                name="soccer" 
-                                color={color}
-                                size={size}
-                                />
+                                <Icon name="soccer" color={color} size={size} />
                             )}
-                            label="Championship"
                             onPress={() => {props.navigation.navigate('Championship')}}
                         />
-                        <DrawerItem 
+                        <DrawerItem label="League" inactiveTintColor={colors.textGray2}
                             icon={({color, size}) => (
-                                <Icon 
-                                name="trophy-outline" 
-                                color={color}
-                                size={size}
-                                />
+                                <Icon name="trophy-outline" color={color} size={size} />
                             )}
-                            label="League"
                             onPress={() => {props.navigation.navigate('League')}}
                         />
-                    </Drawer.Section>
-                    <Drawer.Section title="Preferences">
-                        <TouchableRipple onPress={() => {toggleTheme()}}>
+                    </View>
+                    <View style={styles.drawerSection}>
+                        <Text style={styles.textPreference}>Preferencias</Text>
+                        <TouchableOpacity onPress={() => {toggleTheme()}}>
                             <View style={styles.preference}>
-                                <Text>Dark Theme</Text>
+                                <Text style={{ color: colors.textGray2 }}>Dark Theme</Text>
                                 <View pointerEvents="none">
-                                    <Switch value={isDarkTheme}/>
+                                    <Switch value={themeDark}
+                                        trackColor={{ true: colors.greenPrimary, false: colors.textGray3 }}
+                                        thumbColor={themeDark ? colors.greenPrimary : colors.textGray3 }/>
                                 </View>
                             </View>
-                        </TouchableRipple>
-                    </Drawer.Section>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </DrawerContentScrollView>
-            <Drawer.Section style={styles.bottonDrawerSection}>
-                <DrawerItem 
+            <View style={styles.bottonDrawerSection}>
+                <DrawerItem label="Sair" inactiveTintColor={colors.textGray2}
                     icon={({color, size}) => (
-                        <Icon 
-                        name="exit-to-app" 
-                        color={color}
-                        size={size}
-                        />
+                        <Icon name="exit-to-app" color={color} size={size} />
                     )}
-                    label="Sign Out"
                     onPress={handleSignOut}
                 />
-            </Drawer.Section>
+            </View>
         </View>
     )
 }
@@ -141,43 +117,51 @@ const styles = StyleSheet.create({
         flex:1
     },
     userInfoSection: {
-        paddingLeft: 20,
-    },
-    title: {
-        fontSize: 16,
-        marginTop: 3,
-        fontWeight: 'bold'
-    },
-    caption: {
-        fontSize: 14,
-        lineHeight: 14,
-    },
-    row: {
-        marginTop: 20,
+        padding: 20,
         flexDirection: 'row',
-        alignItems: 'center'
+
+        borderBottomColor: colors.textGray3,
+        borderBottomWidth: 1
     },
-    section: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginRight: 15
+    userInfoImg: {
+        height: 40,
+        width: 40,
+        marginRight: 10
     },
-    paragraph: {
+    userInfo: {
+        flex: 1,
+        justifyContent: 'space-between'
+    },
+    userInfoName: {
+        fontSize: 20,
         fontWeight: 'bold',
-        marginRight: 3,
+        color: colors.textGray1
+    },
+    userInfoClube: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: colors.textGray3
     },
     drawerSection: {
-        marginTop: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.textGray4
     },
     bottonDrawerSection: {
         marginBottom: 15,
-        borderTopColor: '#f4f4f4',
-        borderTopWidth: 1
+        borderColor: colors.textGray4,
+        borderTopWidth: 1,
+        borderBottomWidth: 1
     },
     preference: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 12,
         paddingHorizontal: 16
+    },
+    textPreference: {
+        fontWeight: 'bold',
+        color: colors.textGray3,
+        marginLeft: 15,
+        marginTop: 4
     }
 })
