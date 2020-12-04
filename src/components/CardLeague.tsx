@@ -57,7 +57,7 @@ export default function CardLeague({ league } : Props) {
                 <Text style={styles.cardInfoTitle}>{league.name}</Text>
                 { viewDono() }
                 <View style={styles.cardInfoUser}>
-                    <Text style={styles.cardInfoUserPos}>{position}.</Text>
+                    <Text style={styles.cardInfoUserPos}>{position ? `${position}.` : ''}</Text>
                     <Text style={styles.cardInfoUserName}>{userPoint?.user.name || ''}</Text>
                     <Text style={styles.cardInfoUserPoint}>{userPoint?.point || ''}</Text>
                 </View>

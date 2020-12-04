@@ -79,7 +79,7 @@ export default function LeagueScreen() {
                     <Text style={styles.viewTitleText}>Ligas com Amigos</Text>
                 </View>
                 <View style={styles.buttomContainer}>
-                    <Link to='/League'>
+                    <Link to='/SearchLeagueScreen'>
                         <TouchableOpacity style={styles.buttom}>
                             <Text style={styles.buttomText}>Procurar</Text>
                         </TouchableOpacity>
