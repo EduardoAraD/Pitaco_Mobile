@@ -84,6 +84,18 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                             )}
                             onPress={() => {props.navigation.navigate('League')}}
                         />
+                        <DrawerItem label="Clube de Coração" inactiveTintColor={colors.textGray2}
+                            icon={({color, size}) => (
+                                <Icon name="heart-outline" color={color} size={size} />
+                            )}
+                            onPress={() => {props.navigation.navigate('HeartClub')}}
+                        />
+                        <DrawerItem label="Amigos" inactiveTintColor={colors.textGray2}
+                            icon={({color, size}) => (
+                                <Icon name="account-group-outline" color={color} size={size} />
+                            )}
+                            onPress={() => {props.navigation.navigate('Friend')}}
+                        />
                     </View>
                     <View style={styles.drawerSection}>
                         <Text style={styles.textPreference}>Preferencias</Text>
