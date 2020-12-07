@@ -1,34 +1,65 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-import { useRoute } from '@react-navigation/native'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import Header from '../../components/HeaderComponent'
 import ItemStandingLeague from '../../components/ItemStandingLeague'
 
-import { useAuth } from '../../contexts/auth'
-
 import { League } from '../../models/League'
+import { User } from '../../models/User'
 
 import colors from '../../assets/colors'
 
 interface RouteProps {
-    league: League
+    league: League,
+    isDono: boolean,
+    user: User
 }
 
 export default function LeagueShow() {
+    const navigate = useNavigation()
     const route = useRoute();
-    const { league } = route.params as RouteProps
-    const { user } = useAuth()
+    const { league, isDono, user } = route.params as RouteProps
 
     function viewDono() {
-        if(league.dono) {
-            return league.dono.email === user?.email ? (
+        if( league.dono ){
+            return isDono ? (
                 <Text style={[styles.cardLeagueInfoDono, { color: colors.yellowPrimary }]}>@{league.dono.name}</Text>
             ) : (
                 <Text style={styles.cardLeagueInfoDono}>@{league.dono.name}</Text>
             )
         }
+    }
+
+    function viewButtomActions() {
+        if( isDono ) {
+            return (
+                <View style={styles.viewButtomAction}>
+                    <TouchableOpacity style={styles.buttomAction} 
+                        onPress={handleNavigateFriend}>
+                        <Text style={styles.buttomActionText}>Convidar Amigos</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttomAction} 
+                        onPress={handleNavigateSolicitation}>
+                        <Text style={styles.buttomActionText}>Solicitações</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+        const notParticipating = league.points.filter(point => point.user.email === user.email).length === 0
+        if(notParticipating) {
+            return <TouchableOpacity style={[styles.buttomAction, { width: 150 }]} >
+                <Text style={styles.buttomActionText}>Participar da Liga</Text>
+            </TouchableOpacity>
+        }
+    }
+
+    function handleNavigateFriend(){
+        navigate.navigate('Friend')
+    }
+    function handleNavigateSolicitation(){
+        navigate.navigate('SolicitationScreen')
     }
 
     return (
@@ -43,6 +74,7 @@ export default function LeagueShow() {
                         { viewDono() }
                     </View>
                 </View>
+                { viewButtomActions() }
                 <View style={styles.cardStanding}>
                     <View style={styles.cardStandingTitle}>
                         <Text style={styles.cardStandingTitleText}>Classificação</Text> 
@@ -50,7 +82,7 @@ export default function LeagueShow() {
                     { league.points.map((point, index) => 
                         <ItemStandingLeague key={index}
                             position={index + 1}
-                            isUser={point.user.email === user?.email}
+                            isUser={point.user.email === user.email}
                             point={point}
                         />)
                     }
@@ -67,6 +99,27 @@ const styles = StyleSheet.create({
     },
     scroll: {
         paddingHorizontal: 20
+    },
+    viewButtomAction: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    buttomAction: {
+        height: 30,
+        width: 130,
+        marginVertical: 10,
+        backgroundColor: colors.greenPrimary,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        
+        elevation: 2
+    },
+    buttomActionText: {
+        color: colors.textWhite,
+        fontSize: 12,
+        fontWeight: '600'
     },
     cardLeague: {
         height: 90,
