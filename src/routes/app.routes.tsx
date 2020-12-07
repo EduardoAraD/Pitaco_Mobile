@@ -8,6 +8,8 @@ import DashboardRoute from './app/dashboard.routes';
 import PitacoRoute from './app/pitaco.routes';
 import ChampionshipRoute from './app/championship.routes';
 import LeagueRoute from './app/league.routes';
+import HeartClubRoute from './app/heartclub.routes';
+import FriendRoute from './app/friend.routes';
 
 import DrawerComponent from '../components/DrawerComponent';
 
@@ -62,6 +64,8 @@ export default function AppRoutes() {
   return (
     <Drawer.Navigator drawerContent={ props => <DrawerComponent {...props} />}>
       <Drawer.Screen name="HomeDrawer" component={TabNavigation} />
+      <Drawer.Screen name="Friend" component={FriendRoute} />
+      <Drawer.Screen name='HeartClub' component={HeartClubRoute} />
     </Drawer.Navigator>
   );
 }

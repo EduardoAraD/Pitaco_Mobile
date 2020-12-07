@@ -6,6 +6,7 @@ import LeagueShow from '../../screens/app/LeagueShow'
 import LeagueCreate from '../../screens/app/LeagueCreate'
 import LeagueCreatePreView from '../../screens/app/LeagueCreatePreView'
 import SearchLeague from '../../screens/app/SearchLeague'
+import Solicitation from '../../screens/app/Solicitation'
 import Header from '../../components/HeaderComponent'
 
 const Stack = createStackNavigator()
@@ -23,6 +24,8 @@ export default function LeagueRoute() {
                 options={{ header: () => <Header title='Pré view Liga' back={true} border={true} /> }} />
             <Stack.Screen name='SearchLeagueScreen' component={SearchLeague}
                 options={{ header: () => <Header title='Procurar Liga' back={true} border={true} /> }} />
+            <Stack.Screen name='SolicitationScreen' component={Solicitation}
+                options={{ header: () => <Header title='Solicitações' back={true} border={true} /> }} />
         </Stack.Navigator>
     )
 }
