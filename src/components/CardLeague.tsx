@@ -3,19 +3,18 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
-import { useAuth } from '../contexts/auth'
-
 import { League } from '../models/League'
 import { Point } from '../models/Point'
+import { User } from '../models/User'
 
 import colors from '../assets/colors'
 
 interface Props {
-    league: League
+    league: League,
+    user: User
 }
 
-export default function CardLeague({ league } : Props) {
-    const { user } = useAuth()
+export default function CardLeague({ league, user } : Props) {
     const navigation = useNavigation()
 
     const [userPoint, setUserPoint] = useState<Point>()
@@ -36,7 +35,7 @@ export default function CardLeague({ league } : Props) {
 
     function viewDono() {
         if(league.dono) {
-            return league.dono.email === user?.email ? (
+            return league.dono.email === user.email ? (
                 <Text style={[styles.cardInfoDono, { color: colors.yellowPrimary }]}>@{league.dono.name}</Text>
             ) : (
                 <Text style={styles.cardInfoDono}>@{league.dono.name}</Text>
@@ -45,7 +44,8 @@ export default function CardLeague({ league } : Props) {
     }
 
     function handleNavigateLeague() {
-        navigation.navigate('LeagueShowScreen', { league })
+        const isDono = league.dono ? (league.dono.email === user?.email) : false
+        navigation.navigate('LeagueShowScreen', { league, isDono, user })
     }
 
     return (

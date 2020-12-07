@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { Link } from '@react-navigation/native'
+import { useAuth } from '../../contexts/auth'
 
 import CardLeague from '../../components/CardLeague'
 
 import { League } from '../../models/League'
+import { User } from '../../models/User'
 
 import colors from '../../assets/colors'
 
@@ -39,6 +41,7 @@ const data = [
 ]
 
 export default function LeagueScreen() {
+    const { user } = useAuth()
     const [hasLeague, setHasLeague] = useState(false)
     const [hasClubeFavorite, setClubeFavorite] = useState(false)
 
@@ -57,7 +60,7 @@ export default function LeagueScreen() {
     }
 
     function leagueOfClubeFavorite(){
-        return hasClubeFavorite ? <CardLeague league={data[1]} /> : (
+        return hasClubeFavorite ? <CardLeague league={data[1]} user={user as User} /> : (
             <View style={styles.card}>
                 <Text style={styles.cardText}>Você não escolheu seu clube de coração</Text>
                 <TouchableOpacity style={styles.buttom}>
@@ -73,7 +76,7 @@ export default function LeagueScreen() {
                 <View style={styles.viewTitle}>
                     <Text style={styles.viewTitleText}>Ligas Gerais</Text>
                 </View>
-                <CardLeague league={data[0]} />
+                <CardLeague league={data[0]} user={user as User} />
                 { leagueOfClubeFavorite() }
                 <View style={styles.viewTitle}>
                     <Text style={styles.viewTitleText}>Ligas com Amigos</Text>
@@ -86,7 +89,7 @@ export default function LeagueScreen() {
                     </Link>
                     { createLeagueView() }
                 </View>
-                { data.map( (league, index) => <CardLeague key={index} league={league} /> )}
+                { data.map( (league, index) => <CardLeague key={index} league={league} user={user as User} /> )}
             </ScrollView>
         </View>
     )
