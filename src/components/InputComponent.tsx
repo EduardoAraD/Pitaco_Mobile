@@ -6,16 +6,20 @@ import colors from '../assets/colors'
 interface PropsInput {
     label: string,
     value: string,
-
+    placeholder:string,
+    keyboardType?: "email-address" | "default" | "numeric" | "phone-pad" | "number-pad" | "decimal-pad" | "visible-password" | "ascii-capable" | "numbers-and-punctuation" | "url" | "name-phone-pad" | "twitter" | "web-search",
+    password?: boolean,
     onChange: Function
 }
 
-export default function InputComponent (props: PropsInput) {
+export default function InputComponent ({ label, value, placeholder, keyboardType = "default", password = false, onChange }: PropsInput) {
     return(
         <View style={styles.container}>
-            <Text style={styles.label}>{props.label}</Text>
-            <TextInput style={styles.input} value={props.value}
-                onChangeText={text => props.onChange(text)} />
+            <Text style={styles.label}>{label}</Text>
+            <TextInput style={styles.input} value={value}
+                onChangeText={text => onChange(text)} keyboardType={keyboardType}
+                placeholder={placeholder} placeholderTextColor={colors.textGray5}
+                secureTextEntry={password} />
         </View>
     )
 }

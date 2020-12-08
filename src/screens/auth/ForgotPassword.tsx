@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
 import { useAuth } from '../../contexts/auth'
@@ -27,7 +26,8 @@ export default function ForgotPassword() {
         <View style={styles.container}>
             <TitleComponent text="Será enviado um código para seu email para redefinição de senha" />
             <View style={styles.containerEmail}>
-                <InputComponent label='E-mail' onChange={setEmail} value={email} />
+                <InputComponent label='E-mail' placeholder='E-mail'
+                    onChange={setEmail} value={email} keyboardType='email-address' />
             </View>
             <Text style={styles.text}>Assim que receber, pressione "Continuar"</Text>
             <ContinuarComponent onPress={handleForgotPassword} />

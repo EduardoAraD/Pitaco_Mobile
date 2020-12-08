@@ -30,9 +30,12 @@ export default function ResetPassword() {
             <ScrollView>
                 <View style={{ height: 20 }} />
                 <TitleComponent text='Escreva o código recebido pelo e-mail junto com a nova senha' />
-                <InputComponent label='Código' value={codig} onChange={setCodig} />
-                <InputComponent label='Senha' value={password} onChange={setPassword} />
-                <InputComponent label='Confirme a senha' value={confirmPassword}
+                <InputComponent label='Código' placeholder='Código'
+                    value={codig} onChange={setCodig} />
+                <InputComponent label='Senha' placeholder='Senha'
+                    password={true} value={password} onChange={setPassword} />
+                <InputComponent label='Confirme a senha' placeholder='Senha'
+                    password={true} value={confirmPassword}
                     onChange={setConfirmPassword} />
             </ScrollView>
             <ButtonConfirm onPress={handleConfirm} />

@@ -30,11 +30,14 @@ export default function SignUp() {
             <ScrollView>
                 <TitleComponent text="Cadastre-se e desafie seus amigos no Pitaco" />
                 <View style={styles.inputContent}>
-                    <InputComponent label="Nome" onChange={setName} value={name} />
-                    <InputComponent label="E-mail" onChange={setEmail} value={email} />
-                    <InputComponent label="Senha" onChange={setPassword} value={password} />
-                    <InputComponent label="Confirme a senha"
-                        onChange={setConfirmPassword} value={confirmPassword} />
+                    <InputComponent label="Nome" placeholder='Nome'
+                        onChange={setName} value={name} />
+                    <InputComponent label="E-mail" placeholder='E-mail'
+                        keyboardType='email-address' onChange={setEmail} value={email} />
+                    <InputComponent label="Senha" placeholder='Senha'
+                        password={true} onChange={setPassword} value={password} />
+                    <InputComponent label="Confirme a senha" placeholder='Senha'
+                        password={true} onChange={setConfirmPassword} value={confirmPassword} />
                     <View style={styles.checkboxContent}>
                         <CheckBox value={acceptTerms} 
                             onValueChange={(value) => setAcceptTerms(value)} />

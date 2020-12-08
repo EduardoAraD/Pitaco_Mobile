@@ -25,8 +25,10 @@ export default function Login() {
             <ScrollView style={styles.scroll}>
                 <Image style={styles.leagueImg} resizeMode="contain"
                     source={require('../../assets/images/logoPitaco.png')} />
-                <InputComponent label={"E-mail"} value={email} onChange={setEmail} />
-                <InputComponent label={"Senha"} value={password} onChange={setPassword} />
+                <InputComponent label='E-mail' placeholder='E-mail'
+                    keyboardType='email-address' value={email} onChange={setEmail} />
+                <InputComponent label={"Senha"} placeholder='Senha'
+                    value={password} password={true} onChange={setPassword} />
                 <View style={styles.linkContainer}>
                     <Link to='/ForgotPassword'>
                         <Text style={styles.linkText}>Esqueceu a senha?</Text>
