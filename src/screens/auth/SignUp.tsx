@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useAuth } from '../../contexts/auth'
 
@@ -9,7 +10,6 @@ import ButtonConfirm from '../../components/buttons/BottonConfirmComponent'
 import InputComponent from '../../components/InputComponent'
 import ModalComponent from '../../components/ModalComponent'
 import colors from '../../assets/colors'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function SignUp() {
     const { signUp } = useAuth()
@@ -27,25 +27,27 @@ export default function SignUp() {
 
     return (
         <View style={styles.container}>
-            <TitleComponent text="Cadastre-se e desafie seus amigos no Pitaco" />
-            <View style={styles.inputContent}>
-                <InputComponent label="Nome" onChange={setName} value={name} />
-                <InputComponent label="E-mail" onChange={setEmail} value={email} />
-                <InputComponent label="Senha" onChange={setPassword} value={password} />
-                <InputComponent label="Confirme a senha"
-                    onChange={setConfirmPassword} value={confirmPassword} />
-                <View style={styles.checkboxContent}>
-                    <CheckBox value={acceptTerms} 
-                        onValueChange={(value) => setAcceptTerms(value)} />
-                    <TouchableOpacity style={{ marginLeft: 2, padding: 5 }}
-                        onPress={() => setModalVisible(!modalVisible)}
-                    >
-                        <Text style={styles.checkboxText}>Termos de uso</Text>
-                    </TouchableOpacity>
+            <ScrollView>
+                <TitleComponent text="Cadastre-se e desafie seus amigos no Pitaco" />
+                <View style={styles.inputContent}>
+                    <InputComponent label="Nome" onChange={setName} value={name} />
+                    <InputComponent label="E-mail" onChange={setEmail} value={email} />
+                    <InputComponent label="Senha" onChange={setPassword} value={password} />
+                    <InputComponent label="Confirme a senha"
+                        onChange={setConfirmPassword} value={confirmPassword} />
+                    <View style={styles.checkboxContent}>
+                        <CheckBox value={acceptTerms} 
+                            onValueChange={(value) => setAcceptTerms(value)} />
+                        <TouchableOpacity style={{ marginLeft: 2, padding: 5 }}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={styles.checkboxText}>Termos de uso</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <ModalComponent visible={modalVisible} setVisible={setModalVisible} />
                 </View>
-                <ModalComponent visible={modalVisible} setVisible={setModalVisible} />
-            </View>
-            <ButtonConfirm onPress={handleSignUp} />
+                <ButtonConfirm onPress={handleSignUp} />
+            </ScrollView>
         </View>
     )
 }

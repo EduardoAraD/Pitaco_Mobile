@@ -9,6 +9,7 @@ import InputComponent from '../../components/InputComponent'
 import ButtonConfirm from '../../components/buttons/BottonConfirmComponent'
 
 import colors from '../../assets/colors'
+import { ScrollView } from 'react-native-gesture-handler'
 
 export default function ResetPassword() {
     const navigation = useNavigation()
@@ -26,13 +27,14 @@ export default function ResetPassword() {
 
     return (
         <View style={styles.container}>
-            <TitleComponent text='Escreva o código recebido pelo e-mail junto com a nova senha' />
-            <View style={styles.inputContainer}>
+            <ScrollView>
+                <View style={{ height: 20 }} />
+                <TitleComponent text='Escreva o código recebido pelo e-mail junto com a nova senha' />
                 <InputComponent label='Código' value={codig} onChange={setCodig} />
                 <InputComponent label='Senha' value={password} onChange={setPassword} />
                 <InputComponent label='Confirme a senha' value={confirmPassword}
                     onChange={setConfirmPassword} />
-            </View>
+            </ScrollView>
             <ButtonConfirm onPress={handleConfirm} />
         </View>
     )
@@ -41,12 +43,7 @@ export default function ResetPassword() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        paddingHorizontal: 20,
         backgroundColor: colors.backgroundWhite
     },
-    inputContainer: {
-        flex: 1,
-        minHeight: 230,
-        justifyContent: 'space-evenly'
-    }
 })

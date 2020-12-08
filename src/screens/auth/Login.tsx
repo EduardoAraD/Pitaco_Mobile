@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/auth'
 import InputComponent from '../../components/InputComponent'
 import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent'
 import colors from '../../assets/colors'
+import { ScrollView } from 'react-native-gesture-handler'
 
 export default function Login() {
     const { signIn } = useAuth()
@@ -21,19 +22,21 @@ export default function Login() {
 
     return (
         <View style={styles.container}>
-            <Image style={styles.leagueImg} resizeMode="contain"
-                source={require('../../assets/images/logoPitaco.png')} />
-            <InputComponent label={"E-mail"} value={email} onChange={setEmail} />
-            <InputComponent label={"Senha"} value={password} onChange={setPassword} />
-            <View style={styles.linkContainer}>
-                <Link to='/ForgotPassword'>
-                    <Text style={styles.linkText}>Esqueceu a senha?</Text>
-                </Link>
-                <Link to='/SignUp'>
-                    <Text style={styles.linkText}>Cadastra-se</Text>
-                </Link>
-            </View>
-            <ButtonConfirmComponent onPress={handleSignIn} />
+            <ScrollView style={styles.scroll}>
+                <Image style={styles.leagueImg} resizeMode="contain"
+                    source={require('../../assets/images/logoPitaco.png')} />
+                <InputComponent label={"E-mail"} value={email} onChange={setEmail} />
+                <InputComponent label={"Senha"} value={password} onChange={setPassword} />
+                <View style={styles.linkContainer}>
+                    <Link to='/ForgotPassword'>
+                        <Text style={styles.linkText}>Esqueceu a senha?</Text>
+                    </Link>
+                    <Link to='/SignUp'>
+                        <Text style={styles.linkText}>Cadastra-se</Text>
+                    </Link>
+                </View>
+                <ButtonConfirmComponent onPress={handleSignIn} />
+            </ScrollView>
         </View>
     )
 }
@@ -41,17 +44,20 @@ export default function Login() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        minHeight: 560,
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
 
         backgroundColor: colors.backgroundWhite
+    },
+    scroll: {
+        paddingHorizontal: 20,
+        width: '100%',
     },
     leagueImg: {
         height: 250,
         width: 250,
-        marginBottom: 20
+        margin: 20,
+        alignSelf: 'center'
     },
     linkContainer: {
         width: '100%',
