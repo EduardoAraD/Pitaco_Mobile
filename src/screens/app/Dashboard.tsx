@@ -108,9 +108,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         backgroundColor: colors.whitePrimary,
-        borderWidth: 2,
         borderRadius: 20,
-        borderColor: colors.textGray4
+        elevation: 2
     },
     cardPerfil: {
         height: 160,

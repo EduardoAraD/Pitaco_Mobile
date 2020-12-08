@@ -9,9 +9,11 @@ import { League } from '../../models/League'
 import { Point } from '../../models/Point'
 
 import colors from '../../assets/colors'
+import { useAuth } from '../../contexts/auth'
 
 export default function SearchLeague() {
     const navigation = useNavigation()
+    const { user } = useAuth()
     const [search, setSearch] = useState('')
     const [leagues, setLeagues] = useState<League[]>([])
     const [leaguesFilter, setLeaguesFilter] = useState<League[]>([])
@@ -91,8 +93,10 @@ export default function SearchLeague() {
             { point: 203, exactScore: 12, user: { name: 'Edut', email: 'tan@' }} as Point,
             { point: 196, exactScore: 8, user: { name: 'SourhT', email: 'teste@g' }} as Point,
         ]
+        
+        const isDono = league.dono ? (league.dono.email === user?.email) : false
 
-        navigation.navigate('LeagueShowScreen', { league })
+        navigation.navigate('LeagueShowScreen', { league, isDono, user })
     }
 
     return (
