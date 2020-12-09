@@ -3,12 +3,14 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Link } from '@react-navigation/native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
+import { useAuth } from '../../contexts/auth'
+
 import CardUser from '../../components/CardUser'
 
-import colors from '../../assets/colors'
 import { User } from '../../models/User'
 
 export default function FriendsUser() {
+    const { theme } = useAuth()
     const [users, setUsers] = useState<User[]>([])
 
     useEffect(() => {
@@ -35,12 +37,12 @@ export default function FriendsUser() {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.viewTitle}>
-                <Text style={styles.titleText}>Seus Amigos</Text>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
+            <View style={[styles.viewTitle,{borderBottomColor: theme.textGray4}]}>
+                <Text style={[styles.titleText,{color: theme.greenPrimary}]}>Seus Amigos</Text>
                 <Link to='/SearchFriend'>
-                    <TouchableOpacity style={styles.titleButton}>
-                        <Text style={styles.titleButtonText}>Procurar Amigos</Text>
+                    <TouchableOpacity style={[styles.titleButton,{backgroundColor: theme.greenSecundary}]}>
+                        <Text style={[styles.titleButtonText,{color: theme.textWhite}]}>Procurar Amigos</Text>
                     </TouchableOpacity>
                 </Link>
             </View>
@@ -52,10 +54,6 @@ export default function FriendsUser() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     viewTitle: {
         marginTop: 30,
         marginHorizontal: 20,
@@ -63,14 +61,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-        borderBottomColor: colors.textGray4,
         borderBottomWidth: 1
     },
     titleText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontWeight: 'bold'
     },
     titleButton: {
         height: 30,
@@ -78,13 +73,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: colors.greenPrimary,
         elevation: 2
     },
     titleButtonText: {
         fontSize: 12,
-        fontWeight: '600',
-        color: colors.textWhite
+        fontWeight: '600'
     },
     scroll: {
         paddingHorizontal: 20

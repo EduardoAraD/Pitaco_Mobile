@@ -3,17 +3,16 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
+import { useAuth } from '../../contexts/auth'
+
 import SearchInput from '../../components/SearchInput'
 
 import { League } from '../../models/League'
 import { Point } from '../../models/Point'
 
-import colors from '../../assets/colors'
-import { useAuth } from '../../contexts/auth'
-
 export default function SearchLeague() {
     const navigation = useNavigation()
-    const { user } = useAuth()
+    const { user, theme } = useAuth()
     const [search, setSearch] = useState('')
     const [leagues, setLeagues] = useState<League[]>([])
     const [leaguesFilter, setLeaguesFilter] = useState<League[]>([])
@@ -100,18 +99,18 @@ export default function SearchLeague() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
             <SearchInput value={search} setValue={setSearch} onPress={handleSearchLeague} title='Ligas'/>
             <ScrollView style={styles.scroll}>
                 { leaguesFilter.map( (league, index) => 
-                    <TouchableOpacity key={index} style={styles.card}
+                    <TouchableOpacity key={index} style={[styles.card,{backgroundColor: theme.whitePrimary}]}
                         onPress={() => handleSearchNavigateLeague(index)}>
                         <Image style={styles.cardImg} resizeMode='contain'
                             source={league.logo} />
                         <View style={styles.cardInfo}>
-                            <Text style={styles.cardInfoTitle}>{league.name}</Text>
-                            <Text style={styles.cardInfoDono}>{league.dono ?
-                                `@${league.dono.name}` : ''}</Text>
+                            <Text style={[styles.cardInfoTitle,{color: theme.greenPrimary}]}>{league.name}</Text>
+                            <Text style={[styles.cardInfoDono,{color: theme.textGray3}]}>
+                                {league.dono ? `@${league.dono.name}` : ''}</Text>
                         </View>
                     </TouchableOpacity>
                 )}
@@ -121,10 +120,6 @@ export default function SearchLeague() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     scroll: {
         paddingHorizontal: 20
     },
@@ -135,10 +130,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         marginVertical: 5,
-
-        backgroundColor: colors.whitePrimary,
         borderRadius: 20,
-        elevation: 3
+        elevation: 2
     },
     cardImg: {
         height: 50,
@@ -151,12 +144,10 @@ const styles = StyleSheet.create({
     },
     cardInfoTitle: {
         fontSize: 18,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontWeight: 'bold'
     },
     cardInfoDono: {
         fontSize: 12,
-        fontWeight: '600',
-        color: colors.textGray3
+        fontWeight: '600'
     }
 })

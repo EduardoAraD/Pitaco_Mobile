@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
+import { useAuth } from '../../contexts/auth'
+
 import SearchInput from '../../components/SearchInput'
 
 import { User } from '../../models/User'
 
-import colors from '../../assets/colors'
-
 export default function SearchFriend() {
+    const { theme } = useAuth()
     const [search, setSearch] = useState('')
     const [users, setUsers] = useState<User[]>([])
     const [usersFilter, setUsersFilter] = useState<User[]>([])
@@ -49,24 +50,25 @@ export default function SearchFriend() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
             <SearchInput value={search} setValue={setSearch} onPress={handleSearchUser} title='Pitaqueiros'/>
             <ScrollView style={styles.scroll}>
                 { usersFilter.map((user, index) => (
-                    <View style={styles.card} key={index} >
+                    <View style={[styles.card,{backgroundColor: theme.whitePrimary}]} key={index} >
                         <Image style={styles.cardImg} resizeMode='contain'
                             source={require('../../assets/images/logoPitaco.png')} />
                         <View style={styles.cardInfo}>
-                            <Text style={styles.cardInfoName}>@{user.name}</Text>
+                            <Text style={[styles.cardInfoName,{color: theme.textGray2}]}>@{user.name}</Text>
                             <View style={styles.cardInfoAction}>
                                 <View style={styles.cardInfoClub}>
-                                    <Text style={styles.cardInfoClubName}>{user.heartClub.name}</Text>
+                                    <Text style={{fontSize: 12,color: theme.textGray3}}
+                                        >{user.heartClub.name}</Text>
                                     <Image style={styles.cardInfoClubImg} resizeMode='contain'
                                         source={{ uri: user.heartClub.logo }} />
                                 </View>
-                                <TouchableOpacity style={styles.cardInfoActionButtom}
+                                <TouchableOpacity style={[styles.cardInfoActionButtom,{backgroundColor: theme.bluePrimary}]}
                                     onPress={ () => handleAddUserFriend(user) }>
-                                    <Text style={styles.cardInfoActionButtomText}>Adicionar</Text>
+                                    <Text style={[styles.cardInfoActionButtomText,{color: theme.textWhite}]}>Adicionar</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -78,10 +80,6 @@ export default function SearchFriend() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     scroll: {
         paddingHorizontal: 20
     },
@@ -92,7 +90,6 @@ const styles = StyleSheet.create({
         padding: 5,
         marginVertical: 5,
         borderRadius: 10,
-        backgroundColor: colors.whitePrimary,
     },
     cardImg: {
         height: 50,
@@ -105,8 +102,7 @@ const styles = StyleSheet.create({
     },
     cardInfoName: {
         fontSize: 18,
-        fontWeight: 'bold',
-        color: colors.textGray2
+        fontWeight: 'bold'
     },
     cardInfoAction: {
         flexDirection: 'row'
@@ -116,10 +112,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end'
     },
-    cardInfoClubName: {
-        fontSize: 12,
-        color: colors.textGray3
-    },
     cardInfoClubImg: {
         height: 20,
         width: 20,
@@ -128,7 +120,6 @@ const styles = StyleSheet.create({
     cardInfoActionButtom: {
         height: 20,
         width: 100,
-        backgroundColor: colors.bluePrimary,
         borderRadius: 10,
         elevation: 2,
         justifyContent: 'center',
@@ -136,7 +127,6 @@ const styles = StyleSheet.create({
     },
     cardInfoActionButtomText: {
         fontSize: 10,
-        fontWeight: '600',
-        color: colors.textWhite
+        fontWeight: '600'
     }
 })

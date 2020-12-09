@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { Link } from '@react-navigation/native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { useAuth } from '../../contexts/auth'
 
 import InputComponent from '../../components/InputComponent'
 import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent'
-import colors from '../../assets/colors'
-import { ScrollView } from 'react-native-gesture-handler'
+
+import colors from '../../assets/theme/light'
 
 export default function Login() {
     const { signIn } = useAuth()

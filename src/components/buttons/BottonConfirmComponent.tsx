@@ -1,17 +1,19 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
-import colors from '../../assets/colors'
+import { useAuth } from '../../contexts/auth'
 
 interface Props {
     onPress: Function
 }
 
 export default function ButtonConfirmComponent(props: Props) {
+    const { theme } = useAuth()
+
     return (
         <TouchableOpacity onPress={() => props.onPress()}
-            style={styles.botton}>
-            <Text style={styles.text}>Confirmar</Text>
+            style={[styles.botton, {backgroundColor: theme.greenSecundary}]}>
+            <Text style={[styles.text, {color: theme.textWhite}]}>Confirmar</Text>
         </TouchableOpacity>
     )
 }
@@ -23,12 +25,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 8,
         height: 64,
-        borderRadius: 20,
-
-        backgroundColor: colors.greenPrimary
+        borderRadius: 20
     },
     text: {
-        color: colors.textWhite,
         fontSize: 20,
         fontWeight: 'bold'
     }

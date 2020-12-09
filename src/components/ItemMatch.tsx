@@ -1,32 +1,34 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 
-import { Match } from '../models/Match'
+import { useAuth } from '../contexts/auth'
 
-import colors from '../assets/colors'
+import { Match } from '../models/Match'
 
 interface Props {
     match: Match
 }
 
 export default function ItemMatch({ match }: Props) {
+    const { theme } = useAuth()
+
     return (
-        <View style={styles.cardContainer}>
-            <Text style={styles.textCardStadium}>Campeonato Brasileiro A 2020 - {match.stadium}</Text>
+        <View style={[styles.cardContainer,{borderColor: theme.textGray4}]}>
+            <Text style={[styles.textCardStadium,{color: theme.textGray2}]}>Campeonato Brasileiro A 2020 - {match.stadium}</Text>
             <View style={styles.cardGame}>
                 <View style={styles.cardGameItem}>
                     <Image style={styles.cardGameImg} resizeMode='contain'
                         source={{ uri: match.clubeHome.logo }} />
-                    <Text style={styles.textCardName}>{match.clubeHome.name}</Text>
+                    <Text style={[styles.textCardName,{color: theme.textGray2}]}>{match.clubeHome.name}</Text>
                 </View>
                 <View style={styles.cardGamePlacar}>
-                    <Text style={styles.textCardHora}>{`${match.date} - ${match.hour}`}</Text>
-                    <Text style={styles.textCardPlacar}>{`${match.golsHome} - ${match.golsAway}`}</Text>
+                    <Text style={[styles.textCardHora,{color: theme.textGray3}]}>{`${match.date} - ${match.hour}`}</Text>
+                    <Text style={[styles.textCardPlacar,{color: theme.textGray1}]}>{`${match.golsHome} - ${match.golsAway}`}</Text>
                 </View>
                 <View style={[styles.cardGameItem, { alignItems: 'flex-start' }]}>
                     <Image style={styles.cardGameImg} resizeMode='contain'
                         source={{ uri: match.clubeAway.logo }} />
-                    <Text style={styles.textCardName}>{match.clubeAway.name}</Text>
+                    <Text style={[styles.textCardName,{color: theme.textGray2}]}>{match.clubeAway.name}</Text>
                 </View>
             </View>
         </View>
@@ -38,8 +40,6 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingVertical: 2,
         alignItems: 'center',
-
-        borderColor: colors.textGray4,
         borderTopWidth: 1,
     },
     cardGame: {
@@ -60,22 +60,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textCardStadium: {
-        fontSize: 9,
-        color: colors.textGray2
+        fontSize: 9
     },
     textCardHora: {
         fontSize: 7,
-        fontWeight: '600',
-        color: colors.textGray3
+        fontWeight: '600'
     },
     textCardPlacar: {
         fontSize: 25,
-        fontWeight: 'bold',
-        color: colors.textGray1
+        fontWeight: 'bold'
     },
     textCardName: {
         fontSize: 12,
-        fontWeight: 'bold',
-        color: colors.textGray2
+        fontWeight: 'bold'
     }
 })

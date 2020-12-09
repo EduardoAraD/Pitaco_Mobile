@@ -6,19 +6,20 @@ import SignUp from '../screens/auth/SignUp'
 import ForgotPassword from '../screens/auth/ForgotPassword'
 import ResetPassword from '../screens/auth/ResetPassword'
 import Header from '../components/HeaderComponent';
-
-import colors from '../assets/colors'
+import { useAuth } from '../contexts/auth';
 
 const Stack = createStackNavigator();
 
 export default function AuhtRoutes() {
+    const { theme } = useAuth()
+
     return (
         <Stack.Navigator initialRouteName="Login"
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: colors.greenPrimary,
+                    backgroundColor: theme.greenPrimary,
                 },
-                headerTintColor: colors.whitePrimary,
+                headerTintColor: theme.whitePrimary,
                 headerTitleStyle: {
                     fontWeight: 'bold',
                     fontSize: 20,

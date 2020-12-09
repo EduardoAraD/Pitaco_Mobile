@@ -8,8 +8,6 @@ import ButtonConfirmComponent from '../../components/buttons/BottonConfirmCompon
 import CardLeague from '../../components/CardLeague'
 import TitleComponent from '../../components/TitleComponent'
 
-import colors from '../../assets/colors'
-
 import { League } from '../../models/League'
 import { User } from '../../models/User'
 
@@ -18,12 +16,12 @@ interface RouteProps {
 }
 
 export default function LeagueCreatePreView() {
-    const { user } = useAuth();
+    const { user, theme } = useAuth();
     const route = useRoute();
     const { league } = route.params as RouteProps
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container,{backgroundColor: theme.backgroundWhite}]}>
             <TitleComponent text='Pré visualização da sua Liga' />
             <CardLeague league={ league } user={user as User} />
             <ButtonConfirmComponent onPress={() => {}} />
@@ -34,7 +32,6 @@ export default function LeagueCreatePreView() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.backgroundWhite,
         justifyContent: 'space-around',
         paddingHorizontal: 20
     }

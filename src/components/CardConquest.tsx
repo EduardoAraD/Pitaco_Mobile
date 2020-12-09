@@ -1,21 +1,24 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 
-import colors from '../assets/colors'
 import { Conquest } from '../models/Conquest'
+
+import { useAuth } from '../contexts/auth'
 
 interface Props {
     conquest: Conquest
 }
 
 export default function CardConquest({ conquest}: Props) {
+    const { theme } = useAuth()
+
     return (
-        <View style={styles.card}>
+        <View style={[styles.card, {backgroundColor: theme.whitePrimary}]}>
             <Image style={styles.cardImg} resizeMode='contain'
                 source={conquest.league.logo} />
             <View style={styles.cardInfo}>
-                <Text style={styles.cardInfoName}>{conquest.league.name}</Text>
-                <Text style={styles.cardInfoPos}>{conquest.position}° Lugar</Text>
+                <Text style={[styles.cardInfoName, {color: theme.yellowPrimary}]}>{conquest.league.name}</Text>
+                <Text style={[styles.cardInfoPos, {color: theme.textGray2}]}>{conquest.position}° Lugar</Text>
             </View>
         </View>
     )
@@ -23,7 +26,6 @@ export default function CardConquest({ conquest}: Props) {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: colors.whitePrimary,
         height: 50,
         width: 180,
         marginRight: 10,
@@ -44,11 +46,9 @@ const styles = StyleSheet.create({
     },
     cardInfoName: {
         fontSize: 13,
-        fontWeight: 'bold',
-        color: colors.yellowPrimary
+        fontWeight: 'bold'
     },
     cardInfoPos: {
-        fontSize: 10,
-        color: colors.textGray2
+        fontSize: 10
     }
 })

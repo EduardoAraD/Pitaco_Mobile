@@ -3,6 +3,8 @@ import { View, Text, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
+import { useAuth } from '../../contexts/auth'
+
 import DoubleButtom from '../../components/buttons/DoubleButton'
 import ItemStandingComplete from '../../components/ItemStandingComplete'
 import ItemMatch from '../../components/ItemMatch'
@@ -10,9 +12,8 @@ import ItemMatch from '../../components/ItemMatch'
 import { ItemStanding } from '../../models/ItemStanding'
 import { Match } from '../../models/Match'
 
-import colors from '../../assets/colors'
-
 export default function Championship() {
+    const { theme } = useAuth()
     const [viewOptionStandingMatch, setViewOptionStandingMatch] = useState(true)
     const [itemsStanding, setItemsStanding] = useState<ItemStanding[]>([])
     const [numberRodada, setNumberRodada] = useState(1)
@@ -85,19 +86,19 @@ export default function Championship() {
 
     function content(){
         return viewOptionStandingMatch ? (
-            <View style={styles.cardStanding}>
+            <View style={[styles.cardStanding,{backgroundColor: theme.whitePrimary}]}>
                 <View style={styles.cardTitleStanding}>
-                    <Text style={styles.cardTitleText}>Classificação - Brasileiro A 20/21</Text>
-                    <View style={styles.cardSubs}>
-                        <Text style={styles.cardSubsText}>P</Text>
-                        <Text style={styles.cardSubsText}>J</Text>
-                        <Text style={styles.cardSubsText}>V</Text>
-                        <Text style={styles.cardSubsText}>E</Text>
-                        <Text style={styles.cardSubsText}>D</Text>
-                        <Text style={styles.cardSubsText}>S</Text>
-                        <Text style={styles.cardSubsText}>GF</Text>
-                        <Text style={styles.cardSubsText}>GS</Text>
-                        <Text style={[styles.cardSubsText, { width: 32 }]}>%</Text>
+                    <Text style={[styles.cardTitleText,{color: theme.textGray3}]}>Classificação - Brasileiro A 20/21</Text>
+                    <View style={[styles.cardSubs,{backgroundColor: theme.greenPrimary}]}>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>P</Text>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>J</Text>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>V</Text>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>E</Text>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>D</Text>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>S</Text>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>GF</Text>
+                        <Text style={[styles.cardSubsText,{color: theme.whitePrimary}]}>GS</Text>
+                        <Text style={[[styles.cardSubsText,{color: theme.whitePrimary}], { width: 32 }]}>%</Text>
                     </View>
                 </View>
                 { itemsStanding.map( (item, index) => 
@@ -105,14 +106,14 @@ export default function Championship() {
                 )}
             </View>
         ) : (
-            <View style={styles.cardStanding}>
-                <View style={styles.cardTitleMatch}>
+            <View style={[styles.cardStanding,{backgroundColor: theme.whitePrimary}]}>
+                <View style={[styles.cardTitleMatch,{borderColor: theme.textGray4}]}>
                     <TouchableOpacity onPress={() => handleUpdateNumberRodada(-1)}>
-                        <Icon name='chevron-left' size={30} color={colors.greenSecundary} />
+                        <Icon name='chevron-left' size={30} color={theme.greenSecundary} />
                     </TouchableOpacity>
-                    <Text style={styles.cardTitleMatchText}>{numberRodada}° Rodada</Text>
+                    <Text style={[styles.cardTitleMatchText,{color: theme.greenPrimary}]}>{numberRodada}° Rodada</Text>
                     <TouchableOpacity onPress={() => handleUpdateNumberRodada(1)}>
-                        <Icon name='chevron-right' size={30} color={colors.greenSecundary} />
+                        <Icon name='chevron-right' size={30} color={theme.greenSecundary} />
                     </TouchableOpacity>
                 </View>
                 { matchs.map( (match, index) => 
@@ -123,7 +124,7 @@ export default function Championship() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
             <ScrollView style={styles.scroll}>
                 <DoubleButtom nameOption1='Jogos' nameOption2='Tabela'
                     option={viewOptionStandingMatch} setOption={setViewOptionStandingMatch} />
@@ -134,19 +135,13 @@ export default function Championship() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     scroll: {
         paddingHorizontal: 20
     },
     cardStanding: {
         marginTop: 10,
         width: '100%',
-        backgroundColor: colors.whitePrimary,
         borderRadius: 20,
-
         elevation: 2
     },
     cardTitleStanding: {
@@ -154,7 +149,6 @@ const styles = StyleSheet.create({
     },
     cardTitleText: {
         flex: 1,
-        color: colors.textGray3,
         fontSize: 14,
         fontWeight: '600',
         alignContent: 'center',
@@ -166,15 +160,12 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'flex-end',
         alignItems: 'center',
-
-        backgroundColor: colors.greenPrimary
     },
     cardSubsText: {
         width: 20,
         textAlign: 'center',
         fontSize: 11,
         fontWeight: '600',
-        color: colors.whitePrimary,
     },
     cardTitleMatch: {
         height: 40,
@@ -183,13 +174,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-        borderBottomWidth: 1,
-        borderColor: colors.textGray4
+        borderBottomWidth: 1
     },
     cardTitleMatchText: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontWeight: 'bold'
     }
 })

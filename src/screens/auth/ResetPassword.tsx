@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { useAuth } from '../../contexts/auth'
 
@@ -8,8 +9,7 @@ import TitleComponent from '../../components/TitleComponent'
 import InputComponent from '../../components/InputComponent'
 import ButtonConfirm from '../../components/buttons/BottonConfirmComponent'
 
-import colors from '../../assets/colors'
-import { ScrollView } from 'react-native-gesture-handler'
+import colors from '../../assets/theme/light'
 
 export default function ResetPassword() {
     const navigation = useNavigation()

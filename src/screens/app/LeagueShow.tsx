@@ -3,13 +3,13 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
+import { useAuth } from '../../contexts/auth'
+
 import Header from '../../components/HeaderComponent'
 import ItemStandingLeague from '../../components/ItemStandingLeague'
 
 import { League } from '../../models/League'
 import { User } from '../../models/User'
-
-import colors from '../../assets/colors'
 
 interface RouteProps {
     league: League,
@@ -18,6 +18,7 @@ interface RouteProps {
 }
 
 export default function LeagueShow() {
+    const { theme } = useAuth()
     const navigate = useNavigation()
     const route = useRoute();
     const { league, isDono, user } = route.params as RouteProps
@@ -25,9 +26,9 @@ export default function LeagueShow() {
     function viewDono() {
         if( league.dono ){
             return isDono ? (
-                <Text style={[styles.cardLeagueInfoDono, { color: colors.yellowPrimary }]}>@{league.dono.name}</Text>
+                <Text style={[styles.cardLeagueInfoDono, { color: theme.yellowPrimary }]}>@{league.dono.name}</Text>
             ) : (
-                <Text style={styles.cardLeagueInfoDono}>@{league.dono.name}</Text>
+                <Text style={[styles.cardLeagueInfoDono,{ color: theme.greenSecundary}]}>@{league.dono.name}</Text>
             )
         }
     }
@@ -36,21 +37,21 @@ export default function LeagueShow() {
         if( isDono ) {
             return (
                 <View style={styles.viewButtomAction}>
-                    <TouchableOpacity style={styles.buttomAction} 
+                    <TouchableOpacity style={[styles.buttomAction,{backgroundColor: theme.greenSecundary}]} 
                         onPress={handleNavigateFriend}>
-                        <Text style={styles.buttomActionText}>Convidar Amigos</Text>
+                        <Text style={[styles.buttomActionText,{color: theme.textWhite}]}>Convidar Amigos</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttomAction} 
+                    <TouchableOpacity style={[styles.buttomAction,{backgroundColor: theme.greenSecundary}]} 
                         onPress={handleNavigateSolicitation}>
-                        <Text style={styles.buttomActionText}>Solicitações</Text>
+                        <Text style={[styles.buttomActionText,{color: theme.textWhite}]}>Solicitações</Text>
                     </TouchableOpacity>
                 </View>
             )
         }
         const notParticipating = league.points.filter(point => point.user.email === user.email).length === 0
         if(notParticipating) {
-            return <TouchableOpacity style={[styles.buttomAction, { width: 150 }]} >
-                <Text style={styles.buttomActionText}>Participar da Liga</Text>
+            return <TouchableOpacity style={[styles.buttomAction, { backgroundColor: theme.greenSecundary, width: 150 }]} >
+                <Text style={[styles.buttomActionText,{color: theme.textWhite}]}>Participar da Liga</Text>
             </TouchableOpacity>
         }
     }
@@ -63,21 +64,21 @@ export default function LeagueShow() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1,backgroundColor: theme.backgroundWhite}}>
             <Header title={league.name} back={true} border={true} />
             <ScrollView style={styles.scroll}>
-                <View style={styles.cardLeague}>
+                <View style={[styles.cardLeague,{backgroundColor: theme.whitePrimary}]}>
                     <Image style={styles.cardLeagueImg} resizeMode='contain'
                         source={ league.logo} />
                     <View style={styles.cardLeagueInfo}>
-                        <Text style={styles.cardLeagueInfoDescrip}>{league.description}</Text>
+                        <Text style={[styles.cardLeagueInfoDescrip,{color: theme.textGray3}]}>{league.description}</Text>
                         { viewDono() }
                     </View>
                 </View>
                 { viewButtomActions() }
-                <View style={styles.cardStanding}>
-                    <View style={styles.cardStandingTitle}>
-                        <Text style={styles.cardStandingTitleText}>Classificação</Text> 
+                <View style={[styles.cardStanding,{backgroundColor: theme.whitePrimary}]}>
+                    <View style={[styles.cardStandingTitle,{borderColor: theme.textGray3}]}>
+                        <Text style={[styles.cardStandingTitleText,{color: theme.textGray2}]}>Classificação</Text> 
                     </View>
                     { league.points.map((point, index) => 
                         <ItemStandingLeague key={index}
@@ -93,10 +94,6 @@ export default function LeagueShow() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     scroll: {
         paddingHorizontal: 20
     },
@@ -109,15 +106,12 @@ const styles = StyleSheet.create({
         height: 30,
         width: 130,
         marginVertical: 10,
-        backgroundColor: colors.greenPrimary,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        
         elevation: 2
     },
     buttomActionText: {
-        color: colors.textWhite,
         fontSize: 12,
         fontWeight: '600'
     },
@@ -127,8 +121,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         marginVertical: 20,
-
-        backgroundColor: colors.whitePrimary,
         borderRadius: 20,
         elevation: 3
     },
@@ -143,18 +135,15 @@ const styles = StyleSheet.create({
     },
     cardLeagueInfoDescrip: {
         fontSize: 14,
-        fontWeight: '600',
-        color: colors.textGray3
+        fontWeight: '600'
     },
     cardLeagueInfoDono: {
         fontSize: 14,
-        fontWeight: 'bold',
-        color: colors.greenSecundary
+        fontWeight: 'bold'
     },
     cardStanding: {
         marginVertical: 20,
         width: '100%',
-        backgroundColor: colors.whitePrimary,
         borderRadius: 20,
         elevation: 3
     },
@@ -162,13 +151,10 @@ const styles = StyleSheet.create({
         height: 40,
         paddingLeft: 15,
         justifyContent: 'center',
-
-        borderBottomWidth: 1,
-        borderColor: colors.textGray3
+        borderBottomWidth: 1
     },
     cardStandingTitleText: {
         fontSize: 14,
-        fontWeight: '600',
-        color: colors.textGray3
+        fontWeight: '600'
     },
 })

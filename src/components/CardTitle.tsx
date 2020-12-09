@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Link } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-import colors from '../assets/colors'
+import { useAuth } from '../contexts/auth'
 
 interface Props {
     title: string,
@@ -11,13 +11,15 @@ interface Props {
   }
 
 export default function CardTitle ({ title, children }: Props) {
+    const { theme } = useAuth()
+
     return (
-        <View style={styles.card}>
-            <View style={styles.cardTitle}>
-                <Text style={styles.cardText}>{title}</Text>
+        <View style={[styles.card,{backgroundColor: theme.whitePrimary}]}>
+            <View style={[styles.cardTitle,{borderColor: theme.textGray4}]}>
+                <Text style={[styles.cardText,{color: theme.textGray2}]}>{title}</Text>
                 <Link to='/Championship' >
-                    <TouchableOpacity style={styles.cardButton} >
-                        <Text style={styles.cardButtonText}>Ver Mais</Text>
+                    <TouchableOpacity style={[styles.cardButton,{backgroundColor: theme.greenSecundary}]} >
+                        <Text style={[styles.cardButtonText,{color: theme.whitePrimary}]}>Ver Mais</Text>
                     </TouchableOpacity>
                 </Link>
             </View>
@@ -30,10 +32,8 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
         marginVertical: 10,
-        backgroundColor: colors.whitePrimary,
         borderRadius: 20,
-
-        elevation: 3,
+        elevation: 3
     },
     cardTitle: {
         height: 40,
@@ -42,13 +42,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-        borderBottomWidth: 1,
-        borderColor: colors.textGray4
+        borderBottomWidth: 1
     },
     cardText: {
         fontSize: 17,
-        color: colors.textGray2,
         fontWeight: 'bold'
     },
     cardButton: {
@@ -56,12 +53,10 @@ const styles = StyleSheet.create({
         width: 75,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.greenSecundary,
         borderRadius: 15
     },
     cardButtonText: {
         fontSize: 12,
-        fontWeight: '600',
-        color: colors.whitePrimary
+        fontWeight: '600'
     }
 })

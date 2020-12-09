@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
+import { useAuth } from '../../contexts/auth'
+
 import TitleComponent from '../../components/TitleComponent'
 
 import { User } from '../../models/User'
 
-import colors from '../../assets/colors'
-
 export default function Solicitation() {
+    const { theme } = useAuth()
     const [users, setUsers] = useState<User[]>([])
 
     useEffect(() => {
@@ -44,33 +45,34 @@ export default function Solicitation() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
             <View style={{margin: 20}}>
                 <TitleComponent text='Liga de Pitaqueiros que pediram para participar de sua liga' />
             </View>
-            <ScrollView style={styles.scroll}>
+            <ScrollView style={[styles.scroll,{borderColor: theme.textGray4}]}>
                 { users.map((user, index) => (
-                    <View style={styles.card} key={index}>
-                        <View style={styles.cardInfo}>
+                    <View style={[styles.card,{backgroundColor: theme.whitePrimary}]} key={index}>
+                        <View style={[styles.cardInfo,{borderBottomColor: theme.textGray4}]}>
                             <Image style={styles.cardInfoImg} resizeMode='contain'
                                 source={require('../../assets/images/logoPitaco.png')} />
                             <View style={styles.cardInfoUser}>
-                                <Text style={styles.cardInfoUserName}>@{user.name}</Text>
+                                <Text style={[styles.cardInfoUserName,{color: theme.textGray2}]}>@{user.name}</Text>
                                 <View style={styles.cardInfoUserClub}>
-                                    <Text style={styles.cardInfoUserClubeName}>{user.heartClub.name}</Text>
+                                    <Text style={[styles.cardInfoUserClubeName,{color: theme.textGray3}]}
+                                        >{user.heartClub.name}</Text>
                                     <Image style={styles.cardInfoUserClubeImg} resizeMode='contain' 
                                         source={{ uri: user.heartClub.logo }} />
                                 </View>
                             </View>
                         </View>
                         <View style={styles.cardAction}>
-                            <TouchableOpacity style={[styles.cardActionButtom, { backgroundColor: colors.bluePrimary }]}
+                            <TouchableOpacity style={[styles.cardActionButtom, { backgroundColor: theme.bluePrimary }]}
                                 onPress={() => handleAddUserInLeague(index) } >
-                                <Text style={styles.cardActionButtomText}>Aceitar</Text>
+                                <Text style={[styles.cardActionButtomText,{color: theme.textWhite}]}>Aceitar</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.cardActionButtom, { backgroundColor: colors.textRed }]}
+                            <TouchableOpacity style={[styles.cardActionButtom, { backgroundColor: theme.textRed }]}
                                 onPress={() => handleRefuceUserInLeague(index) } >
-                                <Text style={styles.cardActionButtomText}>Recusar</Text>
+                                <Text style={[styles.cardActionButtomText,{color: theme.textWhite}]}>Recusar</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -81,26 +83,19 @@ export default function Solicitation() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite,
-    },
     scroll: {
         paddingHorizontal: 20,
         borderTopWidth: 1,
-        borderBottomWidth: 1,
-        borderColor: colors.textGray4
+        borderBottomWidth: 1
     },
     card: {
         height: 90,
-        backgroundColor: colors.whitePrimary,
         borderRadius: 10,
         marginVertical: 5
     },
     cardInfo: {
         padding: 5,
         flexDirection: 'row',
-        borderBottomColor: colors.textGray4,
         borderBottomWidth: 1
     },
     cardInfoImg: {
@@ -114,8 +109,7 @@ const styles = StyleSheet.create({
     },
     cardInfoUserName: {
         fontSize: 18,
-        fontWeight: 'bold',
-        color: colors.textGray2
+        fontWeight: 'bold'
     },
     cardInfoUserClub: {
         flexDirection: 'row',
@@ -123,8 +117,7 @@ const styles = StyleSheet.create({
     },
     cardInfoUserClubeName: {
         fontSize: 12,
-        fontWeight: 'bold',
-        color: colors.textGray3
+        fontWeight: 'bold'
     },
     cardInfoUserClubeImg: {
         height: 20,
@@ -146,7 +139,6 @@ const styles = StyleSheet.create({
     },
     cardActionButtomText: {
         fontSize: 10,
-        fontWeight: '600',
-        color: colors.textWhite
+        fontWeight: '600'
     }
 })

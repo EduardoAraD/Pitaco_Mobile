@@ -3,11 +3,11 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
+import { useAuth } from '../contexts/auth'
+
 import { League } from '../models/League'
 import { Point } from '../models/Point'
 import { User } from '../models/User'
-
-import colors from '../assets/colors'
 
 interface Props {
     league: League,
@@ -15,6 +15,7 @@ interface Props {
 }
 
 export default function CardLeague({ league, user } : Props) {
+    const { theme } = useAuth()
     const navigation = useNavigation()
 
     const [userPoint, setUserPoint] = useState<Point>()
@@ -36,9 +37,9 @@ export default function CardLeague({ league, user } : Props) {
     function viewDono() {
         if(league.dono) {
             return league.dono.email === user.email ? (
-                <Text style={[styles.cardInfoDono, { color: colors.yellowPrimary }]}>@{league.dono.name}</Text>
+                <Text style={[styles.cardInfoDono, { color: theme.yellowPrimary }]}>@{league.dono.name}</Text>
             ) : (
-                <Text style={styles.cardInfoDono}>@{league.dono.name}</Text>
+                <Text style={[styles.cardInfoDono, {color: theme.textGray3}]}>@{league.dono.name}</Text>
             )
         }
     }
@@ -49,17 +50,17 @@ export default function CardLeague({ league, user } : Props) {
     }
 
     return (
-        <TouchableOpacity style={styles.card}
+        <TouchableOpacity style={[styles.card,{backgroundColor: theme.whitePrimary}]}
             onPress={handleNavigateLeague}>
             <Image style={styles.cardImg} resizeMode='contain'
                 source={league.logo} />
             <View style={styles.cardInfo}>
-                <Text style={styles.cardInfoTitle}>{league.name}</Text>
+                <Text style={[styles.cardInfoTitle,{color: theme.greenPrimary}]}>{league.name}</Text>
                 { viewDono() }
                 <View style={styles.cardInfoUser}>
-                    <Text style={styles.cardInfoUserPos}>{position ? `${position}.` : ''}</Text>
-                    <Text style={styles.cardInfoUserName}>{userPoint?.user.name || ''}</Text>
-                    <Text style={styles.cardInfoUserPoint}>{userPoint?.point || ''}</Text>
+                    <Text style={[styles.cardInfoUserPos,{color: theme.textGray3}]}>{position ? `${position}.` : ''}</Text>
+                    <Text style={[styles.cardInfoUserName,{color: theme.textGray1}]}>{userPoint?.user.name || ''}</Text>
+                    <Text style={[styles.cardInfoUserPoint,{color: theme.greenPrimary}]}>{userPoint?.point || ''}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -73,8 +74,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         marginVertical: 10,
-
-        backgroundColor: colors.whitePrimary,
         borderRadius: 20,
         elevation: 3
     },
@@ -89,13 +88,11 @@ const styles = StyleSheet.create({
     },
     cardInfoTitle: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontWeight: 'bold'
     },
     cardInfoDono: {
         fontSize: 12,
-        fontWeight: '600',
-        color: colors.textGray3
+        fontWeight: '600'
     },
     cardInfoUser: {
         width: '100%',
@@ -104,19 +101,16 @@ const styles = StyleSheet.create({
     },
     cardInfoUserPos: {
         fontSize: 16,
-        fontWeight: '600',
-        color: colors.textGray3
+        fontWeight: '600'
     },
     cardInfoUserName: {
         marginLeft: 2,
         fontSize: 18,
-        fontWeight: 'bold',
-        color: colors.textGray1
+        fontWeight: 'bold'
     },
     cardInfoUserPoint: {
         fontSize: 18,
         fontWeight: 'bold',
-        color:colors.greenPrimary,
         flex: 1,
         textAlign: 'right'
     }

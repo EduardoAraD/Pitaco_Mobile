@@ -9,7 +9,8 @@ import TitleComponent from '../../components/TitleComponent'
 import ButtonConfirm from '../../components/buttons/BottonConfirmComponent'
 import InputComponent from '../../components/InputComponent'
 import ModalComponent from '../../components/ModalComponent'
-import colors from '../../assets/colors'
+
+import colors from '../../assets/theme/light'
 
 export default function SignUp() {
     const { signUp } = useAuth()

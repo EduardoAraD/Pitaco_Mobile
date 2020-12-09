@@ -13,18 +13,20 @@ import FriendRoute from './app/friend.routes';
 
 import DrawerComponent from '../components/DrawerComponent';
 
-import colors from '../assets/colors'
+import { useAuth } from '../contexts/auth';
 
 const Tab = createBottomTabNavigator();
 
 function TabNavigation() {
+  const { theme } = useAuth()
+
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: colors.greenPrimary,
-        activeBackgroundColor: colors.whitePrimary,
-        inactiveTintColor: colors.textGray2,
-        inactiveBackgroundColor: colors.whitePrimary
+        activeTintColor: theme.greenPrimary,
+        activeBackgroundColor: theme.whitePrimary,
+        inactiveTintColor: theme.textGray2,
+        inactiveBackgroundColor: theme.whitePrimary
       }}>
       <Tab.Screen name="Dashboard" component={DashboardRoute}
         options={{

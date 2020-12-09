@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-import colors from '../assets/colors'
+import { useAuth } from '../contexts/auth'
 
 interface Props {
     value: string,
@@ -12,21 +12,24 @@ interface Props {
 }
 
 export default function SearchInput({ value, title, setValue, onPress}: Props) {
+    const { theme } = useAuth()
+
     return (
         <React.Fragment>
             <View style={styles.viewSearch}>
-                <Text style={styles.searchText}>Procurar</Text>
+                <Text style={[styles.searchText,{color: theme.textGray3}]}>Procurar</Text>
                 <View style={styles.searchAction}>
-                    <TextInput value={value} style={styles.searchInput}
+                    <TextInput value={value} style={[styles.searchInput,{backgroundColor: theme.whitePrimary,
+                        color: theme.textGray3, borderColor: theme.textGray3}]}
                         onChangeText={ text => setValue(text)} />
                     <View style={{ width: 20 }} />
-                    <TouchableOpacity style={styles.searchButton}
+                    <TouchableOpacity style={[styles.searchButton,{backgroundColor: theme.greenSecundary}]}
                         onPress={() => onPress()}>
-                        <Text style={styles.searchButtonText}>Buscar</Text>
+                        <Text style={[styles.searchButtonText,{color: theme.textWhite}]}>Buscar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-            <Text style={styles.titleText}>{title}</Text>
+            <Text style={[styles.titleText,{color: theme.greenPrimary, borderBottomColor: theme.textGray3}]}>{title}</Text>
         </React.Fragment>
     )
 }
@@ -38,7 +41,6 @@ const styles = StyleSheet.create({
     searchText: {
         fontSize: 15,
         fontWeight: '600',
-        color: colors.textGray3,
         marginBottom: 3
     },
     searchAction: {
@@ -50,17 +52,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         height: 40,
         flex: 1,
-        backgroundColor: colors.whitePrimary,
-        color: colors.textGray3,
         borderWidth: 1,
-        borderColor: colors.textGray3,
-
         fontSize: 18
     },
     searchButton: {
         height: 40,
         width: 90,
-        backgroundColor: colors.greenPrimary,
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
@@ -69,16 +66,12 @@ const styles = StyleSheet.create({
     searchButtonText: {
         fontSize: 12,
         fontWeight: '600',
-        color: colors.textWhite
     },
     titleText: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: colors.greenPrimary,
-
         marginHorizontal: 20,
         paddingBottom: 10,
         borderBottomWidth: 1,
-        borderBottomColor: colors.textGray3
     }
 })

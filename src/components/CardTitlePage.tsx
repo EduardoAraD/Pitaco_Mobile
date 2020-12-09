@@ -1,23 +1,24 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-import colors from '../assets/colors'
+import { useAuth } from '../contexts/auth'
 
 interface Props {
     title: string
 }
 
 export default function CardTitlePage({ title }: Props) {
+    const { theme } = useAuth()
+
     return (
-        <View style={styles.titleCard}>
-            <Text style={styles.textTitle}>{title}</Text>
+        <View style={[styles.titleCard,{backgroundColor: theme.whitePrimary}]}>
+            <Text style={[styles.textTitle,{color: theme.textGray2}]}>{title}</Text>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     titleCard: {
-        backgroundColor: colors.whitePrimary,
         height: 50,
         elevation: 5,
         justifyContent: 'center',
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: 18,
-        fontWeight: '600',
-        color: colors.textGray2
+        fontWeight: '600'
     }
 })

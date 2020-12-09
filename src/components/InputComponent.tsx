@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native'
 
-import colors from '../assets/colors'
+import { useAuth } from '../contexts/auth'
 
 interface PropsInput {
     label: string,
@@ -13,12 +13,15 @@ interface PropsInput {
 }
 
 export default function InputComponent ({ label, value, placeholder, keyboardType = "default", password = false, onChange }: PropsInput) {
+    const { theme } = useAuth()
+
     return(
         <View style={styles.container}>
-            <Text style={styles.label}>{label}</Text>
-            <TextInput style={styles.input} value={value}
-                onChangeText={text => onChange(text)} keyboardType={keyboardType}
-                placeholder={placeholder} placeholderTextColor={colors.textGray5}
+            <Text style={[styles.label,{color: theme.textGray3}]}>{label}</Text>
+            <TextInput style={[styles.input,
+                {backgroundColor: theme.whitePrimary, color: theme.textGray3, borderColor: theme.textGray3}]}
+                value={value} onChangeText={text => onChange(text)} keyboardType={keyboardType}
+                placeholder={placeholder} placeholderTextColor={theme.textGray5}
                 secureTextEntry={password} />
         </View>
     )
@@ -33,7 +36,6 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: '600',
-        color: colors.textGray3,
         paddingBottom: 3
     },
     input: {
@@ -42,12 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         borderRadius: 20,
         height: 56,
-
-        backgroundColor: colors.whitePrimary,
-        color: colors.textGray3,
         borderWidth: 1,
-        borderColor: colors.textGray3,
-
         fontSize: 20
     }
 })

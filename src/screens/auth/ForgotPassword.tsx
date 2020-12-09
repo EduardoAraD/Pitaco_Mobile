@@ -8,7 +8,7 @@ import TitleComponent from '../../components/TitleComponent'
 import InputComponent from '../../components/InputComponent'
 import ContinuarComponent from '../../components/buttons/ContinuarComponent'
 
-import colors from '../../assets/colors'
+import colors from '../../assets/theme/light'
 
 export default function ForgotPassword() {
     const navigation = useNavigation()

@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
+import { useAuth } from '../../contexts/auth'
+
 import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent'
 import SearchInput from '../../components/SearchInput'
 
 import { Clube } from '../../models/Clube'
 
-import colors from '../../assets/colors'
-
 export default function HeartClub() {
+    const { theme } = useAuth()
     const [search, setSearch] = useState('')
     const [clubChoose, setClubChoose] = useState<Clube | null>(null)
     const [clubes, setClubes] = useState<Clube[]>([])
@@ -69,36 +70,36 @@ export default function HeartClub() {
 
     function viewClubChoose(){
         return clubChoose ? (
-            <View style={styles.card}>
+            <View style={[styles.card,{backgroundColor: theme.whitePrimary}]}>
                 <Image style={styles.cardImg} resizeMode='contain'
                     source={{ uri: clubChoose.logo }} />
-                <Text style={styles.cardText}>{clubChoose.name}</Text>
+                <Text style={[styles.cardText,{color: theme.textGray2}]}>{clubChoose.name}</Text>
             </View>
         ) : (
-            <View style={[styles.card, {justifyContent: 'center'}]}>
-               <Text style={styles.cardText}>Sem Clube</Text>
+            <View style={[styles.card, {justifyContent: 'center', backgroundColor: theme.whitePrimary}]}>
+               <Text style={[styles.cardText,{color: theme.textGray2}]}>Sem Clube</Text>
             </View>
         )
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
             <View style={styles.viewSearch}>
-                <Text style={styles.titleText}>Escolha o Clube de Coração</Text>
+                <Text style={[styles.titleText,{color: theme.greenPrimary}]}>Escolha o Clube de Coração</Text>
                 <SearchInput value={search} setValue={setSearch} onPress={handleSearchClub} title='Clubes' />
                 <ScrollView style={styles.scroll}>
                     { clubesFilter.map((club, index) =>
-                        <TouchableOpacity style={styles.card} key={index}
+                        <TouchableOpacity style={[styles.card,{backgroundColor: theme.whitePrimary}]} key={index}
                             onPress={() => setClubChoose(club) }>
                             <Image style={styles.cardImg} resizeMode='contain'
                                 source={{ uri: club.logo }} />
-                            <Text style={styles.cardText}>{club.name}</Text>
+                            <Text style={[styles.cardText,{color: theme.textGray2}]}>{club.name}</Text>
                         </TouchableOpacity>
                     ) }
                 </ScrollView>
             </View>
-            <View style={styles.viewInfo}>
-                <Text style={styles.titleTextInfo}>Clube escolhido</Text>
+            <View style={[styles.viewInfo,{borderTopColor: theme.textGray4}]}>
+                <Text style={[styles.titleTextInfo,{color: theme.greenPrimary}]}>Clube escolhido</Text>
                 { viewClubChoose() }
                 <ButtonConfirmComponent onPress={handleConfirmButtom} />
             </View>
@@ -107,10 +108,6 @@ export default function HeartClub() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     viewSearch: {
         flex: 1
     },
@@ -118,8 +115,7 @@ const styles = StyleSheet.create({
         margin: 20,
         marginBottom: 0,
         fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontWeight: 'bold'
     },
     scroll: {
         marginHorizontal: 20
@@ -129,7 +125,6 @@ const styles = StyleSheet.create({
         padding: 5,
         marginVertical: 5,
         alignItems: 'center',
-        backgroundColor: colors.whitePrimary,
         borderRadius: 10,
         flexDirection: 'row',
         elevation: 3
@@ -141,18 +136,15 @@ const styles = StyleSheet.create({
     },
     cardText: {
         fontSize: 18,
-        fontWeight: 'bold',
-        color: colors.textGray2
+        fontWeight: 'bold'
     },
     viewInfo: {
         marginHorizontal: 20,
-        borderTopWidth: 1,
-        borderTopColor: colors.textGray4,
+        borderTopWidth: 1
     },
     titleTextInfo: {
         marginTop: 10,
         fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontWeight: 'bold'
     }
 })

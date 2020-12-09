@@ -1,17 +1,19 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
-import colors from '../../assets/colors'
+import { useAuth } from '../../contexts/auth'
 
 interface Props {
     onPress: Function
 }
 
 export default function ContinuarComponent(props: Props) {
+    const { theme } = useAuth()
+
     return (
-        <TouchableOpacity style={styles.buttonContinuar} 
+        <TouchableOpacity style={[styles.buttonContinuar, {backgroundColor: theme.greenSecundary}]} 
             onPress={() => props.onPress()}>
-            <Text style={styles.textbutton}>Continuar</Text>
+            <Text style={[styles.textbutton, {color: theme.whitePrimary}]}>Continuar</Text>
         </TouchableOpacity>
     )
 }
@@ -19,16 +21,13 @@ export default function ContinuarComponent(props: Props) {
 const styles = StyleSheet.create({
     textbutton: {
         fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.whitePrimary
+        fontWeight: 'bold'
     },
     buttonContinuar: {
         height: 64,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 20,
-
-        backgroundColor: colors.greenPrimary
+        borderRadius: 20
     },
 })

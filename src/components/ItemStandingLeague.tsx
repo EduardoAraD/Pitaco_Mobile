@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 
+import { useAuth } from '../contexts/auth'
+
 import { Point } from '../models/Point'
-import colors from '../assets/colors'
 
 interface Props {
     point: Point,
@@ -11,15 +12,17 @@ interface Props {
 }
 
 export default function ItemStandingLeague({ point, position, isUser }: Props){
+    const { theme } = useAuth()
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>{position}.</Text>
+        <View style={[styles.container,{borderTopColor: theme.textGray4}]}>
+            <Text style={[styles.text,{color: theme.textGray3}]}>{position}.</Text>
             <Image style={styles.img} resizeMode='contain'
                 source={require('../assets/images/logoPitaco.png')} />
-            <Text style={[styles.textName,{ color: isUser ? colors.greenPrimary : colors.textGray2 }]}
+            <Text style={[styles.textName,{ color: isUser ? theme.greenPrimary : theme.textGray2 }]}
                 >{point.user.name}</Text>
-            <Text style={styles.textPoint}>{point.point}</Text>
-            <Text style={[styles.text, { width: 34, textAlign: 'right' }]}>{point.exactScore}</Text>
+            <Text style={[styles.textPoint,{color: theme.greenPrimary}]}>{point.point}</Text>
+            <Text style={[styles.text, {color: theme.textGray3, width: 34, textAlign: 'right' }]}>{point.exactScore}</Text>
         </View>
     )
 }
@@ -32,14 +35,11 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'flex-end',
-
-        borderTopWidth: 1,
-        borderTopColor: colors.textGray4
+        borderTopWidth: 1
     },
     text: {
         fontSize: 14,
-        fontWeight: '600',
-        color: colors.textGray3
+        fontWeight: '600'
     },
     img: {
         height: 30,
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     },
     textPoint: {
         fontSize: 14,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontWeight: 'bold'
     }
 })

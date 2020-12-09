@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-import colors from '../../assets/colors'
+import { useAuth } from '../../contexts/auth'
 
 interface Props {
     nameOption1: string,
@@ -12,19 +12,21 @@ interface Props {
 }
 
 export default function DoubleButtom({ nameOption1, nameOption2, option, setOption }: Props) {
+    const { theme } = useAuth()
+
     return (
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.buttonLeft,
-                {backgroundColor: option ? colors.whitePrimary : colors.greenPrimary }]}
+                {backgroundColor: option ? theme.whitePrimary : theme.greenSecundary }]}
                 onPress={() => setOption(false)} >
                 <Text style={[styles.buttonText,
-                    { color: option? colors.textGray3 : colors.textWhite }]}>{nameOption1}</Text>
+                    { color: option? theme.textGray3 : theme.textWhite }]}>{nameOption1}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.buttonRight,
-                {backgroundColor: option ? colors.greenPrimary : colors.whitePrimary }]}
+                {backgroundColor: option ? theme.greenSecundary : theme.whitePrimary }]}
                 onPress={() => setOption(true)} >
                 <Text style={[styles.buttonText,
-                { color: option? colors.textWhite : colors.textGray3 }]}>{nameOption2}</Text>
+                { color: option? theme.textWhite : theme.textGray3 }]}>{nameOption2}</Text>
             </TouchableOpacity>
         </View>
     )

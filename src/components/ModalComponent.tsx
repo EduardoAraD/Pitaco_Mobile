@@ -1,15 +1,16 @@
 import React from 'react'
 import { View, Text, Modal, ScrollView, TouchableHighlight, StyleSheet } from 'react-native'
 
-import colors from '../assets/colors'
+import { useAuth } from '../contexts/auth'
 
 interface Props {
     visible: boolean,
-
     setVisible: Function
 }
 
 export default function ModalComponent(props: Props) {
+    const { theme } = useAuth()
+
     return (
       <Modal
         animationType='fade'
@@ -17,17 +18,18 @@ export default function ModalComponent(props: Props) {
         visible={props.visible}
       >
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+          <View style={[styles.modalView,
+            {backgroundColor: theme.backgroundGreen, borderColor: theme.greenPrimary}]}>
             <TouchableHighlight
-              style={styles.openButton}
+              style={[styles.openButton,{backgroundColor: theme.textRed}]}
               onPress={() => props.setVisible(!props.visible)}
             >
-              <Text style={styles.textStyle}>X</Text>
+              <Text style={[styles.textStyle,{color: theme.textWhite}]}>X</Text>
             </TouchableHighlight>
 
-            <Text style={styles.title}>Termos de Contrato</Text>
+            <Text style={[styles.title,{color: theme.textGray2}]}>Termos de Contrato</Text>
             <ScrollView style={styles.scrollView}>
-              <Text style={styles.text}>ljnalkjsdnalskdjasdfjknsdaf
+              <Text style={{color: theme.textGray3}}>ljnalkjsdnalskdjasdfjknsdaf
                 askldbsfdkbsadf
                 askldbsadjfhbsafd
                 inadjahtektjkçkafdkavsdhasfdçasd
@@ -49,15 +51,12 @@ const styles = StyleSheet.create({
     modalView: {
       height: 400,
       width: 280,
-      backgroundColor: colors.backgroundGreen,
       borderRadius: 20,
       borderWidth: 2,
-      borderColor: colors.greenPrimary,
       alignItems: 'center',
       elevation: 5
     },
     openButton: {
-      backgroundColor: colors.textRed,
       height: 40,
       width: 40,
       borderRadius: 5,
@@ -71,7 +70,6 @@ const styles = StyleSheet.create({
       top: 0
     },
     textStyle: {
-      color: colors.textWhite,
       fontWeight: 'bold',
       textAlign: 'center',
       fontSize: 27
@@ -80,18 +78,13 @@ const styles = StyleSheet.create({
       marginBottom: 15,
       textAlign: 'center'
     },
-
     title: {
       fontSize: 22,
       fontWeight: '800',
-      color: colors.textGray2,
       margin: 10
     },
     scrollView: {
       flex: 1,
       margin: 15
-    },
-    text: {
-      color: colors.textGray3
     }
-  });
+});

@@ -4,11 +4,11 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 
 import { useAuth } from '../../contexts/auth'
+
 import ContinuarComponent from '../../components/buttons/ContinuarComponent'
 import InputComponent from '../../components/InputComponent'
-import { League } from '../../models/League'
 
-import colors from '../../assets/colors'
+import { League } from '../../models/League'
 
 const simboloData = [
     require('../../assets/images/trophy1.png'),
@@ -20,7 +20,7 @@ const simboloData = [
 ]
 
 export default function LeagueCreate() {
-    const { user } = useAuth()
+    const { user, theme } = useAuth()
     const navigation = useNavigation()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
@@ -44,28 +44,30 @@ export default function LeagueCreate() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
             <ScrollView style={styles.scroll}>
                 <View style={{ height: 20 }} />
-                <InputComponent label='Nome' value={name} onChange={setName} />
+                <InputComponent label='Nome' placeholder='Nome'
+                    value={name} onChange={setName} />
                 <View style={styles.inputTextView}>
                     <View style={styles.labelView}>
-                        <Text style={styles.label}>Descrição</Text>
-                        <Text style={styles.labelNota}>{50 - description.length}/50 caracteres</Text>
+                        <Text style={{fontWeight: '600',color: theme.textGray3}}>Descrição</Text>
+                        <Text style={[styles.labelNota,{color: theme.textGray3}]}>{50 - description.length}/50 caracteres</Text>
                     </View>
-                    <TextInput style={styles.input} value={description}
+                    <TextInput style={[styles.input,{backgroundColor: theme.whitePrimary,
+                        color: theme.textGray3, borderColor: theme.textGray3}]} value={description}
                         multiline={true} maxLength={50} textAlignVertical='top'
                         onChangeText={text => setDescription(text)} />
                 </View>
                 <View style={styles.inputTextView}>
-                    <Text style={styles.label}>Escoha um Símbolo para Liga</Text>
+                    <Text style={{fontWeight: '600', color: theme.textGray3}}>Escoha um Símbolo para Liga</Text>
                     <ScrollView horizontal={true} >
                         {simboloData.map((simbolo, index) => {
                             const escolhidoColor = {backgroundColor: escudo === index ?
-                                colors.yellowPrimary : colors.backgroundWhite }
+                                theme.yellowPrimary : theme.backgroundWhite }
                             
-                            return <TouchableOpacity key={index} style={[styles.viewImg, escolhidoColor]}
-                                    onPress={ () => setEscudo(index)}>
+                            return <TouchableOpacity style={[{borderColor: theme.textGray3,borderWidth: 1}, escolhidoColor]}
+                                    key={index} onPress={ () => setEscudo(index)}>
                                     <Image source={simbolo} resizeMode='contain' style={styles.img} />
                                 </TouchableOpacity>
                         })}
@@ -79,10 +81,6 @@ export default function LeagueCreate() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     scroll: {
         paddingHorizontal: 20,
     },
@@ -98,12 +96,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         paddingBottom: 3
     },
-    label: {
-        fontWeight: '600',
-        color: colors.textGray3,
-    },
     labelNota: {
-        color: colors.textGray3,
         fontSize: 10,
         fontWeight: '600'
     },
@@ -111,17 +104,8 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 20,
         height: 100,
-
-        backgroundColor: colors.whitePrimary,
-        color: colors.textGray3,
         borderWidth: 1,
-        borderColor: colors.textGray3,
-
         fontSize: 20
-    },
-    viewImg: {
-        borderColor: colors.textGray3,
-        borderWidth: 1
     },
     img: {
         height: 100,

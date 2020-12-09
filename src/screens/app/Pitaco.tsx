@@ -3,13 +3,14 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-import CardTitlePage from '../../components/CardTitlePage'
-import InputMatch from '../../components/InputMatch'
+import { useAuth } from '../../contexts/auth'
+
 import ButtomConfirm from '../../components/buttons/BottonConfirmComponent'
 import DoubleConfirm from '../../components/buttons/DoubleButton'
-import { Match } from '../../models/Match'
+import CardTitlePage from '../../components/CardTitlePage'
+import InputMatch from '../../components/InputMatch'
 
-import colors from '../../assets/colors'
+import { Match } from '../../models/Match'
 
 interface ValuesMatch {
     golsHomePitaco: string,
@@ -18,6 +19,7 @@ interface ValuesMatch {
 }
 
 export default function Pitaco() {
+    const { theme } = useAuth()
     const [viewRodada, setViewRodada] = useState(true)
     const [numberRodada, setNumberRodada] = useState(1)
     const [arrayMatchs, setArrayMatchs] = useState<ValuesMatch[]>([])
@@ -60,18 +62,18 @@ export default function Pitaco() {
 
     function titleCard(){
         return viewRodada ? (
-            <View style={styles.cardTitle}>
+            <View style={[styles.cardTitle,{borderColor: theme.textGray4}]}>
                 <TouchableOpacity onPress={() => handleUpdateNumberRodada(-1)}>
-                    <Icon name='chevron-left' size={30} color={colors.greenSecundary} />
+                    <Icon name='chevron-left' size={30} color={theme.greenSecundary} />
                 </TouchableOpacity>
-                <Text style={styles.cardTitleText}>{numberRodada}° Rodada</Text>
+                <Text style={[styles.cardTitleText,{color: theme.greenPrimary}]}>{numberRodada}° Rodada</Text>
                 <TouchableOpacity onPress={() => handleUpdateNumberRodada(1)}>
-                    <Icon name='chevron-right' size={30} color={colors.greenSecundary} />
+                    <Icon name='chevron-right' size={30} color={theme.greenSecundary} />
                 </TouchableOpacity>
             </View> 
         ) : (
             <View style={[styles.cardTitle, { justifyContent: 'center' }]}>
-                <Text style={styles.cardTitleText}>Jogos de Hoje (27/03/2020)</Text>
+                <Text style={[styles.cardTitleText,{color: theme.greenPrimary}]}>Jogos de Hoje (27/03/2020)</Text>
             </View>
         );
     }
@@ -84,7 +86,6 @@ export default function Pitaco() {
             } else {
                 arrayUpdate[index].golsHomePitaco = text.replace(/[^0-9]/g, '')
             }
-
             setArrayMatchs( arrayUpdate )
         }
     }
@@ -97,7 +98,6 @@ export default function Pitaco() {
             } else {
                 arrayUpdate[index].golsAwayPitaco = text.replace(/[^0-9]/g, '')
             }
-
             setArrayMatchs( arrayUpdate )
         }
     }
@@ -107,12 +107,12 @@ export default function Pitaco() {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
             <CardTitlePage title='Pitacos encerram 2h antes do jogo' />
             <ScrollView style={styles.scroll}>
                 <DoubleConfirm nameOption1='Hoje' nameOption2='Rodada'
                     option={viewRodada} setOption={setViewRodada} />
-                <View style={styles.card}>
+                <View style={[styles.card,{backgroundColor: theme.whitePrimary}]}>
                     { titleCard() }
                     { arrayMatchs.map( (match, index) => (
                         <InputMatch key={index} index={index}
@@ -132,17 +132,12 @@ export default function Pitaco() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.backgroundWhite
-    },
     scroll: {
         paddingHorizontal: 20,
     },
     scrollButtonContainer: {
         marginTop: 10,
         elevation: 2,
-
         flexDirection: 'row',
         justifyContent: 'center',
     },
@@ -151,7 +146,6 @@ const styles = StyleSheet.create({
         width: 140,
         borderTopLeftRadius: 20,
         borderBottomLeftRadius: 20,
-        
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -160,7 +154,6 @@ const styles = StyleSheet.create({
         width: 140,
         borderTopRightRadius: 20,
         borderBottomRightRadius: 20,
-        
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -171,9 +164,7 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
         marginVertical: 10,
-        backgroundColor: colors.whitePrimary,
         borderRadius: 20,
-
         elevation: 3,
     },
     cardTitle: {
@@ -183,13 +174,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-        borderBottomWidth: 1,
-        borderColor: colors.textGray4
+        borderBottomWidth: 1
     },
     cardTitleText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.greenPrimary
+        fontSize: 18,
+        fontWeight: 'bold'
     }
 })

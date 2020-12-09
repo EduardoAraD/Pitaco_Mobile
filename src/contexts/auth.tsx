@@ -6,11 +6,16 @@ import api from '../services/api'
 
 import { User } from '../models/User'
 
+import ColorsTheme from '../assets/theme/theme'
+import colorsLight from '../assets/theme/light'
+import colorsDark from '../assets/theme/dark'
+
 interface AuthContextData {
     signed: boolean;
     user: User | null;
     loading: boolean;
     themeDark: boolean;
+    theme: ColorsTheme;
 
     signIn(email: string, password: string): Promise<void>;
     signUp(name: string, email: string, password: string, confirmPassword: string): Promise<void>;
@@ -27,6 +32,7 @@ export const AuthProvider: React.FC = ({children}) => {
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
     const [themeDark, setThemeDark] = useState(false)
+    const [theme, setTheme] = useState<ColorsTheme>(colorsLight)
 
     useEffect(() => {
         async function loadStorageData() {
@@ -39,8 +45,10 @@ export const AuthProvider: React.FC = ({children}) => {
                 api.defaults.headers.Authorization = `Bearer ${storageToken}`
                 if(theme === 'true'){
                     setThemeDark(true)
+                    setTheme(colorsDark)
                 } else{
                     setThemeDark(false)
+                    setTheme(colorsLight)
                 }
             }
             setLoading(false)
@@ -79,6 +87,8 @@ export const AuthProvider: React.FC = ({children}) => {
         AsyncStorage.clear().then(() => {
             setUser(null)
             setToken('')
+            setThemeDark(false)
+            setTheme(colorsLight)
         })
     }
 
@@ -87,8 +97,10 @@ export const AuthProvider: React.FC = ({children}) => {
         setThemeDark(theme)
         if(theme){
             await AsyncStorage.setItem('@Pitaco:theme', 'true')
+            setTheme(colorsDark)
         } else {
             await AsyncStorage.setItem('@Pitaco:theme', 'false')
+            setTheme(colorsLight)
         }
         
     }
@@ -103,7 +115,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
     return (
         <AuthContext.Provider
-            value={{signed: !!user, user, loading, themeDark,
+            value={{signed: !!user, user, loading, themeDark, theme,
                 signIn, signUp, signOut, forgotPassword, resetPassword, onChangeThemeDark}}>
             {children}
         </AuthContext.Provider>
