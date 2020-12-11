@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { Link } from '@react-navigation/native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import Snackbar from 'react-native-snackbar'
 
 import { useAuth } from '../../contexts/auth'
 
@@ -16,9 +17,18 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    function handleSignIn() {
+    async function handleSignIn() {
         console.log(email, password)
-        signIn(email, password)
+        const error = await signIn(email, password)
+        if(error != ''){
+            console.log(`Mostrar a mensagem "${error}"`)
+            Snackbar.show({
+                text: error,
+                duration: Snackbar.LENGTH_LONG,
+                backgroundColor: colors.textRed,
+                textColor: colors.textWhite
+            });
+        }   
     }
 
     return (
@@ -32,10 +42,14 @@ export default function Login() {
                     value={password} password={true} onChange={setPassword} />
                 <View style={styles.linkContainer}>
                     <Link to='/ForgotPassword'>
-                        <Text style={styles.linkText}>Esqueceu a senha?</Text>
+                        <TouchableOpacity style={{ paddingVertical: 10, paddingRight: 10 }}>
+                            <Text style={styles.linkText}>Esqueceu a senha?</Text>
+                        </TouchableOpacity>
                     </Link>
                     <Link to='/SignUp'>
-                        <Text style={styles.linkText}>Cadastra-se</Text>
+                        <TouchableOpacity style={{ paddingVertical: 10, paddingLeft: 10 }}>
+                            <Text style={styles.linkText}>Cadastra-se</Text>
+                        </TouchableOpacity>
                     </Link>
                 </View>
                 <ButtonConfirmComponent onPress={handleSignIn} />
@@ -49,7 +63,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-
         backgroundColor: colors.backgroundWhite
     },
     scroll: {
@@ -64,8 +77,7 @@ const styles = StyleSheet.create({
     },
     linkContainer: {
         width: '100%',
-        marginTop: 10,
-        marginBottom: 15,
+        marginBottom: 5,
         justifyContent: 'space-between',
         flexDirection: 'row'
     },

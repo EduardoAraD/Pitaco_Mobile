@@ -17,7 +17,7 @@ interface AuthContextData {
     themeDark: boolean;
     theme: ColorsTheme;
 
-    signIn(email: string, password: string): Promise<void>;
+    signIn(email: string, password: string): Promise<string>;
     signUp(name: string, email: string, password: string, confirmPassword: string): Promise<void>;
     signOut(): void;
     forgotPassword(email: string): Promise<void>;
@@ -30,6 +30,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export const AuthProvider: React.FC = ({children}) => {
     const [token, setToken] = useState("")
     const [user, setUser] = useState<User | null>(null)
+    const [championshipId, setChampionshipId] = useState(0)
     const [loading, setLoading] = useState(true)
     const [themeDark, setThemeDark] = useState(false)
     const [theme, setTheme] = useState<ColorsTheme>(colorsLight)
@@ -39,9 +40,11 @@ export const AuthProvider: React.FC = ({children}) => {
             const storageUser = await AsyncStorage.getItem('@Pitaco:user')
             const storageToken = await AsyncStorage.getItem('@Pitaco:token')
             const theme = await AsyncStorage.getItem('@Pitaco:theme')
+            const championship = await AsyncStorage.getItem('@Pitaco:championship')
 
-            if(storageUser && storageToken) {
+            if(storageUser && storageToken && championship) {
                 setUser(JSON.parse(storageUser))
+                setChampionshipId(parseInt(championship))
                 api.defaults.headers.Authorization = `Bearer ${storageToken}`
                 if(theme === 'true'){
                     setThemeDark(true)
@@ -58,16 +61,23 @@ export const AuthProvider: React.FC = ({children}) => {
     }, [])
 
     async function signIn(email: string, password: string) {
-        const response = auth.signIn(email, password);
+        const response = await auth.signIn(email, password);
+        console.log(response)
+        if(response.data.user){
+            setUser(response.data.user)
+            setToken(response.data.token)
+            setChampionshipId(response.data.ChampionshipId)
 
-        setUser(response.user)
-        setToken(response.token)
+            api.defaults.headers.Authorization = `Bearer ${response.data.token}`
 
-        api.defaults.headers.Authorization = `Bearer ${response.token}`
-
-        await AsyncStorage.setItem('@Pitaco:user', JSON.stringify(response.user))
-        await AsyncStorage.setItem('@Pitaco:token', response.token)
-        await AsyncStorage.setItem('@Pitaco:theme', 'false')
+            await AsyncStorage.setItem('@Pitaco:user', JSON.stringify(response.data.user))
+            await AsyncStorage.setItem('@Pitaco:token', response.data.token)
+            await AsyncStorage.setItem('@Pitaco:championship', response.data.ChampionshipId.toString())
+            await AsyncStorage.setItem('@Pitaco:theme', 'false')
+            return ''
+        } else {
+            return response.error
+        }
     }
 
     async function signUp(name: string, email: string, password: string, confirmPassword: string){

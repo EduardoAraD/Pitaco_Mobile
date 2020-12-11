@@ -4,22 +4,24 @@ import api from './api'
 import { User } from '../models/User'
 
 interface Response {
-    token: string,
-    user: User
+    data: {
+        token: string,
+        user: User,
+        ChampionshipId: number
+    },
+    error: string
 }
 
-function signIn(email: string, password: string): Response {
-    
-    api.post("/login", { email, password }).then((resp: AxiosResponse) => {
-        console.log(resp.data)
-    }).catch( (error: AxiosError) => {
-        console.log( error.response?.data.errors)
+async function signIn(email: string, password: string): Promise<Response> {
+    return await api.post("/login", { email, password }).then((resp: AxiosResponse) => {
+        const data = resp.data
+        const response = {  data: data, error: '' } as Response
+        return response
+    }).catch((err: AxiosError) => {
+        const error = err.response?.data.error
+        const response = { data: {}, error } as Response
+        return response
     })
-
-    const token = 'Taidbjasd'
-    const user = { name: 'SourhT', email, points: 2, exactScore: 0 } as User
-
-    return { token, user };
 }
 
 function register(name:string, email: string, password: string, confirmPassword: string) {
