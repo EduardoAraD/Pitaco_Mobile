@@ -24,11 +24,11 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={[styles.userInfoSection, { borderBottomColor: theme.textGray3 }]}>
-                        <Image source={{ uri: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png' }}
+                        <Image source={{ uri: user?.avatar }}
                             resizeMode='contain' style={styles.userInfoImg} />
                         <View style={styles.userInfo}>
                             <Text style={[styles.userInfoName, {color: theme.textGray1}]}>{user?.name}</Text>
-                            <Text style={[styles.userInfoClube,{color: theme.textGray3}]}>Flamengo</Text>
+                            <Text style={[styles.userInfoClube,{color: theme.textGray3}]}>{user?.heartClub?.name}</Text>
                         </View>
                     </View>
                     <View style={[styles.drawerSection, {borderBottomColor: theme.textGray4}]}>
