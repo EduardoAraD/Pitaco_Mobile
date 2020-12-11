@@ -4,15 +4,17 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { useAuth } from '../contexts/auth'
 
+import { Clube } from '../models/Clube'
+
 interface Props {
     position: number,
-    name: string,
-    variacao: number,
+    clube: Clube,
     points: number,
+    matchs: number,
     wins: number,
-    saldo: number,
-    golsDone: number,
-    matchs: number
+    golsScore: number,
+    golsDiff: number,
+    positionVariation: number 
 }
 
 export default function ItemStanding(props: Props) {
@@ -41,16 +43,16 @@ export default function ItemStanding(props: Props) {
             borderBottomColor: theme.textGray4, borderLeftColor: theme.bluePrimary}]}>
             <Text style={[styles.textPos,{color: theme.textGray2}]}>{props.position}.</Text>
             <Image style={styles.img} resizeMode='contain'
-                source={require('../assets/images/logoPitaco.png')} />
+                source={{ uri: props.clube.logo }} />
             <View style={styles.areaValor}>
-                <Text style={[styles.textNome,{color: theme.textGray2}]}>{props.name || 'not clube'}</Text>
+                <Text style={[styles.textNome,{color: theme.textGray2}]}>{props.clube.name}</Text>
                 <View style={styles.areaText}>
-                    {textVariacao(props.variacao)}
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.points || 0}</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.matchs || 0}</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.wins || 0}</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{(props.saldo) || 0}</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.golsDone || 0}</Text>
+                    {textVariacao(props.positionVariation || 0 )}
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.points}</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.matchs}</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.wins}</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.golsDiff}</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{props.golsScore}</Text>
                 </View>
             </View>
         </View>
