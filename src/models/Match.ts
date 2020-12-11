@@ -1,7 +1,8 @@
 import { Clube } from './Clube'
 
 export interface Match {
-    idMatch: number,
+    id: number,
+    matchIdApi: number,
     clubeHome: Clube,
     clubeAway: Clube,
     date: string,
@@ -9,5 +10,6 @@ export interface Match {
     stadium: string,
     golsHome: number,
     golsAway: number,
-    status: string
+    status: string,
+    finishPitaco: boolean
 }

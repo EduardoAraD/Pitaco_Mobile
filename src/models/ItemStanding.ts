@@ -6,11 +6,11 @@ export interface ItemStanding {
     points: number,
     matchs: number,
     wins: number,
-    draws: number,
-    defeats: number,
-    golsDone: number,
+    draw: number,
+    defeat: number,
+    golsScore: number,
     golsConceded: number,
     golsDiff: number,
-    utilization: number,
+    porcentage: number,
     positionVariation: number 
 }
