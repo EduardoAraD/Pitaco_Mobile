@@ -25,7 +25,7 @@ export default function InputMatch({ index, golsHome, setGolsHome, golsAway, set
             return (
             <View style={[styles.cardVisible,{borderTopColor: theme.greenSecundary}]}>
                 <Text style={[styles.cardVisibleName, { textAlign: 'right', color: theme.textGray2}]}>{match.clubeHome.name}</Text>
-                <Text style={[styles.cardVisiblePlacar,{color: theme.textGray1}]}>{ match.status === 'finish' ? 
+                <Text style={[styles.cardVisiblePlacar,{color: theme.textGray1}]}>{ match.status === 'finished' ? 
                     `${match.golsHome} - ${match.golsAway}` : ' - '}</Text>
                 <Text style={[styles.cardVisibleName,{color: theme.textGray2}]}>{match.clubeAway.name}</Text>
                 <View style={{ width: 25}} />
@@ -44,19 +44,19 @@ export default function InputMatch({ index, golsHome, setGolsHome, golsAway, set
                             <Image style={styles.cardClubeImg} resizeMode='contain'
                                 source={{ uri: match.clubeHome.logo }} />
                         </View>
-                        <TextInput style={ match.status !== 'finish' ?
+                        <TextInput style={ match.status !== 'finished' ?
                             [styles.input,{ borderBottomColor: golsHome.length > 0 ? theme.greenSecundary: theme.textGray3,
                                 color: theme.greenSecundary }] : 
                             [styles.inputDisable,{backgroundColor: theme.textGray5, color: theme.textGray3}] } 
-                            editable={match.status !== 'finish' ? true : false }
+                            editable={match.status !== 'finished' ? true : false }
                             value={golsHome} keyboardType='numeric'
                             onChangeText={text => setGolsHome(text, index)} />
                         <Text style={[styles.textCardPlacar,{color: theme.greenSecundary}]}>-</Text>
-                        <TextInput style={ match.status !== 'finish' ?
+                        <TextInput style={ match.status !== 'finished' ?
                             [styles.input,{ borderBottomColor: golsAway.length > 0 ? theme.greenSecundary: theme.textGray3,
                                 color: theme.greenSecundary }] : 
                             [styles.inputDisable,{backgroundColor: theme.textGray5, color: theme.textGray3}] } 
-                            editable={match.status !== 'finish' ? true : false }
+                            editable={match.status !== 'finished' ? true : false }
                             value={golsAway} keyboardType='numeric'
                             onChangeText={(text) => setGolsAway(text, index)} />
                         <View style={[styles.cardClube, { justifyContent: 'flex-start'}]}>
