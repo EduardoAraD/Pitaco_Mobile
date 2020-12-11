@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { ScrollView } from 'react-native-gesture-handler'
+import Snackbar from 'react-native-snackbar'
 
 import { useAuth } from '../../contexts/auth'
 
@@ -20,9 +21,23 @@ export default function ResetPassword() {
     const [confirmPassword, setConfirmPassword] = useState('')
 
     async function handleConfirm() {
-        await resetPassword(codig, password, confirmPassword)
-
-        navigation.navigate('Success')
+        const {success, error} = await resetPassword(codig, password, confirmPassword)
+        if(success != ''){
+            Snackbar.show({
+                text: success,
+                duration: Snackbar.LENGTH_LONG,
+                backgroundColor: colors.greenPrimary,
+                textColor: colors.textWhite
+            });
+            navigation.navigate('Login')
+        } else {
+            Snackbar.show({
+                text: error,
+                duration: Snackbar.LENGTH_LONG,
+                backgroundColor: colors.textRed,
+                textColor: colors.textWhite
+            });
+        }
     }
 
     return (

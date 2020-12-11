@@ -21,7 +21,7 @@ interface AuthContextData {
     signUp(name: string, email: string, password: string, confirmPassword: string, accertTerms: boolean): Promise<string>;
     signOut(): void;
     forgotPassword(email: string): Promise<{success: string, error: string}>;
-    resetPassword(codig: string, password: string, confirmPassword: string): Promise<void>;
+    resetPassword(codig: string, password: string, confirmPassword: string): Promise<{success: string, error: string}>;
     onChangeThemeDark(): Promise<void>
 }
 
@@ -135,7 +135,7 @@ export const AuthProvider: React.FC = ({children}) => {
     }
 
     async function resetPassword( email: string, password: string, confirmPassword: string) {
-        const response = await auth.resetPassword(email, password, confirmPassword)
+        return await auth.resetPassword(email, password, confirmPassword)
     }
 
     return (
