@@ -16,13 +16,16 @@ interface AuthContextData {
     loading: boolean;
     themeDark: boolean;
     theme: ColorsTheme;
+    championshipId: number;
+    currentRodada: number;
 
     signIn(email: string, password: string): Promise<string>;
     signUp(name: string, email: string, password: string, confirmPassword: string, accertTerms: boolean): Promise<string>;
     signOut(): void;
     forgotPassword(email: string): Promise<{success: string, error: string}>;
     resetPassword(codig: string, password: string, confirmPassword: string): Promise<{success: string, error: string}>;
-    onChangeThemeDark(): Promise<void>
+    onChangeThemeDark(): Promise<void>;
+    currentRodadaChampionship(rodadaId: number): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -30,6 +33,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 export const AuthProvider: React.FC = ({children}) => {
     const [token, setToken] = useState("")
     const [user, setUser] = useState<User | null>(null)
+    const [currentRodada, setCurrentRodada] = useState(1)
     const [championshipId, setChampionshipId] = useState(0)
     const [loading, setLoading] = useState(true)
     const [themeDark, setThemeDark] = useState(false)
@@ -138,10 +142,14 @@ export const AuthProvider: React.FC = ({children}) => {
         return await auth.resetPassword(email, password, confirmPassword)
     }
 
+    function currentRodadaChampionship(rodadaId: number) {
+        setCurrentRodada(rodadaId)
+    }
+
     return (
         <AuthContext.Provider
-            value={{signed: !!user, user, loading, themeDark, theme,
-                signIn, signUp, signOut, forgotPassword, resetPassword, onChangeThemeDark}}>
+            value={{signed: !!user, user, loading, themeDark, theme, championshipId, currentRodada,
+                signIn, signUp, signOut, forgotPassword, resetPassword, onChangeThemeDark, currentRodadaChampionship}}>
             {children}
         </AuthContext.Provider>
     );
