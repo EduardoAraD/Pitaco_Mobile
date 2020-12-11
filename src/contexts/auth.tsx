@@ -20,7 +20,7 @@ interface AuthContextData {
     signIn(email: string, password: string): Promise<string>;
     signUp(name: string, email: string, password: string, confirmPassword: string, accertTerms: boolean): Promise<string>;
     signOut(): void;
-    forgotPassword(email: string): Promise<void>;
+    forgotPassword(email: string): Promise<{success: string, error: string}>;
     resetPassword(codig: string, password: string, confirmPassword: string): Promise<void>;
     onChangeThemeDark(): Promise<void>
 }
@@ -86,7 +86,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
     async function signUp(name: string, email: string, password: string, confirmPassword: string, accertTerms: boolean){
         if(!accertTerms) return 'Termos não aceitos'
-        
+
         const response = await auth.register(name, email, password, confirmPassword)
         if(response.data.user){
             setUser(response.data.user)
@@ -131,7 +131,7 @@ export const AuthProvider: React.FC = ({children}) => {
     }
 
     async function forgotPassword(email: string) {
-        const response = await auth.forgotPassword(email)
+        return await auth.forgotPassword(email)
     }
 
     async function resetPassword( email: string, password: string, confirmPassword: string) {

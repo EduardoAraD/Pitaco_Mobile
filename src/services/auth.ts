@@ -37,9 +37,13 @@ async function register(name:string, email: string, password: string, confirmPas
         })
 }
 
-function forgotPassword(email: string) {
-    // api.post('/forgot-password')
-    console.log(email)
+async function forgotPassword(email: string) {
+    return await api.post('/forgot-password', { email}).then((resp: AxiosResponse) => {
+        return { success: 'E-mail enviado com sucesso.', error : ''}
+    }).catch(( err: AxiosError) => {
+        const error = err.response?.data.error
+        return { success: '', error }
+    })
 }
 
 function resetPassword(email: string, password: string, confirmPassword: string) {

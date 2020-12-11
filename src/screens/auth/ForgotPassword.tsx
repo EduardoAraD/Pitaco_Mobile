@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import Snackbar from 'react-native-snackbar'
 
 import { useAuth } from '../../contexts/auth'
 
@@ -17,9 +18,23 @@ export default function ForgotPassword() {
     const [email, setEmail] = useState('')
 
     async function handleForgotPassword(){
-        await forgotPassword(email)
-
-        navigation.navigate('ResetPassword')
+        const {success, error } = await forgotPassword(email)
+        if(success != ''){
+            Snackbar.show({
+                text: success,
+                duration: Snackbar.LENGTH_LONG,
+                backgroundColor: colors.greenPrimary,
+                textColor: colors.textWhite
+            });
+            navigation.navigate('ResetPassword')
+        } else {
+            Snackbar.show({
+                text: error,
+                duration: Snackbar.LENGTH_LONG,
+                backgroundColor: colors.textRed,
+                textColor: colors.textWhite
+            });
+        }
     }
 
     return (
@@ -29,7 +44,6 @@ export default function ForgotPassword() {
                 <InputComponent label='E-mail' placeholder='E-mail'
                     onChange={setEmail} value={email} keyboardType='email-address' />
             </View>
-            <Text style={styles.text}>Assim que receber, pressione "Continuar"</Text>
             <ContinuarComponent onPress={handleForgotPassword} />
         </View>
     )
@@ -53,10 +67,5 @@ const styles = StyleSheet.create({
         borderRadius: 20,
 
         backgroundColor: colors.bluePrimary
-    },
-    text: {
-        fontSize: 18,
-        textAlign: 'center',
-        color: colors.textGray3
     }
 })
