@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import Snackbar from 'react-native-snackbar'
 
 import { useAuth } from '../../contexts/auth'
 
@@ -11,52 +12,73 @@ import CardTitlePage from '../../components/CardTitlePage'
 import InputMatch from '../../components/InputMatch'
 
 import { Match } from '../../models/Match'
+import { Pitaco } from '../../models/Pitaco'
 
-interface ValuesMatch {
-    golsHomePitaco: string,
-    golsAwayPitaco: string,
-    match: Match
+import * as servicesPitaco from '../../services/pitaco'
+
+interface PitacoMatch {
+    match: Match,
+    pitaco: Pitaco
 }
 
-export default function Pitaco() {
-    const { theme } = useAuth()
+interface RodadaPitaco {
+    rodada: number,
+    matchs: PitacoMatch[]
+}
+
+const allRodadas: RodadaPitaco[] = []
+
+export default function PitacoScreen() {
+    const { theme, user, championshipId, currentRodada } = useAuth()
     const [viewRodada, setViewRodada] = useState(true)
-    const [numberRodada, setNumberRodada] = useState(1)
-    const [arrayMatchs, setArrayMatchs] = useState<ValuesMatch[]>([])
+    const [numberRodada, setNumberRodada] = useState(currentRodada)
+    const [arrayMatchs, setArrayMatchs] = useState<PitacoMatch[]>([])
+    const [arrayMatchsToday, setArrayMatchsToday] = useState<PitacoMatch[]>([])
 
-    function teste() {
-        const data = { golsHomePitaco: '', golsAwayPitaco: '',
-        match: {
-            idMatch: 102,
-            clubeHome: { name: 'Ferroviário AC', shortName: 'FER',
-                logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
-             clubeAway: { name: 'Ceará SC', shortName: 'CEA',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
-            date: '27/02/2020',
-            hour: '16:00',
-            golsHome: 0,
-            golsAway: 1,
-            stadium: 'Arena Castelão',
-            status: 'init'
-            } as Match
-        } as ValuesMatch
-
-        const newArray: ValuesMatch[] = []
-        newArray.push(data)
-        newArray.push(JSON.parse(JSON.stringify(data)) as ValuesMatch)
-        newArray.push(JSON.parse(JSON.stringify(data)) as ValuesMatch)
-
-        setArrayMatchs( newArray )
+    async function loadingData() {
+        const responseToday = await servicesPitaco.getPitacoMatchToday(user?.email || '')
+        if(responseToday.data != [] ) {
+            setArrayMatchsToday(responseToday.data)
+        } else {
+            Snackbar.show({ text: responseToday.error, duration: Snackbar.LENGTH_LONG,
+                backgroundColor: theme.textRed, textColor: theme.textWhite
+            });
+        }
+        const responseRodada = await servicesPitaco.getPitacoMatchRodada(user?.email || '', championshipId, currentRodada)
+        if(responseRodada.data != [] ) {
+            setArrayMatchs(responseRodada.data)
+            setNumberRodada(currentRodada)
+            allRodadas.push({ rodada: currentRodada, matchs: responseRodada.data })
+        } else {
+            Snackbar.show({ text: responseRodada.error, duration: Snackbar.LENGTH_LONG,
+                backgroundColor: theme.textRed, textColor: theme.textWhite
+            });
+        }
     }
 
     useEffect(() => {
-        teste()
+        loadingData()
     }, [])
 
-    function handleUpdateNumberRodada(val: number){
+    async function handleUpdateNumberRodada(val: number){
         const newNumber = numberRodada + val
         if(newNumber >= 1 && newNumber <= 38) {
             setNumberRodada(newNumber)
+            const rodada = allRodadas.find(item => item.rodada === newNumber )
+            if (rodada) {
+                setArrayMatchs( rodada.matchs )
+            } else {
+                const responseRodada = await servicesPitaco.getPitacoMatchRodada(user?.email || '',
+                    championshipId, newNumber)
+                if(responseRodada.data != [] ) {
+                    setArrayMatchs(responseRodada.data)
+                    allRodadas.push({ rodada: newNumber, matchs: responseRodada.data })
+                } else {
+                    Snackbar.show({ text: responseRodada.error, duration: Snackbar.LENGTH_LONG,
+                        backgroundColor: theme.textRed, textColor: theme.textWhite
+                    });
+                }
+            }
         }
     }
 
@@ -78,27 +100,61 @@ export default function Pitaco() {
         );
     }
 
+    function showMatchs() {
+        const matchs = viewRodada ? arrayMatchs : arrayMatchsToday
+        return matchs.map((item, index) => (
+            <InputMatch key={index} index={index}
+                golsHome={item.pitaco.golsHome}
+                setGolsHome={handleGolsHomeArray}
+                golsAway={item.pitaco.golsAway}
+                setGolsAway={handleGolsAwayArray}
+                match={item.match} />
+        ))
+    }
+
     function handleGolsHomeArray(text: string, index: number){
         if(text.length <= 2) {
-            const arrayUpdate = arrayMatchs.map(match => match)
-            if(text.length === 0){
-                arrayUpdate[index].golsHomePitaco = ''
+            if(viewRodada){
+                const arrayUpdate = arrayMatchs.map(match => match)
+                if(text.length === 0){
+                    arrayUpdate[index].pitaco.golsHome = ''
+                } else {
+                    arrayUpdate[index].pitaco.golsHome = text.replace(/[^0-9]/g, '')
+                }
+                setArrayMatchs( arrayUpdate )
             } else {
-                arrayUpdate[index].golsHomePitaco = text.replace(/[^0-9]/g, '')
+                const arrayUpdate = arrayMatchsToday[index]
+                if(text.length === 0){
+                    arrayUpdate.pitaco.golsHome = ''
+                } else {
+                    arrayUpdate.pitaco.golsHome = text.replace(/[^0-9]/g, '')
+                }
+                arrayMatchsToday.splice(index, 1, arrayUpdate)
+                setArrayMatchs([...arrayMatchsToday])
             }
-            setArrayMatchs( arrayUpdate )
         }
     }
 
     function handleGolsAwayArray(text: string, index: number) {
         if(text.length <= 2) {
-            const arrayUpdate = arrayMatchs.map(match => match)
-            if(text.length === 0){
-                arrayUpdate[index].golsAwayPitaco = ''
+            if(viewRodada){
+                const arrayUpdate = arrayMatchs.map(match => match)
+                if(text.length === 0){
+                    arrayUpdate[index].pitaco.golsAway = ''
+                } else {
+                    arrayUpdate[index].pitaco.golsAway = text.replace(/[^0-9]/g, '')
+                }
+                setArrayMatchs( arrayUpdate )
             } else {
-                arrayUpdate[index].golsAwayPitaco = text.replace(/[^0-9]/g, '')
+                const arrayUpdate = arrayMatchsToday[index]
+                if(text.length === 0){
+                    arrayUpdate.pitaco.golsAway = ''
+                } else {
+                    arrayUpdate.pitaco.golsAway = text.replace(/[^0-9]/g, '')
+                }
+                arrayMatchsToday.splice(index, 1, arrayUpdate)
+                setArrayMatchs([...arrayMatchsToday])
             }
-            setArrayMatchs( arrayUpdate )
         }
     }
 
@@ -114,15 +170,7 @@ export default function Pitaco() {
                     option={viewRodada} setOption={setViewRodada} />
                 <View style={[styles.card,{backgroundColor: theme.whitePrimary}]}>
                     { titleCard() }
-                    { arrayMatchs.map( (match, index) => (
-                        <InputMatch key={index} index={index}
-                            golsHome={match.golsHomePitaco}
-                            setGolsHome={handleGolsHomeArray}
-                            golsAway={match.golsAwayPitaco}
-                            setGolsAway={handleGolsAwayArray}
-                            match={match.match}
-                        />
-                    ))}
+                    { showMatchs() }
                 </View>
                 <View style={{ margin: 5}} />
                 <ButtomConfirm onPress={handleConfirm} />
