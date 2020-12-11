@@ -21,7 +21,6 @@ export default function Login() {
         console.log(email, password)
         const error = await signIn(email, password)
         if(error != ''){
-            console.log(`Mostrar a mensagem "${error}"`)
             Snackbar.show({
                 text: error,
                 duration: Snackbar.LENGTH_LONG,

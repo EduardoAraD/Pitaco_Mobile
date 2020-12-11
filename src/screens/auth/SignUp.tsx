@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import CheckBox from '@react-native-community/checkbox';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import Snackbar from 'react-native-snackbar';
 
 import { useAuth } from '../../contexts/auth'
 
@@ -23,7 +24,15 @@ export default function SignUp() {
     const [modalVisible, setModalVisible] = useState(false)
 
     async function handleSignUp() {
-        await signUp(name, email, password, confirmPassword)
+        const error = await signUp(name, email, password, confirmPassword, acceptTerms)
+        if( error != '') {
+            Snackbar.show({
+                text: error,
+                duration: Snackbar.LENGTH_LONG,
+                backgroundColor: colors.textRed,
+                textColor: colors.textWhite
+            });
+        }
     }
 
     return (

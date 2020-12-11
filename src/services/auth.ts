@@ -24,16 +24,17 @@ async function signIn(email: string, password: string): Promise<Response> {
     })
 }
 
-function register(name:string, email: string, password: string, confirmPassword: string) {
-    
-    //api.post("/signIn")
-
-    const token = 'Taidbjasd'
-    const user = { name, email, points: 0, exactScore: 0 } as User
-    
-    console.log(user)
-
-    return { token, user };
+async function register(name:string, email: string, password: string, confirmPassword: string): Promise<Response> {
+    return await api.post('/signUp', { name, email, password, confirmPassword})
+        .then(( resp: AxiosResponse) => {
+            const data = resp.data
+            const response = { data, error: '' } as Response
+            return response
+        }).catch(( err: AxiosError) => {
+            const error = err.response?.data.error
+            const response = { data: {}, error } as Response
+            return response
+        })
 }
 
 function forgotPassword(email: string) {
