@@ -18,7 +18,7 @@ import { Rodada } from '../../models/Rodada'
 import * as servicesChampionship from '../../services/championship'
 
 export default function Dashboard() {
-    const { theme, user, championshipId, currentRodadaChampionship } = useAuth()
+    const { theme, user, championship, currentRodadaChampionship } = useAuth()
     const [standing, setStanding] = useState<ItemStanding[]>([])
     const [rodada, setRodada] = useState<Rodada>({} as Rodada)
 
@@ -27,7 +27,7 @@ export default function Dashboard() {
     }, [])
 
     async function loadingData(){
-        const standingResponse = await servicesChampionship.getStandingChampionship(championshipId)
+        const standingResponse = await servicesChampionship.getStandingChampionship(championship)
         if(standingResponse.error === ''){
             setStanding( standingResponse.standing.filter((item, index) => index < 6 ))
         } else {
@@ -35,7 +35,7 @@ export default function Dashboard() {
                 backgroundColor: theme.textRed, textColor: theme.textWhite
             });
         }
-        const matchResponse = await servicesChampionship.getCurrentRodada(championshipId)
+        const matchResponse = await servicesChampionship.getCurrentRodada(championship)
         if(matchResponse.error === ''){
             setRodada( matchResponse.rodada )
             currentRodadaChampionship(matchResponse.rodada.number)

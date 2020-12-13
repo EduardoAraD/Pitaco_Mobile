@@ -16,7 +16,7 @@ interface AuthContextData {
     loading: boolean;
     themeDark: boolean;
     theme: ColorsTheme;
-    championshipId: number;
+    championship: number;
     currentRodada: number;
 
     signIn(email: string, password: string): Promise<string>;
@@ -31,10 +31,9 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export const AuthProvider: React.FC = ({children}) => {
-    const [token, setToken] = useState("")
     const [user, setUser] = useState<User | null>(null)
     const [currentRodada, setCurrentRodada] = useState(1)
-    const [championshipId, setChampionshipId] = useState(0)
+    const [championship, setChampionship] = useState(0)
     const [loading, setLoading] = useState(true)
     const [themeDark, setThemeDark] = useState(false)
     const [theme, setTheme] = useState<ColorsTheme>(colorsLight)
@@ -51,7 +50,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
             if(storageUser && storageToken && championship) {
                 setUser(JSON.parse(storageUser))
-                setChampionshipId(parseInt(championship))
+                setChampionship(parseInt(championship))
                 api.defaults.headers.Authorization = `Bearer ${storageToken}`
                 if(theme === 'true'){
                     setThemeDark(true)
@@ -68,54 +67,53 @@ export const AuthProvider: React.FC = ({children}) => {
     }, [])
 
     async function signIn(email: string, password: string) {
-        const response = await auth.signIn(email, password);
-        if(response.data.user){
-            setUser(response.data.user)
-            setToken(response.data.token)
-            setChampionshipId(response.data.ChampionshipId)
+        const { data, error } = await auth.signIn(email, password);
+        if(data.user){
+            setChampionship(data.championship)
+            setUser(data.user)
 
-            api.defaults.headers.Authorization = `Bearer ${response.data.token}`
+            api.defaults.headers.Authorization = `Bearer ${data.token}`
 
-            const userKey = ["@Pitaco:user", JSON.stringify(response.data.user)]
-            const tokenKey = ["@Pitaco:token", response.data.token]
-            const championshipKey = ['@Pitaco:championship', response.data.ChampionshipId.toString()] 
+            const userKey = ["@Pitaco:user", JSON.stringify(data.user)]
+            const tokenKey = ["@Pitaco:token", data.token]
+            const championshipKey = ['@Pitaco:championship', data.championship.toString()] 
             const themeKey = ['@Pitaco:theme', 'false']
 
             await AsyncStorage.multiSet([userKey, tokenKey, championshipKey, themeKey])
             return ''
         } else {
-            return response.error
+            return error
         }
     }
 
     async function signUp(name: string, email: string, password: string, confirmPassword: string, accertTerms: boolean){
         if(!accertTerms) return 'Termos não aceitos'
 
-        const response = await auth.register(name, email, password, confirmPassword)
-        if(response.data.user){
-            setUser(response.data.user)
-            setToken(response.data.token)
-            setChampionshipId(response.data.ChampionshipId)
+        const { data, error } = await auth.register(name, email, password, confirmPassword)
+        if(data.user){
+            setChampionship(data.championship)
+            setUser(data.user)
 
-            api.defaults.headers.Authorization = `Bearer ${response.data.token}`
+            api.defaults.headers.Authorization = `Bearer ${data.token}`
 
-            const userKey = ["@Pitaco:user", JSON.stringify(response.data.user)]
-            const tokenKey = ["@Pitaco:token", response.data.token]
-            const championshipKey = ['@Pitaco:championship', response.data.ChampionshipId.toString()] 
+            const userKey = ["@Pitaco:user", JSON.stringify(data.user)]
+            const tokenKey = ["@Pitaco:token", data.token]
+            const championshipKey = ['@Pitaco:championship', data.championship.toString()] 
             const themeKey = ['@Pitaco:theme', 'false']
 
             await AsyncStorage.multiSet([userKey, tokenKey, championshipKey, themeKey])
 
             return ''
         } else {
-            return response.error
+            return error
         }
     }
 
     function signOut(){
         AsyncStorage.clear().then(() => {
             setUser(null)
-            setToken('')
+            setChampionship(0)
+            setCurrentRodada(0)
             setThemeDark(false)
             setTheme(colorsLight)
         })
@@ -148,7 +146,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
     return (
         <AuthContext.Provider
-            value={{signed: !!user, user, loading, themeDark, theme, championshipId, currentRodada,
+            value={{signed: !!user, user, loading, themeDark, theme, championship, currentRodada,
                 signIn, signUp, signOut, forgotPassword, resetPassword, onChangeThemeDark, currentRodadaChampionship}}>
             {children}
         </AuthContext.Provider>

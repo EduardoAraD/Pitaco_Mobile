@@ -18,7 +18,6 @@ export default function Login() {
     const [password, setPassword] = useState('')
 
     async function handleSignIn() {
-        console.log(email, password)
         const error = await signIn(email, password)
         if(error != ''){
             Snackbar.show({

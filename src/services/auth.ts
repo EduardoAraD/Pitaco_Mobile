@@ -7,7 +7,7 @@ interface Response {
     data: {
         token: string,
         user: User,
-        ChampionshipId: number
+        championship: number
     },
     error: string
 }
