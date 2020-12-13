@@ -1,5 +1,5 @@
 export interface Clube {
     name: string,
-    shortName: string,
+    shortCode: string,
     logo: string
 }

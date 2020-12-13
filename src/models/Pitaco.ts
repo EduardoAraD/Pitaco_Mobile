@@ -5,5 +5,6 @@ export interface Pitaco {
     golsAway: string,
     point: number,
     exactScore: number,
+    update: boolean,
     match: Match
 }
