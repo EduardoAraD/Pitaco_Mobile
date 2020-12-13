@@ -12,7 +12,6 @@ interface ResponseStanding {
 }
 
 async function getStandingChampionship(championshipId: number) {
-    console.log(championshipId)
     return await api.get(`/championship/${championshipId}/tabela/`)
         .then(( resp: AxiosResponse) => {
             const data = resp.data
@@ -36,4 +35,15 @@ async function getCurrentRodada(championshipId: number) {
         })
 }
 
-export { getStandingChampionship, getCurrentRodada }
+async function getRodada(championship: number, rodada: number) {
+    return await api.get(`/championship/${championship}/rodadas/${rodada}`)
+        .then(( resp: AxiosResponse) => {
+            const data = resp.data
+            return { rodada: data as Rodada, error: ''}
+        }).catch(( err: AxiosError) => {
+            const error = err.response?.data.error
+            return { rodada: {} as Rodada, error: error as string }
+        })
+}
+
+export { getStandingChampionship, getCurrentRodada, getRodada }
