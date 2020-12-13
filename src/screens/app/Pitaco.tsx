@@ -57,8 +57,6 @@ export default function PitacoScreen() {
     async function handleUpdateNumberRodada(val: number){
         const newNumber = numberRodada + val
         if(newNumber >= 1 && newNumber <= 38) {
-            //allRodadas = allRodadas.map(item => item.rodada === numberRodada ? 
-            //    { rodada: numberRodada, matchs: arrayMatchs } : item)
             setNumberRodada(newNumber)
             const rodada = allRodadas.find(item => item.rodada === newNumber )
             if (rodada) {

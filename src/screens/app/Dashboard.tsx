@@ -88,7 +88,7 @@ export default function Dashboard() {
                         <Icon name='dots-vertical' color={theme.textGray3} />
                     </View>
                 </CardTitle>
-                <CardTitle title='Jogos de Hoje'>
+                <CardTitle title={`Jogos da ${rodada.number}° rodada`}>
                     { rodada.matchs?.map( (match, index) => 
                         <ItemMatch key={index} match={match} />
                     )}

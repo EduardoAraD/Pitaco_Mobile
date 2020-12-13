@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Snackbar from 'react-native-snackbar'
 
 import { useAuth } from '../../contexts/auth'
 
@@ -11,76 +12,62 @@ import ItemMatch from '../../components/ItemMatch'
 
 import { ItemStanding } from '../../models/ItemStanding'
 import { Match } from '../../models/Match'
+import { Rodada } from '../../models/Rodada'
+
+import * as servicesChampionship from '../../services/championship'
+
+let allRodadas: Rodada[] = []
 
 export default function Championship() {
-    const { theme } = useAuth()
+    const { theme, championship } = useAuth()
     const [viewOptionStandingMatch, setViewOptionStandingMatch] = useState(true)
     const [itemsStanding, setItemsStanding] = useState<ItemStanding[]>([])
     const [numberRodada, setNumberRodada] = useState(1)
     const [matchs, setMatchs] = useState<Match[]>([])
 
-    function test() {
-        const data = [
-            {   position: 1, 
-                clube: { name: 'Ferroviário AC', shortName: 'FER',
-                logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
-                points: 39, wins: 11, draws: 6, defeats: 2, matchs: 19,
-                golsDone: 56, golsConceded: 35, golsDiff: 21,
-                positionVariation: 0, utilization: (39/(19*3) * 100)
-            } as ItemStanding,
-            {   position: 2, 
-                clube: { name: 'Ceará SC', shortName: 'CEA',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
-                points: 38, wins: 11, draws: 5, defeats: 3, matchs: 19,
-                golsDone: 50, golsConceded: 38, golsDiff: 12,
-                positionVariation: 1, utilization: (38/(19*3) * 100)
-            } as ItemStanding,
-            {   position: 3, 
-                clube: { name: 'Fortaleza EC', shortName: 'FOR',
-                logo: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Escudo_do_Fortaleza_EC.png'},
-                points: 37, wins: 10, draws: 7, defeats: 2, matchs: 19,
-                golsDone: 54, golsConceded: 42, golsDiff: 12,
-                positionVariation: -1, utilization: (37/(19*3) * 100)
-            } as ItemStanding
-        ]
-        setItemsStanding(data)
-        const data2 = [
-            {   idMatch: 102,
-                clubeHome: { name: 'Ferroviário AC', shortName: 'FER',
-                    logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
-                clubeAway: { name: 'Ceará SC', shortName: 'CEA',
-                    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
-                date: '27/02/2020', hour: '16:00', golsHome: 0,
-                golsAway: 1, stadium: 'Arena Castelão', status: 'init'
-            } as Match,
-            {   idMatch: 102,
-                clubeHome: { name: 'Ferroviário AC', shortName: 'FER',
-                    logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
-                clubeAway: { name: 'Ceará SC', shortName: 'CEA',
-                    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
-                date: '27/02/2020', hour: '16:00', golsHome: 0,
-                golsAway: 1, stadium: 'Arena Castelão', status: 'init'
-            } as Match,
-            {   idMatch: 102,
-                clubeHome: { name: 'Ferroviário AC', shortName: 'FER',
-                    logo: 'https://upload.wikimedia.org/wikipedia/pt/d/d0/Ferrovi%C3%A1rioAC2019.png'},
-                clubeAway: { name: 'Ceará SC', shortName: 'CEA',
-                    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Cear%C3%A1_Sporting_Club_logo.svg/410px-Cear%C3%A1_Sporting_Club_logo.svg.png'},
-                date: '27/02/2020', hour: '16:00', golsHome: 0,
-                golsAway: 1, stadium: 'Arena Castelão', status: 'init'
-            } as Match
-        ]
-        setMatchs(data2)
+    async function loadingData() {
+        const standingResponse = await servicesChampionship.getStandingChampionship(championship)
+        if(standingResponse.error === ''){
+            setItemsStanding( standingResponse.standing )
+        } else {
+            Snackbar.show({ text: standingResponse.error, duration: Snackbar.LENGTH_LONG,
+                backgroundColor: theme.textRed, textColor: theme.textWhite
+            });
+        }
+        const matchResponse = await servicesChampionship.getCurrentRodada(championship)
+        if(matchResponse.error === ''){
+            setNumberRodada(matchResponse.rodada.number)
+            setMatchs( matchResponse.rodada.matchs )
+            allRodadas.push(matchResponse.rodada)
+        } else {
+            Snackbar.show({ text: matchResponse.error, duration: Snackbar.LENGTH_LONG,
+                backgroundColor: theme.textRed, textColor: theme.textWhite
+            });
+        }
     }
 
     useEffect(() => {
-        test()
+        loadingData()
     }, [])
 
-    function handleUpdateNumberRodada(val: number){
+    async function handleUpdateNumberRodada(val: number){
         const newNumber = numberRodada + val
         if(newNumber >= 1 && newNumber <= 38) {
+            const rodada = allRodadas.find(item => item.number === newNumber )
             setNumberRodada(newNumber)
+            if (rodada) {
+                setMatchs( rodada.matchs )
+            } else {
+                const { rodada, error } = await servicesChampionship.getRodada( championship, newNumber)
+                if( error === '' ) {
+                    setMatchs(rodada.matchs)
+                    allRodadas.push(rodada)
+                } else {
+                    Snackbar.show({ text: error, duration: Snackbar.LENGTH_LONG,
+                        backgroundColor: theme.textRed, textColor: theme.textWhite
+                    });
+                }
+            }
         }
     }
 
@@ -139,7 +126,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     cardStanding: {
-        marginTop: 10,
+        marginVertical: 10,
         width: '100%',
         borderRadius: 20,
         elevation: 2
