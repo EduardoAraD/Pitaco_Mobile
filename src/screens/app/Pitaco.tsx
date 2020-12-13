@@ -16,20 +16,14 @@ import { Pitaco } from '../../models/Pitaco'
 
 import * as servicesPitaco from '../../services/pitaco'
 
-interface PitacoMatch {
-    match: Match,
-    pitaco: Pitaco
-}
+interface PitacoMatch { match: Match, pitaco: Pitaco }
+interface RodadaPitaco { rodada: number, matchs: PitacoMatch[] }
+interface PitacoRequest { golsHome: number, golsAway: number, id: number }
 
-interface RodadaPitaco {
-    rodada: number,
-    matchs: PitacoMatch[]
-}
-
-const allRodadas: RodadaPitaco[] = []
+let allRodadas: RodadaPitaco[] = []
 
 export default function PitacoScreen() {
-    const { theme, user, championshipId, currentRodada } = useAuth()
+    const { theme, user, championship, currentRodada } = useAuth()
     const [viewRodada, setViewRodada] = useState(true)
     const [numberRodada, setNumberRodada] = useState(currentRodada)
     const [arrayMatchs, setArrayMatchs] = useState<PitacoMatch[]>([])
@@ -44,7 +38,7 @@ export default function PitacoScreen() {
                 backgroundColor: theme.textRed, textColor: theme.textWhite
             });
         }
-        const responseRodada = await servicesPitaco.getPitacoMatchRodada(user?.email || '', championshipId, currentRodada)
+        const responseRodada = await servicesPitaco.getPitacoMatchRodada(user?.email || '', championship, currentRodada)
         if(responseRodada.data != [] ) {
             setArrayMatchs(responseRodada.data)
             setNumberRodada(currentRodada)
@@ -63,13 +57,15 @@ export default function PitacoScreen() {
     async function handleUpdateNumberRodada(val: number){
         const newNumber = numberRodada + val
         if(newNumber >= 1 && newNumber <= 38) {
+            //allRodadas = allRodadas.map(item => item.rodada === numberRodada ? 
+            //    { rodada: numberRodada, matchs: arrayMatchs } : item)
             setNumberRodada(newNumber)
             const rodada = allRodadas.find(item => item.rodada === newNumber )
             if (rodada) {
                 setArrayMatchs( rodada.matchs )
             } else {
                 const responseRodada = await servicesPitaco.getPitacoMatchRodada(user?.email || '',
-                    championshipId, newNumber)
+                    championship, newNumber)
                 if(responseRodada.data != [] ) {
                     setArrayMatchs(responseRodada.data)
                     allRodadas.push({ rodada: newNumber, matchs: responseRodada.data })
@@ -83,6 +79,7 @@ export default function PitacoScreen() {
     }
 
     function titleCard(){
+        const date = new Date()
         return viewRodada ? (
             <View style={[styles.cardTitle,{borderColor: theme.textGray4}]}>
                 <TouchableOpacity onPress={() => handleUpdateNumberRodada(-1)}>
@@ -95,21 +92,29 @@ export default function PitacoScreen() {
             </View> 
         ) : (
             <View style={[styles.cardTitle, { justifyContent: 'center' }]}>
-                <Text style={[styles.cardTitleText,{color: theme.greenPrimary}]}>Jogos de Hoje (27/03/2020)</Text>
+                <Text style={[styles.cardTitleText,{color: theme.greenPrimary}]}>Jogos de Hoje ({`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`})</Text>
             </View>
         );
     }
 
     function showMatchs() {
+        function notSpentTime(dataNow: Date, data: Date) {
+            data.setHours(data.getHours() - 2)
+            return dataNow < data
+        }
         const matchs = viewRodada ? arrayMatchs : arrayMatchsToday
-        return matchs.map((item, index) => (
-            <InputMatch key={index} index={index}
-                golsHome={item.pitaco.golsHome}
+        const dateNow = new Date()
+        return matchs.map((item, index) => {
+            const [day, mount, year] = item.match.date.split('/')
+            const dateMatch = new Date(`${year}/${mount}/${day} ${item.match.hour}`)
+            return <InputMatch key={index} index={index} update={item.pitaco.update}
+                golsHome={item.pitaco.golsHome.toString()}
                 setGolsHome={handleGolsHomeArray}
-                golsAway={item.pitaco.golsAway}
+                golsAway={item.pitaco.golsAway.toString()}
                 setGolsAway={handleGolsAwayArray}
-                match={item.match} />
-        ))
+                match={item.match}
+                notFinishPitaco={notSpentTime(dateNow, dateMatch)} />
+        })
     }
 
     function handleGolsHomeArray(text: string, index: number){
@@ -121,6 +126,7 @@ export default function PitacoScreen() {
                 } else {
                     arrayUpdate[index].pitaco.golsHome = text.replace(/[^0-9]/g, '')
                 }
+                arrayUpdate[index].pitaco.update = true
                 setArrayMatchs( arrayUpdate )
             } else {
                 const arrayUpdate = arrayMatchsToday[index]
@@ -129,8 +135,9 @@ export default function PitacoScreen() {
                 } else {
                     arrayUpdate.pitaco.golsHome = text.replace(/[^0-9]/g, '')
                 }
+                arrayUpdate.pitaco.update = true
                 arrayMatchsToday.splice(index, 1, arrayUpdate)
-                setArrayMatchs([...arrayMatchsToday])
+                setArrayMatchsToday([...arrayMatchsToday])
             }
         }
     }
@@ -144,6 +151,7 @@ export default function PitacoScreen() {
                 } else {
                     arrayUpdate[index].pitaco.golsAway = text.replace(/[^0-9]/g, '')
                 }
+                arrayUpdate[index].pitaco.update = true
                 setArrayMatchs( arrayUpdate )
             } else {
                 const arrayUpdate = arrayMatchsToday[index]
@@ -152,14 +160,55 @@ export default function PitacoScreen() {
                 } else {
                     arrayUpdate.pitaco.golsAway = text.replace(/[^0-9]/g, '')
                 }
+                arrayUpdate.pitaco.update = true
                 arrayMatchsToday.splice(index, 1, arrayUpdate)
-                setArrayMatchs([...arrayMatchsToday])
+                setArrayMatchsToday([...arrayMatchsToday])
             }
         }
     }
 
-    function handleConfirm() {
-        console.log(arrayMatchs)
+    async function handleConfirm() {
+        function pitacoMatchForPitacoRequest(pitMatch: PitacoMatch[]) {
+            return pitMatch.filter(itemPM => itemPM.pitaco.update &&
+                itemPM.pitaco.golsHome != '' && itemPM.pitaco.golsAway != '').map(item => { 
+                return {golsHome: parseInt(item.pitaco.golsHome),
+                        golsAway: parseInt(item.pitaco.golsAway),
+                        id: item.match.id } as PitacoRequest}
+                )
+        }
+        function pitacoForPitacoMatch(pitacos: Pitaco[], pitMatch: PitacoMatch[]) {
+            return pitMatch.map(item => {
+                for(let i = 0; i < pitacos.length; i++){
+                    const pitaco = pitacos[i]
+                    if( item.match.id === pitaco.match.id) {
+                        return { pitaco: { ...pitaco, update: false }, match: pitaco.match } as PitacoMatch
+                    }
+                }
+                return item
+            })
+        }
+
+        const pitacosReq:PitacoRequest[] = pitacoMatchForPitacoRequest(viewRodada ? arrayMatchs : arrayMatchsToday)
+        if( pitacosReq.length === 0) {
+            Snackbar.show({ text: 'Nenhum Pitaco foi alterado', duration: Snackbar.LENGTH_LONG,
+                backgroundColor: theme.textRed, textColor: theme.textWhite
+            });
+            return 
+        }
+        const { pitacos, error } = await servicesPitaco.createPitacoMatch(user?.email || '', pitacosReq)
+        if(pitacos != []) {
+            const newArrayMatchs: PitacoMatch[] = pitacoForPitacoMatch(pitacos, viewRodada ? arrayMatchs : arrayMatchsToday )
+            if(viewRodada) setArrayMatchs( newArrayMatchs )
+            else setArrayMatchsToday( newArrayMatchs )
+
+            Snackbar.show({ text: 'Pitacos registrados com sucesso', duration: Snackbar.LENGTH_LONG,
+                backgroundColor: theme.greenPrimary, textColor: theme.textWhite
+            });
+        } else {
+            Snackbar.show({ text: error, duration: Snackbar.LENGTH_LONG,
+                backgroundColor: theme.textRed, textColor: theme.textWhite
+            });
+        }
     }
 
     return (
