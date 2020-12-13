@@ -9,14 +9,16 @@ import { Match } from '../models/Match'
 
 interface Props {
     index: number,
+    update: boolean,
     golsHome: string,
     setGolsHome: Function,
     golsAway: string,
-    setGolsAway: Function
+    setGolsAway: Function,
+    notFinishPitaco: boolean,
     match: Match
 }
 
-export default function InputMatch({ index, golsHome, setGolsHome, golsAway, setGolsAway, match}: Props) {
+export default function InputMatch({ index, update, golsHome, setGolsHome, golsAway, setGolsAway, notFinishPitaco, match}: Props) {
     const { theme } = useAuth()
     const [visible, setVisible] = useState(false)
 
@@ -40,29 +42,29 @@ export default function InputMatch({ index, golsHome, setGolsHome, golsAway, set
                     <Text style={[styles.textCardStadium,{color: theme.textGray2}]}>{`${match.stadium} - ${match.date} - ${match.hour}`}</Text>
                     <View style={styles.cardInput}>
                         <View style={[styles.cardClube, { justifyContent: 'flex-end'}]}>
-                            <Text style={[styles.cardClubeText,{color: theme.textGray2}]}>{match.clubeHome.shortName}</Text>
+                            <Text style={[styles.cardClubeText,{color: theme.textGray2}]}>{match.clubeHome.shortCode}</Text>
                             <Image style={styles.cardClubeImg} resizeMode='contain'
                                 source={{ uri: match.clubeHome.logo }} />
                         </View>
-                        <TextInput style={ match.status !== 'finished' ?
-                            [styles.input,{ borderBottomColor: golsHome.length > 0 ? theme.greenSecundary: theme.textGray3,
-                                color: theme.greenSecundary }] : 
+                        <TextInput style={ notFinishPitaco ?
+                            [styles.input,{ borderBottomColor: update? theme.blueSecundary : (golsHome.length > 0 ? theme.greenSecundary: theme.textGray3),
+                                color: update? theme.blueSecundary : theme.greenSecundary }] : 
                             [styles.inputDisable,{backgroundColor: theme.textGray5, color: theme.textGray3}] } 
-                            editable={match.status !== 'finished' ? true : false }
+                            editable={notFinishPitaco}
                             value={golsHome} keyboardType='numeric'
                             onChangeText={text => setGolsHome(text, index)} />
-                        <Text style={[styles.textCardPlacar,{color: theme.greenSecundary}]}>-</Text>
-                        <TextInput style={ match.status !== 'finished' ?
-                            [styles.input,{ borderBottomColor: golsAway.length > 0 ? theme.greenSecundary: theme.textGray3,
-                                color: theme.greenSecundary }] : 
+                        <Text style={[styles.textCardPlacar,{color: update? theme.blueSecundary : theme.greenSecundary}]}>-</Text>
+                        <TextInput style={ notFinishPitaco ?
+                            [styles.input,{ borderBottomColor: update? theme.blueSecundary : (golsAway.length > 0 ? theme.greenSecundary: theme.textGray3),
+                                color: update? theme.blueSecundary : theme.greenSecundary }] : 
                             [styles.inputDisable,{backgroundColor: theme.textGray5, color: theme.textGray3}] } 
-                            editable={match.status !== 'finished' ? true : false }
+                            editable={notFinishPitaco}
                             value={golsAway} keyboardType='numeric'
                             onChangeText={(text) => setGolsAway(text, index)} />
                         <View style={[styles.cardClube, { justifyContent: 'flex-start'}]}>
                             <Image style={styles.cardClubeImg} resizeMode='contain'
                                 source={{ uri: match.clubeAway.logo }} />
-                            <Text style={[styles.cardClubeText,{color: theme.textGray2}]}>{match.clubeAway.shortName}</Text>
+                            <Text style={[styles.cardClubeText,{color: theme.textGray2}]}>{match.clubeAway.shortCode}</Text>
                         </View>       
                     </View>
                 </View>
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     },
     cardInput: {
         flexDirection: 'row',
+        width: '100%'
     },
     cardClube: {
         flex: 1,
