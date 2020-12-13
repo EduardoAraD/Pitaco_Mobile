@@ -23,7 +23,8 @@ export default function ItemMatch({ match }: Props) {
                 </View>
                 <View style={styles.cardGamePlacar}>
                     <Text style={[styles.textCardHora,{color: theme.textGray3}]}>{`${match.date} - ${match.hour}`}</Text>
-                    <Text style={[styles.textCardPlacar,{color: theme.textGray1}]}>{`${match.golsHome} - ${match.golsAway}`}</Text>
+                    <Text style={[styles.textCardPlacar,{color: theme.textGray1}]}>{ match.status === 'finished' ?
+                        `${match.golsHome} - ${match.golsAway}` : '  -  '}</Text>
                 </View>
                 <View style={[styles.cardGameItem, { alignItems: 'flex-start' }]}>
                     <Image style={styles.cardGameImg} resizeMode='contain'

@@ -41,16 +41,16 @@ export default function ItemStandingComplete({ item }: Props) {
             <View style={styles.areaValor}>
                 <Text style={[styles.textNome,{color: theme.textGray2}]}>{ item.clube.name }</Text>
                 <View style={styles.areaText}>
-                    {textVariacao( item.positionVariation )}
+                    {textVariacao( 0 )}
                     <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.points }</Text>
                     <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.matchs }</Text>
                     <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.wins }</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.draws }</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.defeats }</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.draw }</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.defeat }</Text>
                     <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.golsDiff }</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.golsDone }</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.golsScore }</Text>
                     <Text style={[styles.textValor,{color: theme.textGray2}]}>{ item.golsConceded }</Text>
-                    <Text style={[styles.textValor,{color: theme.textGray2, width: 30 }]}>{ item.utilization.toFixed(1) }</Text>
+                    <Text style={[styles.textValor,{color: theme.textGray2, width: 30 }]}>{ item.porcentage.toFixed(1) }</Text>
                 </View>
             </View>
         </View>
@@ -74,9 +74,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     img: {
-        margin: 3,
-        height: 34,
-        width: 34,
+        marginHorizontal: 3,
+        marginVertical: 5,
+        height: 30,
+        width: 30,
         alignSelf: 'center',
     },
     areaValor: {
