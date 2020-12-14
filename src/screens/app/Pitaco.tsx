@@ -111,6 +111,7 @@ export default function PitacoScreen() {
                 golsAway={item.pitaco.golsAway.toString()}
                 setGolsAway={handleGolsAwayArray}
                 match={item.match}
+                point={item.pitaco.point}
                 notFinishPitaco={notSpentTime(dateNow, dateMatch)} />
         })
     }

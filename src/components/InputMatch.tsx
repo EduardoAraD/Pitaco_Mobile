@@ -10,6 +10,7 @@ import { Match } from '../models/Match'
 interface Props {
     index: number,
     update: boolean,
+    point: number,
     golsHome: string,
     setGolsHome: Function,
     golsAway: string,
@@ -18,7 +19,7 @@ interface Props {
     match: Match
 }
 
-export default function InputMatch({ index, update, golsHome, setGolsHome, golsAway, setGolsAway, notFinishPitaco, match}: Props) {
+export default function InputMatch({ index, update, point, golsHome, setGolsHome, golsAway, setGolsAway, notFinishPitaco, match}: Props) {
     const { theme } = useAuth()
     const [visible, setVisible] = useState(false)
 
@@ -33,6 +34,17 @@ export default function InputMatch({ index, update, golsHome, setGolsHome, golsA
                 <View style={{ width: 25}} />
             </View>
         )}
+    }
+
+    function colorPoint(val: number){
+        if(!notFinishPitaco && golsAway != '' && golsHome != '' ){
+            switch(val){
+                case 10: return theme.greenPrimary
+                case 7: return theme.blueSecundary
+                case 5: return theme.yellowPrimary
+                default: return theme.textRed
+            }
+        } else return theme.textGray4
     }
     
     return (
@@ -69,8 +81,8 @@ export default function InputMatch({ index, update, golsHome, setGolsHome, golsA
                     </View>
                 </View>
                 <View style={styles.cardAction}>
-                    <View style={[styles.cardPoints,{backgroundColor: theme.whitePrimary,borderColor: theme.textGray4}]}>
-                        <Text style={[styles.cardPointsText,{color: theme.textGray4}]}>0</Text>
+                    <View style={[styles.cardPoints,{backgroundColor: theme.whitePrimary,borderColor: colorPoint(point)}]}>
+                        <Text style={[styles.cardPointsText,{color: colorPoint(point)}]}>{point}</Text>
                     </View>
                     <TouchableOpacity style={styles.buttonShow}
                         onPress={() => setVisible(!visible)} >
