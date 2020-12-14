@@ -21,7 +21,7 @@ export default function CardLeague({ league, user } : Props) {
     const [userPoint, setUserPoint] = useState<Point>()
     const [position, setPosition] = useState('')
 
-    function test() {
+    function loadingData() {
         const pointUser = league.points.find((point) => point.user.email === user?.email)
         if(pointUser) {
             const index = league.points.indexOf(pointUser) + 1
@@ -31,7 +31,7 @@ export default function CardLeague({ league, user } : Props) {
     }
 
     useEffect(() => {
-        test()
+        loadingData()
     }, [])
 
     function viewDono() {
@@ -60,7 +60,7 @@ export default function CardLeague({ league, user } : Props) {
                 <View style={styles.cardInfoUser}>
                     <Text style={[styles.cardInfoUserPos,{color: theme.textGray3}]}>{position ? `${position}.` : ''}</Text>
                     <Text style={[styles.cardInfoUserName,{color: theme.textGray1}]}>{userPoint?.user.name || ''}</Text>
-                    <Text style={[styles.cardInfoUserPoint,{color: theme.greenPrimary}]}>{userPoint?.point || ''}</Text>
+                    <Text style={[styles.cardInfoUserPoint,{color: theme.greenPrimary}]}>{userPoint?.points || ''}</Text>
                 </View>
             </View>
         </TouchableOpacity>
