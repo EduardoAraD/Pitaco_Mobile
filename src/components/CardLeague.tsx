@@ -86,7 +86,7 @@ export default function CardLeague({ league, user }: Props) {
   }, []);
 
   function viewDono() {
-    if (league.dono.name !== '') {
+    if (league.dono.name) {
       return league.dono.email === user.email ? (
         <Text style={[styles.cardInfoDono, { color: theme.yellowPrimary }]}>
           @{league.dono.name}

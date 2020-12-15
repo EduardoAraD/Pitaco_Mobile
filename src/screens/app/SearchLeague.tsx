@@ -1,153 +1,124 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import Snackbar from 'react-native-snackbar';
 
-import { useAuth } from '../../contexts/auth'
+import { useAuth } from '../../contexts/auth';
 
-import SearchInput from '../../components/SearchInput'
+import SearchInput from '../../components/SearchInput';
 
-import { League } from '../../models/League'
-import { Point } from '../../models/Point'
+import { League } from '../../models/League';
 
-export default function SearchLeague() {
-    const navigation = useNavigation()
-    const { user, theme } = useAuth()
-    const [search, setSearch] = useState('')
-    const [leagues, setLeagues] = useState<League[]>([])
-    const [leaguesFilter, setLeaguesFilter] = useState<League[]>([])
-
-    useEffect(() => {
-        loadLeague()
-    }, [])
-
-    function loadLeague(){
-        const data = [
-            {   name: 'Pitaco', logo: require('../../assets/images/logoPitaco.png'),
-                description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)'
-            } as League,
-            {   name: 'Dashboard', logo: require('../../assets/images/trophy1.png'),
-                dono: { name: 'Edut', email: 'tan@' },
-                description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)'
-            } as League,
-            {   name: 'Eupaminondas', logo: require('../../assets/images/trophy3.png'),
-                description: 'Brincando aqui na rua, alou mãe',
-                dono: { name: 'SourhT', email: '123' }
-            } as League,
-            {   name: 'Criando Conteúdo', logo: require('../../assets/images/trophy1.png'),
-                dono: { name: 'Edut', email: 'tan@' },
-                description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)'
-            } as League,
-            {   name: 'Liga Pabussú', logo: require('../../assets/images/trophy3.png'),
-                description: 'Brincando aqui na rua, alou mãe',
-                dono: { name: 'SourhT', email: '123' }
-            } as League,
-            {   name: 'Teste oi', logo: require('../../assets/images/trophy1.png'),
-                dono: { name: 'Edut', email: 'tan@' },
-                description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)'
-            } as League,
-            {   name: 'Voisinhas', logo: require('../../assets/images/trophy3.png'),
-                description: 'Brincando aqui na rua, alou mãe',
-                dono: { name: 'SourhT', email: '123' }
-            } as League,
-            {   name: 'Gasguito e compades', logo: require('../../assets/images/trophy1.png'),
-                dono: { name: 'Edut', email: 'tan@' },
-                description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)'
-            } as League,
-            {   name: 'Locomodiva', logo: require('../../assets/images/trophy3.png'),
-                description: 'Brincando aqui na rua, alou mãe',
-                dono: { name: 'SourhT', email: '123' }
-            } as League,
-            {   name: 'Olha o pao', logo: require('../../assets/images/trophy1.png'),
-                dono: { name: 'Edut', email: 'tan@' },
-                description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)'
-            } as League,
-            {   name: 'Pq eu testei isso', logo: require('../../assets/images/trophy3.png'),
-                description: 'Brincando aqui na rua, alou mãe',
-                dono: { name: 'SourhT', email: '123' }
-            } as League,
-            {   name: 'Las chicas magicas', logo: require('../../assets/images/trophy1.png'),
-                dono: { name: 'Edut', email: 'tan@' },
-                description: 'Liga patrocinada pelo criador pelo aplicativo. Agradeço por estarei aqui :)'
-            } as League,
-            {   name: 'Os hemafroditas', logo: require('../../assets/images/trophy3.png'),
-                description: 'Brincando aqui na rua, alou mãe',
-                dono: { name: 'SourhT', email: '123' }
-            } as League
-        ]
-        setLeagues( data )
-        setLeaguesFilter( data )
-    }
-
-    function handleSearchLeague() {
-        const newleagues = leagues.filter(league => league.name.toLocaleLowerCase()
-            .includes(search.toLocaleLowerCase()))
-        setLeaguesFilter( newleagues )
-    }
-
-    function handleSearchNavigateLeague(index: number) {
-        const league = leaguesFilter[index]
-        league.points = [
-            { point: 240, exactScore: 10, user: { name: 'SourhT', email: '123' }} as Point,
-            { point: 203, exactScore: 12, user: { name: 'Edut', email: 'tan@' }} as Point,
-            { point: 196, exactScore: 8, user: { name: 'SourhT', email: 'teste@g' }} as Point,
-        ]
-        
-        const isDono = league.dono ? (league.dono.email === user?.email) : false
-
-        navigation.navigate('LeagueShowScreen', { league, isDono, user })
-    }
-
-    return (
-        <View style={{flex: 1, backgroundColor: theme.backgroundWhite}}>
-            <SearchInput value={search} setValue={setSearch} onPress={handleSearchLeague} title='Ligas'/>
-            <ScrollView style={styles.scroll}>
-                { leaguesFilter.map( (league, index) => 
-                    <TouchableOpacity key={index} style={[styles.card,{backgroundColor: theme.whitePrimary}]}
-                        onPress={() => handleSearchNavigateLeague(index)}>
-                        <Image style={styles.cardImg} resizeMode='contain'
-                            source={league.logo} />
-                        <View style={styles.cardInfo}>
-                            <Text style={[styles.cardInfoTitle,{color: theme.greenPrimary}]}>{league.name}</Text>
-                            <Text style={[styles.cardInfoDono,{color: theme.textGray3}]}>
-                                {league.dono ? `@${league.dono.name}` : ''}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
-            </ScrollView>
-        </View>
-    )
-}
+import { getLeagues } from '../../services/league';
 
 const styles = StyleSheet.create({
-    scroll: {
-        paddingHorizontal: 20
-    },
-    card: {
-        height: 60,
-        width: '100%',
-        flexDirection: 'row',
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        marginVertical: 5,
-        borderRadius: 20,
-        elevation: 2
-    },
-    cardImg: {
-        height: 50,
-        width: 50
-    },
-    cardInfo: {
-        flex: 1,
-        justifyContent: 'space-between',
-        marginLeft: 10
-    },
-    cardInfoTitle: {
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    cardInfoDono: {
-        fontSize: 12,
-        fontWeight: '600'
+  scroll: {
+    paddingHorizontal: 20,
+  },
+  card: {
+    height: 60,
+    width: '100%',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginVertical: 5,
+    borderRadius: 20,
+    elevation: 2,
+  },
+  cardImg: {
+    height: 50,
+    width: 50,
+  },
+  cardInfo: {
+    flex: 1,
+    justifyContent: 'space-between',
+    marginLeft: 10,
+  },
+  cardInfoTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cardInfoDono: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+});
+
+export default function SearchLeague() {
+  const navigation = useNavigation();
+  const { user, theme, championship } = useAuth();
+  const [search, setSearch] = useState('');
+  const [leagues, setLeagues] = useState<League[]>([]);
+  const [leaguesFilter, setLeaguesFilter] = useState<League[]>([]);
+
+  async function loadLeague() {
+    const { data, error } = await getLeagues(championship);
+    if (error === '') {
+      setLeagues(data);
+      setLeaguesFilter(data);
+    } else {
+      Snackbar.show({
+        text: error,
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: theme.textRed,
+        textColor: theme.textWhite,
+      });
     }
-})
+  }
+
+  useEffect(() => {
+    loadLeague();
+  }, []);
+
+  function handleSearchLeague() {
+    const newleagues = leagues.filter((league) =>
+      league.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    );
+    setLeaguesFilter(newleagues);
+  }
+
+  async function handleSearchNavigateLeague(index: number) {
+    const league = leaguesFilter[index];
+
+    const isDono = league.dono ? league.dono.email === user?.email : false;
+
+    navigation.navigate('LeagueShowScreen', { league, isDono, user });
+  }
+
+  return (
+    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+      <SearchInput
+        value={search}
+        setValue={setSearch}
+        onPress={handleSearchLeague}
+        title="Ligas"
+      />
+      <ScrollView style={styles.scroll}>
+        {leaguesFilter.map((league, index) => (
+          <TouchableOpacity
+            key={league.id}
+            style={[styles.card, { backgroundColor: theme.whitePrimary }]}
+            onPress={() => handleSearchNavigateLeague(index)}
+          >
+            <Image
+              style={styles.cardImg}
+              resizeMode="contain"
+              source={league.logo}
+            />
+            <View style={styles.cardInfo}>
+              <Text
+                style={[styles.cardInfoTitle, { color: theme.greenPrimary }]}
+              >
+                {league.name}
+              </Text>
+              <Text style={[styles.cardInfoDono, { color: theme.textGray3 }]}>
+                {league.dono?.name !== '' ? `@${league.dono.name}` : ''}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
+  );
+}
