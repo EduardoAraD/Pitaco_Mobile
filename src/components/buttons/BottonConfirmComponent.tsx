@@ -1,34 +1,36 @@
-import React from 'react'
-import { TouchableOpacity, Text, StyleSheet } from 'react-native'
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-import { useAuth } from '../../contexts/auth'
+import { useAuth } from '../../contexts/auth';
+
+const styles = StyleSheet.create({
+  botton: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+    height: 64,
+    borderRadius: 20,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 
 interface Props {
-    onPress: Function
+  onPress: Function;
 }
 
 export default function ButtonConfirmComponent(props: Props) {
-    const { theme } = useAuth()
+  const { theme } = useAuth();
 
-    return (
-        <TouchableOpacity onPress={() => props.onPress()}
-            style={[styles.botton, {backgroundColor: theme.greenSecundary}]}>
-            <Text style={[styles.text, {color: theme.textWhite}]}>Confirmar</Text>
-        </TouchableOpacity>
-    )
+  return (
+    <TouchableOpacity
+      onPress={() => props.onPress()}
+      style={[styles.botton, { backgroundColor: theme.greenSecundary }]}
+    >
+      <Text style={[styles.text, { color: theme.textWhite }]}>Confirmar</Text>
+    </TouchableOpacity>
+  );
 }
-
-const styles = StyleSheet.create({
-    botton: {
-        width: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 8,
-        height: 64,
-        borderRadius: 20
-    },
-    text: {
-        fontSize: 20,
-        fontWeight: 'bold'
-    }
-})
