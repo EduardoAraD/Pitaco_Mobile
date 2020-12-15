@@ -6,5 +6,10 @@ export interface Clube {
 }
 
 export function initClube(): Clube {
-  return { id: -1, name: '', shortCode: '', logo: '' };
+  return {
+    id: -1,
+    name: '',
+    shortCode: '',
+    logo: 'https://img.icons8.com/ios/452/shield.png',
+  };
 }

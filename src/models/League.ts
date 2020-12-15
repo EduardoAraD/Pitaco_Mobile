@@ -16,7 +16,10 @@ export function initLeague(): League {
     id: -1,
     name: '',
     description: '',
-    logo: { uri: '' },
+    logo: {
+      uri:
+        'https://img2.gratispng.com/20180513/gle/kisspng-computer-icons-icon-design-trophy-5af8bc89bcd005.6013339115262506337734.jpg',
+    },
     dono: initUser(),
     points: [],
   };
