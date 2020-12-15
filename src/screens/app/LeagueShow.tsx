@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
@@ -10,6 +10,8 @@ import ItemStandingLeague from '../../components/ItemStandingLeague';
 
 import { League } from '../../models/League';
 import { User } from '../../models/User';
+import { showLeague } from '../../services/league';
+import { Point } from '../../models/Point';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -88,11 +90,26 @@ type ParamList = {
 export default function LeagueShow() {
   const { theme } = useAuth();
   const navigate = useNavigation();
-  const route = useRoute<RouteProp<ParamList, 'LeagueScreen'>>();
-  const { league, isDono, user } = route.params;
+  const { league, isDono, user } = useRoute<
+    RouteProp<ParamList, 'LeagueScreen'>
+  >().params;
+  const [points, setPoints] = useState<Point[]>(league.points);
+
+  async function loadingData() {
+    if (league.points.length === 0) {
+      const { data, error } = await showLeague(league.id);
+      if (error === '') {
+        setPoints(data.points);
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadingData();
+  }, []);
 
   function viewDono() {
-    if (league.dono.name !== '') {
+    if (league.dono.name) {
       return isDono ? (
         <Text
           style={[styles.cardLeagueInfoDono, { color: theme.yellowPrimary }]}
@@ -201,7 +218,7 @@ export default function LeagueShow() {
               Classificação
             </Text>
           </View>
-          {league.points.map((point, index) => (
+          {points.map((point, index) => (
             <ItemStandingLeague
               key={point.user.email}
               position={index + 1}
