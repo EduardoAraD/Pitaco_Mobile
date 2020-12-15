@@ -104,6 +104,33 @@ async function getLeagueDono(
     });
 }
 
+async function createLeague(
+  championship: number,
+  email: string,
+  description: string,
+  trophy: string,
+  name: string
+): Promise<LeagueResponse> {
+  return api
+    .post('/league', { email, description, trophy, name, championship })
+    .then((resp: AxiosResponse) => {
+      const response = resp.data;
+      const league: League = {
+        id: response.id,
+        name: response.name,
+        description: response.description,
+        dono: response.dono,
+        logo: logoTrophy(response.trophy),
+        points: response.points,
+      };
+      return { data: league, error: '' };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error;
+      return { data: initLeague(), error };
+    });
+}
+
 interface ListLeagueResponse {
   data: League[];
   error: string;
@@ -144,15 +171,32 @@ async function getLeagueGuest(
     });
 }
 
-async function createLeague(
-  championship: number,
-  email: string,
-  description: string,
-  trophy: string,
-  name: string
-) {
+async function getLeagues(championship: number): Promise<ListLeagueResponse> {
   return api
-    .post('/league', { email, description, trophy, name, championship })
+    .post('/leagues', { championship })
+    .then((resp: AxiosResponse) => {
+      const response = resp.data;
+      const leagues: League[] = response.map((item: LeagueDB) => {
+        return {
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          dono: item.dono,
+          logo: logoTrophy(item.trophy),
+          points: item.points,
+        };
+      });
+      return { data: leagues, error: '' };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error;
+      return { data: [], error };
+    });
+}
+
+async function showLeague(id: number): Promise<LeagueResponse> {
+  return api
+    .get(`/leagues/${id}`)
     .then((resp: AxiosResponse) => {
       const response = resp.data;
       const league: League = {
@@ -163,11 +207,11 @@ async function createLeague(
         logo: logoTrophy(response.trophy),
         points: response.points,
       };
-      return { league, error: '' };
+      return { data: league, error: '' };
     })
     .catch((err: AxiosError) => {
       const error = err.response?.data.error;
-      return { league: {}, error };
+      return { data: initLeague(), error };
     });
 }
 
@@ -177,4 +221,6 @@ export {
   getLeagueDono,
   getLeagueGuest,
   createLeague,
+  getLeagues,
+  showLeague,
 };
