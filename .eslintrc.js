@@ -18,11 +18,27 @@ module.exports = {
     sourceType: "module"
   },
   plugins: ["react", "prettier"],
+  settings: {
+    "import/resolver": {
+        node: {
+            extensions: ['.js', '.jsx', '.ts', '.tsx']
+        },
+    },
+  },
   rules: {
-    "prettier/prettier": "error",
-    "react/jsx-filename-extension": ["warn", { extensions: [".tsx", ".ts"] }],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "react/jsx-filename-extension": [ "warn", {extensions: [".js", ".jsx", ".ts", ".tsx"]} ],
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
-    "no-console": ["error", { allow: ["tron"] }]
-  }
+    "no-console": ["error", { allow: ["tron"] }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        ts: "never",
+        tsx: "never"
+      }
+    ]
+  },
 }
