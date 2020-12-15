@@ -1,7 +1,7 @@
-import { User } from "./User";
+import { User } from './User';
 
 export interface Point {
-    points: number,
-    exactScore: number,
-    user: User
+  points: number;
+  exactScore: number;
+  user: User;
 }

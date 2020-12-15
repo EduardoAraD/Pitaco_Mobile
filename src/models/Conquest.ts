@@ -1,6 +1,6 @@
-import { League } from "./League";
+import { League } from './League';
 
 export interface Conquest {
-    league: League,
-    position: number
+  league: League;
+  position: number;
 }
