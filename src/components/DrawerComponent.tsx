@@ -90,9 +90,22 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
               <Text style={[styles.userInfoName, { color: theme.textGray1 }]}>
                 {user?.name}
               </Text>
-              <Text style={[styles.userInfoClube, { color: theme.textGray3 }]}>
-                {user?.heartClub?.name}
-              </Text>
+              {user?.heartClub ? (
+                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                  <Text
+                    style={[styles.userInfoClube, { color: theme.textGray3 }]}
+                  >
+                    {user?.heartClub?.name}
+                  </Text>
+                  <Image
+                    source={{ uri: user?.heartClub?.logo }}
+                    resizeMode="contain"
+                    style={{ height: 20, width: 20, marginHorizontal: 3 }}
+                  />
+                </View>
+              ) : (
+                <View />
+              )}
             </View>
           </View>
           <View

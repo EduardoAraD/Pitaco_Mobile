@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     marginRight: 10,
+    borderRadius: 50,
   },
   cardInfo: {
     flex: 1,
@@ -53,7 +54,7 @@ export default function CardUser({ user }: Props) {
   const navigate = useNavigation();
 
   function handleNavigateFriendShow() {
-    navigate.navigate('FriendShow', { user });
+    navigate.navigate('FriendShow', { friend: user });
   }
 
   return (
