@@ -148,6 +148,10 @@ export function AuthProvider({ children }: PropsAuthProvider) {
     setCurrentRodada(rodadaId);
   }
 
+  function updateUser(userNew: User) {
+    setUser(userNew);
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -165,6 +169,7 @@ export function AuthProvider({ children }: PropsAuthProvider) {
         resetPassword,
         onChangeThemeDark,
         currentRodadaChampionship,
+        updateUser,
       }}
     >
       {children}
