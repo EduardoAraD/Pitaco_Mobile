@@ -16,6 +16,7 @@ const colorsDark = {
   textBlue: '#d07f12',
   backgroundWhite: '#000000',
   backgroundGreen: '#7b2456',
+  backgroundRed: '#e53935',
 };
 
 export default colorsDark;

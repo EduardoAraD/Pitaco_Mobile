@@ -16,4 +16,5 @@ export interface ColorsTheme {
   textBlue: string;
   backgroundWhite: string;
   backgroundGreen: string;
+  backgroundRed: string;
 }
