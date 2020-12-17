@@ -8,6 +8,7 @@ import LeagueCreatePreView from '../../screens/app/LeagueCreatePreView';
 import SearchLeague from '../../screens/app/SearchLeague';
 import Solicitation from '../../screens/app/Solicitation';
 import SuccessLeague from '../../screens/response/SuccessLeague';
+import RemoveLeague from '../../screens/response/RemoveLeague';
 import Header from '../../components/HeaderComponent';
 
 const Stack = createStackNavigator();
@@ -56,6 +57,11 @@ export default function LeagueRoute() {
       <Stack.Screen
         name="SuccessLeagueScreen"
         component={SuccessLeague}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RemoveLeagueScreen"
+        component={RemoveLeague}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
