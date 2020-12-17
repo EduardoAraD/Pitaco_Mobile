@@ -1,4 +1,5 @@
 import { Clube, initClube } from './Clube';
+import { Conquest } from './Conquest';
 import { Point } from './Point';
 
 export interface User {
@@ -7,6 +8,7 @@ export interface User {
   avatar: string;
   points: Point[];
   heartClub: Clube;
+  conquests: Conquest[];
 }
 
 export function initUser(): User {
@@ -17,5 +19,6 @@ export function initUser(): User {
       'https://png.pngtree.com/png-vector/20190909/ourmid/pngtree-outline-user-icon-png-image_1727916.jpg',
     points: [],
     heartClub: initClube(),
+    conquests: [],
   };
 }
