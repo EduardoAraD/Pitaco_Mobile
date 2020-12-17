@@ -2,6 +2,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 import api from './api';
 import { ItemStanding } from '../models/ItemStanding';
 import { initRodada, Rodada } from '../models/Rodada';
+import { Clube } from '../models/Clube';
 
 interface StandingResponse {
   data: ItemStanding[];
@@ -61,4 +62,17 @@ async function getRodada(
     });
 }
 
-export { getStandingChampionship, getCurrentRodada, getRodada };
+async function getClubes(): Promise<{ data: Clube[]; error: string }> {
+  return api
+    .get('/championship/clubes')
+    .then((resp: AxiosResponse) => {
+      const { data } = resp;
+      return { data, error: '' };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error;
+      return { data: [], error };
+    });
+}
+
+export { getStandingChampionship, getCurrentRodada, getRodada, getClubes };
