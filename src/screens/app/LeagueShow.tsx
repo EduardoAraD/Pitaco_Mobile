@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
+import Snackbar from 'react-native-snackbar';
 import { useAuth } from '../../contexts/auth';
 
 import Header from '../../components/HeaderComponent';
@@ -10,8 +11,9 @@ import ItemStandingLeague from '../../components/ItemStandingLeague';
 
 import { League } from '../../models/League';
 import { User } from '../../models/User';
-import { showLeague } from '../../services/league';
 import { Point } from '../../models/Point';
+
+import { showLeague, createSolicitation } from '../../services/league';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -127,12 +129,30 @@ export default function LeagueShow() {
     return <View />;
   }
 
-  function handleNavigateFriend() {
-    navigate.navigate('Friend');
+  function handleNavigateExclusion() {
+    navigate.navigate('RemoveLeagueScreen', { league, user });
   }
 
   function handleNavigateSolicitation() {
-    navigate.navigate('SolicitationScreen');
+    navigate.navigate('SolicitationScreen', { league });
+  }
+
+  function messageSnackbar(message: string, color: string) {
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_LONG,
+      backgroundColor: color,
+      textColor: theme.textWhite,
+    });
+  }
+
+  async function handleParticipationLeague() {
+    const { success, error } = await createSolicitation(league.id, user.email);
+    if (error === '') {
+      messageSnackbar(success, theme.greenSecundary);
+    } else {
+      messageSnackbar(error, theme.textRed);
+    }
   }
 
   function viewButtomActions() {
@@ -144,21 +164,18 @@ export default function LeagueShow() {
               styles.buttomAction,
               { backgroundColor: theme.greenSecundary },
             ]}
-            onPress={handleNavigateFriend}
-          >
-            <Text style={[styles.buttomActionText, { color: theme.textWhite }]}>
-              Convidar Amigos
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.buttomAction,
-              { backgroundColor: theme.greenSecundary },
-            ]}
             onPress={handleNavigateSolicitation}
           >
             <Text style={[styles.buttomActionText, { color: theme.textWhite }]}>
               Solicitações
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.buttomAction, { backgroundColor: theme.textRed }]}
+            onPress={handleNavigateExclusion}
+          >
+            <Text style={[styles.buttomActionText, { color: theme.textWhite }]}>
+              Excluir liga
             </Text>
           </TouchableOpacity>
         </View>
@@ -170,6 +187,7 @@ export default function LeagueShow() {
     if (notParticipating) {
       return (
         <TouchableOpacity
+          onPress={handleParticipationLeague}
           style={[
             styles.buttomAction,
             { backgroundColor: theme.greenSecundary, width: 150 },

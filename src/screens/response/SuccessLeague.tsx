@@ -44,7 +44,7 @@ export default function SucessLeague() {
   const { league } = route.params;
 
   function handleContinuar() {
-    navigation.navigate('Dashboard');
+    navigation.navigate('League');
   }
 
   return (

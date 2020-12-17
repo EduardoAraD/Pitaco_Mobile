@@ -105,8 +105,6 @@ export default function LeagueScreen() {
     );
     if (leagueGuestResponse.error === '') {
       setLeagueGuest(leagueGuestResponse.data);
-    } else {
-      snackbarMessageError(leagueGuestResponse.error);
     }
     setLoadingScreen(false);
   }

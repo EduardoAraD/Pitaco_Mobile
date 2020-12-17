@@ -44,7 +44,7 @@ export default function LeagueCreatePreView() {
       league.name
     );
     if (response.error === '') {
-      navigation.navigate('SuccessLeagueScreen', { league: response.league });
+      navigation.navigate('SuccessLeagueScreen', { league: response.data });
     } else {
       Snackbar.show({
         text: response.error,
