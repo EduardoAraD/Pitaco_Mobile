@@ -12,7 +12,7 @@ export default function DashboardRoute() {
       <Stack.Screen
         name="DashboardScreen"
         component={Dashboard}
-        options={{ header: () => <Header title="Dashboard" /> }}
+        options={{ header: () => <Header title="Dashboard" border /> }}
       />
     </Stack.Navigator>
   );
