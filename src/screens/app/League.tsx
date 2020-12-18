@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, RefreshControl } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Link } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 
 import { useAuth } from '../../contexts/auth';
 
+import LoadingPage from './LoadingPage';
 import CardLeague from '../../components/CardLeague';
 
 import { initLeague, League } from '../../models/League';
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
 
 export default function LeagueScreen() {
   const { user, theme, championship } = useAuth();
+  const [refresh, setRefresh] = useState(false);
   const [loadingScreen, setLoadingScreen] = useState(true);
   const [leaguePitaco, setLeaguePitaco] = useState<League>(initLeague());
   const [leagueHeartClub, setLeagueHeartClub] = useState<League | null>(null);
@@ -98,6 +100,8 @@ export default function LeagueScreen() {
     );
     if (leagueUserResponse.error === '') {
       setLeagueUser(leagueUserResponse.data);
+    } else {
+      setLeagueUser(null);
     }
     const leagueGuestResponse = await servicesLeague.getLeagueGuest(
       championship,
@@ -112,6 +116,12 @@ export default function LeagueScreen() {
   useEffect(() => {
     loadingData();
   }, []);
+
+  async function onRefreshData() {
+    setRefresh(true);
+    await loadingData();
+    setRefresh(false);
+  }
 
   function createLeagueView() {
     return leagueUser ? (
@@ -162,7 +172,16 @@ export default function LeagueScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
       {!loadingScreen ? (
-        <ScrollView style={styles.scroll}>
+        <ScrollView
+          style={styles.scroll}
+          refreshControl={
+            <RefreshControl
+              colors={[theme.greenSecundary]}
+              refreshing={refresh}
+              onRefresh={onRefreshData}
+            />
+          }
+        >
           <View
             style={[styles.viewTitle, { borderBottomColor: theme.textGray4 }]}
           >
@@ -208,11 +227,7 @@ export default function LeagueScreen() {
           ))}
         </ScrollView>
       ) : (
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        >
-          <ActivityIndicator size="large" color={theme.greenPrimary} />
-        </View>
+        <LoadingPage />
       )}
     </View>
   );

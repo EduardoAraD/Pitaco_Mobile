@@ -7,8 +7,8 @@ import Snackbar from 'react-native-snackbar';
 
 import { useAuth } from '../../contexts/auth';
 
+import LoadingPage from './LoadingPage';
 import CardTitle from '../../components/CardTitle';
-import CardTitlePage from '../../components/CardTitlePage';
 import ItemStandingComponent from '../../components/ItemStanding';
 import ItemMatch from '../../components/ItemMatch';
 
@@ -101,10 +101,12 @@ const styles = StyleSheet.create({
 
 export default function Dashboard() {
   const { theme, user, championship, currentRodadaChampionship } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [standing, setStanding] = useState<ItemStanding[]>([]);
   const [rodada, setRodada] = useState<Rodada>(initRodada());
 
   async function loadingData() {
+    setLoading(true);
     const standingResponse = await servicesChampionship.getStandingChampionship(
       championship
     );
@@ -132,25 +134,17 @@ export default function Dashboard() {
         textColor: theme.textWhite,
       });
     }
+    setLoading(false);
   }
 
   useEffect(() => {
     loadingData();
   }, []);
 
-  return (
+  return !loading ? (
     <View
       style={[styles.container, { backgroundColor: theme.backgroundWhite }]}
     >
-      <CardTitlePage
-        title={
-          rodada.matchs.length > 0
-            ? `${rodada.name || ''}° Rodada - Fecha as ${
-                rodada.matchs[0].date || ''
-              }`
-            : 'Carregando ...'
-        }
-      />
       <ScrollView style={styles.scroll}>
         <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>
           <View style={[styles.cardPerfil, { borderColor: theme.textGray4 }]}>
@@ -240,5 +234,7 @@ export default function Dashboard() {
         </CardTitle>
       </ScrollView>
     </View>
+  ) : (
+    <LoadingPage />
   );
 }
