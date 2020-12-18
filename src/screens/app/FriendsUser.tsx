@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, RefreshControl } from 'react-native';
 import { Link } from '@react-navigation/native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
 
 export default function FriendsUser() {
   const { theme, user } = useAuth();
+  const [refresh, setRefresh] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
 
   async function loadingData() {
@@ -65,6 +66,12 @@ export default function FriendsUser() {
     loadingData();
   }, []);
 
+  async function onRefreshData() {
+    setRefresh(true);
+    await loadingData();
+    setRefresh(false);
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
       <View style={[styles.viewTitle, { borderBottomColor: theme.textGray4 }]}>
@@ -84,7 +91,16 @@ export default function FriendsUser() {
           </TouchableOpacity>
         </Link>
       </View>
-      <ScrollView style={styles.scroll}>
+      <ScrollView
+        style={styles.scroll}
+        refreshControl={
+          <RefreshControl
+            colors={[theme.greenSecundary]}
+            refreshing={refresh}
+            onRefresh={onRefreshData}
+          />
+        }
+      >
         {users.map((item) => (
           <CardUser user={item} key={item.email} />
         ))}

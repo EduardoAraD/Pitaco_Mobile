@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, RefreshControl } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
@@ -82,6 +82,7 @@ type ParamList = {
 
 export default function Solicitation() {
   const { theme } = useAuth();
+  const [refresh, setRefresh] = useState(false);
   const { league } = useRoute<RouteProp<ParamList, 'League'>>().params;
   const [users, setUsers] = useState<User[]>([]);
 
@@ -107,6 +108,12 @@ export default function Solicitation() {
     loadingData();
   }, []);
 
+  async function onRefreshData() {
+    setRefresh(true);
+    await loadingData();
+    setRefresh(false);
+  }
+
   async function handleUserInLeague(index: number, result: string) {
     const userList = users.find((item, i) => i === index);
     const { success, error } = await resultSolicitation(
@@ -129,7 +136,16 @@ export default function Solicitation() {
       <View style={{ margin: 20 }}>
         <TitleComponent text="Pitaqueiros que pediram para participar de sua liga" />
       </View>
-      <ScrollView style={[styles.scroll, { borderColor: theme.textGray4 }]}>
+      <ScrollView
+        style={[styles.scroll, { borderColor: theme.textGray4 }]}
+        refreshControl={
+          <RefreshControl
+            colors={[theme.greenSecundary]}
+            refreshing={refresh}
+            onRefresh={onRefreshData}
+          />
+        }
+      >
         {users.map((user, index) => (
           <View
             style={[styles.card, { backgroundColor: theme.whitePrimary }]}
