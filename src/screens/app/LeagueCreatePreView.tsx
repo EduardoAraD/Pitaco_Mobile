@@ -60,7 +60,7 @@ export default function LeagueCreatePreView() {
       style={[styles.container, { backgroundColor: theme.backgroundWhite }]}
     >
       <TitleComponent text="Pré visualização da sua Liga" />
-      <CardLeague league={league} user={user || initUser()} />
+      <CardLeague league={league} user={user || initUser()} isClicked={false} />
       <ButtonConfirmComponent onPress={handleCreateLeague} />
     </View>
   );

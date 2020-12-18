@@ -61,9 +61,10 @@ const styles = StyleSheet.create({
 interface Props {
   league: League;
   user: User;
+  isClicked?: boolean;
 }
 
-export default function CardLeague({ league, user }: Props) {
+export default function CardLeague({ league, user, isClicked = true }: Props) {
   const { theme } = useAuth();
   const navigation = useNavigation();
 
@@ -101,8 +102,10 @@ export default function CardLeague({ league, user }: Props) {
   }
 
   function handleNavigateLeague() {
-    const isDono = league.dono.email === user?.email;
-    navigation.navigate('LeagueShowScreen', { league, isDono, user });
+    if (isClicked) {
+      const isDono = league.dono.email === user?.email;
+      navigation.navigate('LeagueShowScreen', { league, isDono, user });
+    }
   }
 
   return (
