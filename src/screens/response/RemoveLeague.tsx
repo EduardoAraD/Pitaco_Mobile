@@ -51,7 +51,7 @@ export default function RemoveLeague() {
       Snackbar.show({
         text: success,
         duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.backgroundGreen,
+        backgroundColor: theme.greenSecundary,
         textColor: theme.textWhite,
       });
 

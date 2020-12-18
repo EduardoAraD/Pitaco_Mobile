@@ -64,7 +64,7 @@ export default function SearchInput({
   return (
     <>
       <View style={styles.viewSearch}>
-        <Text style={[styles.searchText, { color: theme.textGray3 }]}>
+        <Text style={[styles.searchText, { color: theme.textGray2 }]}>
           Procurar
         </Text>
         <View style={styles.searchAction}>
@@ -74,7 +74,7 @@ export default function SearchInput({
               styles.searchInput,
               {
                 backgroundColor: theme.whitePrimary,
-                color: theme.textGray3,
+                color: theme.textGray2,
                 borderColor: theme.textGray3,
               },
             ]}

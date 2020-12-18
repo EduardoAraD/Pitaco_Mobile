@@ -59,13 +59,13 @@ export default function InputComponent({
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, { color: theme.textGray3 }]}>{label}</Text>
+      <Text style={[styles.label, { color: theme.textGray2 }]}>{label}</Text>
       <TextInput
         style={[
           styles.input,
           {
             backgroundColor: theme.whitePrimary,
-            color: theme.textGray3,
+            color: theme.textGray2,
             borderColor: theme.textGray3,
           },
         ]}
