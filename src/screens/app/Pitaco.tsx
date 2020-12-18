@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
@@ -65,6 +71,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  loading: {
+    height: 300,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 interface PitacoMatch {
@@ -85,6 +97,7 @@ let allRodadas: RodadaPitaco[] = [];
 
 export default function PitacoScreen() {
   const { theme, user, championship, currentRodada } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [viewRodada, setViewRodada] = useState(true);
   const [numberRodada, setNumberRodada] = useState(currentRodada);
   const [arrayMatchs, setArrayMatchs] = useState<PitacoMatch[]>([]);
@@ -100,6 +113,7 @@ export default function PitacoScreen() {
   }
 
   async function loadingData() {
+    setLoading(true);
     const responseToday = await servicesPitaco.getPitacoMatchToday(
       user?.email || ''
     );
@@ -120,6 +134,7 @@ export default function PitacoScreen() {
     } else {
       messageSnackbarError(responseRodada.error);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -285,6 +300,7 @@ export default function PitacoScreen() {
           };
         });
     }
+
     function pitacoForPitacoMatch(pitacos: Pitaco[], pitMatch: PitacoMatch[]) {
       return pitMatch.map((item) => {
         for (let i = 0; i < pitacos.length; i += 1) {
@@ -304,12 +320,7 @@ export default function PitacoScreen() {
       viewRodada ? arrayMatchs : arrayMatchsToday
     );
     if (pitacosReq.length === 0) {
-      Snackbar.show({
-        text: 'Nenhum Pitaco foi registrado',
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
-      });
+      messageSnackbarError('Nenhum Pitaco foi registrado');
       return;
     }
     const { pitacos, error } = await servicesPitaco.createPitacoMatch(
@@ -353,7 +364,13 @@ export default function PitacoScreen() {
         />
         <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>
           {titleCard()}
-          {showMatchs()}
+          {loading ? (
+            <View style={styles.loading}>
+              <ActivityIndicator size="large" color={theme.greenPrimary} />
+            </View>
+          ) : (
+            showMatchs()
+          )}
         </View>
         <View style={{ margin: 5 }} />
         <ButtomConfirm onPress={handleConfirm} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Snackbar from 'react-native-snackbar';
@@ -62,30 +62,42 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  loading: {
+    height: 300,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const allRodadas: Rodada[] = [];
 
 export default function Championship() {
   const { theme, championship } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [viewOptionStandingMatch, setViewOptionStandingMatch] = useState(true);
   const [itemsStanding, setItemsStanding] = useState<ItemStanding[]>([]);
   const [numberRodada, setNumberRodada] = useState(1);
   const [matchs, setMatchs] = useState<Match[]>([]);
 
+  function snackbarMessageError(message: string) {
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_LONG,
+      backgroundColor: theme.textRed,
+      textColor: theme.textWhite,
+    });
+  }
+
   async function loadingData() {
+    setLoading(true);
     const standingResponse = await servicesChampionship.getStandingChampionship(
       championship
     );
     if (standingResponse.error === '') {
       setItemsStanding(standingResponse.data);
     } else {
-      Snackbar.show({
-        text: standingResponse.error,
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
-      });
+      snackbarMessageError(standingResponse.error);
     }
     const matchResponse = await servicesChampionship.getCurrentRodada(
       championship
@@ -95,13 +107,9 @@ export default function Championship() {
       setMatchs(matchResponse.data.matchs);
       allRodadas.push(matchResponse.data);
     } else {
-      Snackbar.show({
-        text: matchResponse.error,
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
-      });
+      snackbarMessageError(matchResponse.error);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -124,12 +132,7 @@ export default function Championship() {
           setMatchs(data.matchs);
           allRodadas.push(data);
         } else {
-          Snackbar.show({
-            text: error,
-            duration: Snackbar.LENGTH_LONG,
-            backgroundColor: theme.textRed,
-            textColor: theme.textWhite,
-          });
+          snackbarMessageError(error);
         }
       }
     }
@@ -181,9 +184,15 @@ export default function Championship() {
             </Text>
           </View>
         </View>
-        {itemsStanding.map((item) => (
-          <ItemStandingComplete key={item.position} item={item} />
-        ))}
+        {loading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color={theme.greenPrimary} />
+          </View>
+        ) : (
+          itemsStanding.map((item) => (
+            <ItemStandingComplete key={item.position} item={item} />
+          ))
+        )}
       </View>
     ) : (
       <View

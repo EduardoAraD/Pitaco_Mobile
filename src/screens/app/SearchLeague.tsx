@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
@@ -15,6 +15,12 @@ import { getLeagues } from '../../services/league';
 const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: 20,
+  },
+  loading: {
+    height: 300,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     height: 60,
@@ -48,11 +54,13 @@ const styles = StyleSheet.create({
 export default function SearchLeague() {
   const navigation = useNavigation();
   const { user, theme, championship } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [leagues, setLeagues] = useState<League[]>([]);
   const [leaguesFilter, setLeaguesFilter] = useState<League[]>([]);
 
   async function loadLeague() {
+    setLoading(true);
     const { data, error } = await getLeagues(championship);
     if (error === '') {
       setLeagues(data);
@@ -65,6 +73,7 @@ export default function SearchLeague() {
         textColor: theme.textWhite,
       });
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -94,31 +103,37 @@ export default function SearchLeague() {
         onPress={handleSearchLeague}
         title="Ligas"
       />
-      <ScrollView style={styles.scroll}>
-        {leaguesFilter.map((league, index) => (
-          <TouchableOpacity
-            key={league.id}
-            style={[styles.card, { backgroundColor: theme.whitePrimary }]}
-            onPress={() => handleSearchNavigateLeague(index)}
-          >
-            <Image
-              style={styles.cardImg}
-              resizeMode="contain"
-              source={league.logo}
-            />
-            <View style={styles.cardInfo}>
-              <Text
-                style={[styles.cardInfoTitle, { color: theme.greenPrimary }]}
-              >
-                {league.name}
-              </Text>
-              <Text style={[styles.cardInfoDono, { color: theme.textGray3 }]}>
-                {league.dono?.name !== '' ? `@${league.dono.name}` : ''}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      {loading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color={theme.greenPrimary} />
+        </View>
+      ) : (
+        <ScrollView style={styles.scroll}>
+          {leaguesFilter.map((league, index) => (
+            <TouchableOpacity
+              key={league.id}
+              style={[styles.card, { backgroundColor: theme.whitePrimary }]}
+              onPress={() => handleSearchNavigateLeague(index)}
+            >
+              <Image
+                style={styles.cardImg}
+                resizeMode="contain"
+                source={league.logo}
+              />
+              <View style={styles.cardInfo}>
+                <Text
+                  style={[styles.cardInfoTitle, { color: theme.greenPrimary }]}
+                >
+                  {league.name}
+                </Text>
+                <Text style={[styles.cardInfoDono, { color: theme.textGray3 }]}>
+                  {league.dono?.name !== '' ? `@${league.dono.name}` : ''}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 }

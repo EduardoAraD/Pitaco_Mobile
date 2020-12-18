@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
@@ -14,6 +14,12 @@ import { addFriend, getListNotFriends } from '../../services/friend';
 const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: 20,
+  },
+  loading: {
+    height: 300,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     height: 60,
@@ -65,16 +71,19 @@ const styles = StyleSheet.create({
 
 export default function SearchFriend() {
   const { theme, user } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState<User[]>([]);
   const [usersFilter, setUsersFilter] = useState<User[]>([]);
 
   async function loadingData() {
+    setLoading(true);
     const { data, error } = await getListNotFriends(user?.email || '');
     if (error === '') {
       setUsersFilter(data);
       setUsers(data);
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -119,53 +128,59 @@ export default function SearchFriend() {
         onPress={handleSearchUser}
         title="Pitaqueiros"
       />
-      <ScrollView style={styles.scroll}>
-        {usersFilter.map((item, index) => (
-          <View
-            style={[styles.card, { backgroundColor: theme.whitePrimary }]}
-            key={item.email}
-          >
-            <Image
-              style={styles.cardImg}
-              resizeMode="contain"
-              source={{ uri: item.avatar }}
-            />
-            <View style={styles.cardInfo}>
-              <Text style={[styles.cardInfoName, { color: theme.textGray2 }]}>
-                @{item.name}
-              </Text>
-              <View style={styles.cardInfoAction}>
-                <View style={styles.cardInfoClub}>
-                  <Text style={{ fontSize: 12, color: theme.textGray3 }}>
-                    {item.heartClub.name}
-                  </Text>
-                  <Image
-                    style={styles.cardInfoClubImg}
-                    resizeMode="contain"
-                    source={{ uri: item.heartClub.logo }}
-                  />
-                </View>
-                <TouchableOpacity
-                  style={[
-                    styles.cardInfoActionButtom,
-                    { backgroundColor: theme.bluePrimary },
-                  ]}
-                  onPress={() => handleAddUserFriend(item, index)}
-                >
-                  <Text
+      {loading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color={theme.greenPrimary} />
+        </View>
+      ) : (
+        <ScrollView style={styles.scroll}>
+          {usersFilter.map((item, index) => (
+            <View
+              style={[styles.card, { backgroundColor: theme.whitePrimary }]}
+              key={item.email}
+            >
+              <Image
+                style={styles.cardImg}
+                resizeMode="contain"
+                source={{ uri: item.avatar }}
+              />
+              <View style={styles.cardInfo}>
+                <Text style={[styles.cardInfoName, { color: theme.textGray2 }]}>
+                  @{item.name}
+                </Text>
+                <View style={styles.cardInfoAction}>
+                  <View style={styles.cardInfoClub}>
+                    <Text style={{ fontSize: 12, color: theme.textGray3 }}>
+                      {item.heartClub.name}
+                    </Text>
+                    <Image
+                      style={styles.cardInfoClubImg}
+                      resizeMode="contain"
+                      source={{ uri: item.heartClub.logo }}
+                    />
+                  </View>
+                  <TouchableOpacity
                     style={[
-                      styles.cardInfoActionButtomText,
-                      { color: theme.textWhite },
+                      styles.cardInfoActionButtom,
+                      { backgroundColor: theme.bluePrimary },
                     ]}
+                    onPress={() => handleAddUserFriend(item, index)}
                   >
-                    Adicionar
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={[
+                        styles.cardInfoActionButtomText,
+                        { color: theme.textWhite },
+                      ]}
+                    >
+                      Adicionar
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 }

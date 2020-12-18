@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
@@ -53,10 +53,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default function HeartClub() {
   const { theme, user, updateUser } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [clubChoose, setClubChoose] = useState<Clube>(
     user?.heartClub || initClube()
@@ -65,6 +71,7 @@ export default function HeartClub() {
   const [clubesFilter, setClubesFilter] = useState<Clube[]>([]);
 
   async function loadingData() {
+    setLoading(true);
     const { data, error } = await getClubes();
     if (error === '') {
       setClubesFilter(data);
@@ -77,6 +84,7 @@ export default function HeartClub() {
         textColor: theme.textWhite,
       });
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -157,24 +165,30 @@ export default function HeartClub() {
           onPress={handleSearchClub}
           title="Clubes"
         />
-        <ScrollView style={styles.scroll}>
-          {clubesFilter.map((club) => (
-            <TouchableOpacity
-              style={[styles.card, { backgroundColor: theme.whitePrimary }]}
-              key={club.id}
-              onPress={() => setClubChoose(club)}
-            >
-              <Image
-                style={styles.cardImg}
-                resizeMode="contain"
-                source={{ uri: club.logo }}
-              />
-              <Text style={[styles.cardText, { color: theme.textGray2 }]}>
-                {club.name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        {loading ? (
+          <View style={styles.loading}>
+            <ActivityIndicator size="large" color={theme.greenPrimary} />
+          </View>
+        ) : (
+          <ScrollView style={styles.scroll}>
+            {clubesFilter.map((club) => (
+              <TouchableOpacity
+                style={[styles.card, { backgroundColor: theme.whitePrimary }]}
+                key={club.id}
+                onPress={() => setClubChoose(club)}
+              >
+                <Image
+                  style={styles.cardImg}
+                  resizeMode="contain"
+                  source={{ uri: club.logo }}
+                />
+                <Text style={[styles.cardText, { color: theme.textGray2 }]}>
+                  {club.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
       </View>
       <View style={[styles.viewInfo, { borderTopColor: theme.textGray4 }]}>
         <Text style={[styles.titleTextInfo, { color: theme.greenPrimary }]}>
