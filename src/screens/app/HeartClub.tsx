@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     margin: 20,
     marginBottom: 0,
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   scroll: {
     marginHorizontal: 20,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   viewInfo: {
     marginHorizontal: 20,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   titleTextInfo: {
     marginTop: 10,
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   loading: {
     flex: 1,
@@ -82,6 +82,7 @@ export default function HeartClub() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
     setLoading(false);
@@ -104,6 +105,7 @@ export default function HeartClub() {
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: color,
       textColor: theme.textWhite,
+      fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
 

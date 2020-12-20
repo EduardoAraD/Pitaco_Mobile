@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   cardInfoName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoAction: {
     flexDirection: 'row',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   cardInfoActionButtomText: {
     fontSize: 10,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -103,6 +103,7 @@ export default function SearchFriend() {
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: color,
       textColor: theme.textWhite,
+      fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
 

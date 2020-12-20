@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   buttomActionText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   cardLeague: {
     height: 90,
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
   },
   cardLeagueInfoDescrip: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   cardLeagueInfoDono: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardStanding: {
     marginVertical: 20,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   cardStandingTitleText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -143,6 +143,7 @@ export default function LeagueShow() {
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: color,
       textColor: theme.textWhite,
+      fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
 

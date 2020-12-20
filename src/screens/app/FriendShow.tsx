@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   viewClub: {
     paddingVertical: 10,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   viewClubName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   viewClubImg: {
     height: 50,
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttomText: {
-    fontWeight: '600',
     fontSize: 10,
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   card: {
     height: 50,
@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
   },
   cardInfoTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoDono: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -116,6 +116,7 @@ export default function FriendShow() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

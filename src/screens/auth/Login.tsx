@@ -10,7 +10,7 @@ import InputComponent from '../../components/InputComponent';
 import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent';
 
 import colors from '../../assets/theme/light';
-import logoPitacoImg from '../../assets/images/logoPitaco.png';
+import logoPitacoImg from '../../assets/images/logo_pitaco_green.png';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   linkText: {
-    color: colors.textGray3,
+    color: colors.textGray2,
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -54,6 +55,7 @@ export default function Login() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: colors.textRed,
         textColor: colors.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

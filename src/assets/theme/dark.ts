@@ -5,7 +5,7 @@ const colorsDark = {
   bluePrimary: '#2F80ED',
   blueSecundary: '#56CCF2',
   yellowPrimary: '#F2C94C',
-  // + 2
+
   textGray1: '#ffffff',
   textGray2: '#e3e3e3',
   textGray3: '#9f9f9f',

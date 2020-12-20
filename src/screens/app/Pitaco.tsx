@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   scrollButtonText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   card: {
     width: '100%',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   cardTitleText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   loading: {
     height: 300,
@@ -109,6 +109,7 @@ export default function PitacoScreen() {
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: theme.textRed,
       textColor: theme.textWhite,
+      fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
 
@@ -346,6 +347,7 @@ export default function PitacoScreen() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.greenPrimary,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     } else {
       messageSnackbarError(error);

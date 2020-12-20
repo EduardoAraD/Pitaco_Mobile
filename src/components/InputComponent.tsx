@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   label: {
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
     paddingBottom: 3,
   },
   input: {
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     height: 56,
     borderWidth: 1,
     fontSize: 20,
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
 });
 

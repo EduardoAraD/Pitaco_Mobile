@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     textAlign: 'center',
   },
   buttom: {
@@ -53,6 +53,7 @@ export default function RemoveLeague() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.greenSecundary,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
 
       navigation.navigate('LeagueScreen');
@@ -62,6 +63,7 @@ export default function RemoveLeague() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

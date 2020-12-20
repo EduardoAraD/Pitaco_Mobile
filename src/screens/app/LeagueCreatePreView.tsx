@@ -51,6 +51,7 @@ export default function LeagueCreatePreView() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

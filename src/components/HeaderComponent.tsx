@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     marginLeft: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     fontSize: 20,
   },
 });

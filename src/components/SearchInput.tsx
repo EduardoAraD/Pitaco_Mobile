@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   searchText: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
     marginBottom: 3,
   },
   searchAction: {
@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
   },
   searchButtonText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   titleText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     marginHorizontal: 20,
     paddingBottom: 10,
     borderBottomWidth: 1,

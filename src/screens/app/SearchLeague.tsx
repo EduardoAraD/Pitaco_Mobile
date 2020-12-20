@@ -44,10 +44,11 @@ const styles = StyleSheet.create({
   cardInfoTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoDono: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -71,6 +72,7 @@ export default function SearchLeague() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
     setLoading(false);

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   titleButton: {
     height: 30,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   titleButtonText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   scroll: {
     paddingHorizontal: 20,
@@ -58,6 +58,7 @@ export default function FriendsUser() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

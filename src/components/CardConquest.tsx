@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
   },
   cardInfoName: {
     fontSize: 13,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoPos: {
     fontSize: 10,
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
 });
 

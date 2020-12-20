@@ -29,14 +29,14 @@ const styles = StyleSheet.create({
   },
   cardInfoName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoClube: {
     flexDirection: 'row',
   },
   cardInfoClubeName: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   cardInfoClubeImg: {
     height: 20,

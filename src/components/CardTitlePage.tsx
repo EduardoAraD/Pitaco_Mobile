@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 

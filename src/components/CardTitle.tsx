@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardButton: {
     height: 30,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   cardButtonText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 

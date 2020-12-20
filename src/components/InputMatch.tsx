@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   cardClubeText: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardClubeImg: {
     height: 30,
@@ -40,22 +40,22 @@ const styles = StyleSheet.create({
     padding: 0,
     textAlign: 'center',
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   inputDisable: {
     width: 30,
     padding: 0,
     textAlign: 'center',
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   textCardStadium: {
     fontSize: 8,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
   textCardPlacar: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardAction: {
     marginHorizontal: 2,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   cardPointsText: {
     fontSize: 11,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
   buttonShow: {
     height: 20,
@@ -92,10 +92,11 @@ const styles = StyleSheet.create({
   cardVisibleName: {
     flex: 1,
     fontSize: 10,
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
   cardVisiblePlacar: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     marginHorizontal: 3,
   },
 });

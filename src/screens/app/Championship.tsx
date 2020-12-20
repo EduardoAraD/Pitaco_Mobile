@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
   cardTitleText: {
     flex: 1,
     fontSize: 14,
-    fontWeight: '600',
     alignContent: 'center',
     margin: 3,
     marginLeft: 10,
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   cardSubs: {
     flexDirection: 'row',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     width: 20,
     textAlign: 'center',
     fontSize: 11,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   cardTitleMatch: {
     height: 40,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   cardTitleMatchText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   loading: {
     height: 300,

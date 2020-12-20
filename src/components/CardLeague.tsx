@@ -30,11 +30,11 @@ const styles = StyleSheet.create({
   },
   cardInfoTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoDono: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   cardInfoUser: {
     width: '100%',
@@ -43,16 +43,16 @@ const styles = StyleSheet.create({
   },
   cardInfoUserPos: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   cardInfoUserName: {
     marginLeft: 2,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoUserPoint: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     flex: 1,
     textAlign: 'right',
   },

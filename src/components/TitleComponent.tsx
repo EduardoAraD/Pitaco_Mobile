@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    fontWeight: '800',
+    fontFamily: 'SairaSemiCondensed-Medium',
     textAlign: 'center',
   },
 });

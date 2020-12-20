@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
   },
   userInfoName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   userInfoClube: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   drawerSection: {
     borderBottomWidth: 1,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   textPreference: {
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     marginLeft: 15,
     marginTop: 4,
   },
@@ -116,6 +116,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
           >
             <DrawerItem
               label="Dashboard"
+              labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
                 <Icon name="home-outline" color={color} size={size} />
@@ -126,6 +127,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
             />
             <DrawerItem
               label="Pitaco"
+              labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
                 <Icon name="scoreboard-outline" color={color} size={size} />
@@ -136,6 +138,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
             />
             <DrawerItem
               label="Championship"
+              labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
                 <Icon name="soccer" color={color} size={size} />
@@ -146,6 +149,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
             />
             <DrawerItem
               label="League"
+              labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
                 <Icon name="trophy-outline" color={color} size={size} />
@@ -156,6 +160,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
             />
             <DrawerItem
               label="Clube de Coração"
+              labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
                 <Icon name="heart-outline" color={color} size={size} />
@@ -166,6 +171,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
             />
             <DrawerItem
               label="Amigos"
+              labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
                 <Icon name="account-group-outline" color={color} size={size} />
@@ -190,7 +196,14 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
               }}
             >
               <View style={styles.preference}>
-                <Text style={{ color: theme.textGray2 }}>Dark Theme</Text>
+                <Text
+                  style={{
+                    color: theme.textGray2,
+                    fontFamily: 'SairaSemiCondensed-Medium',
+                  }}
+                >
+                  Dark Theme
+                </Text>
                 <View pointerEvents="none">
                   <Switch
                     value={themeDark}
@@ -213,6 +226,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
       >
         <DrawerItem
           label="Sair"
+          labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
           inactiveTintColor={theme.textGray2}
           icon={({ color, size }) => (
             <Icon name="exit-to-app" color={color} size={size} />

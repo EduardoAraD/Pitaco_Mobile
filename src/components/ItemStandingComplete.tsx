@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     width: 23,
     textAlign: 'right',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   img: {
     marginHorizontal: 3,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   textNome: {
     flex: 1,
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   areaText: {
     flex: 1,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     width: 20,
     textAlign: 'center',
     fontSize: 11,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 

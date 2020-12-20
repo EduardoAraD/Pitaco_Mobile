@@ -46,6 +46,7 @@ export default function ForgotPassword() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: colors.greenPrimary,
         textColor: colors.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
       navigation.navigate('ResetPassword');
     } else {
@@ -54,6 +55,7 @@ export default function ForgotPassword() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: colors.textRed,
         textColor: colors.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

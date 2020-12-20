@@ -39,17 +39,18 @@ const styles = StyleSheet.create({
     top: 0,
   },
   textStyle: {
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     textAlign: 'center',
     fontSize: 27,
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
   title: {
     fontSize: 22,
-    fontWeight: '800',
+    fontFamily: 'SairaSemiCondensed-Medium',
     margin: 10,
   },
   scrollView: {

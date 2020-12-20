@@ -35,6 +35,7 @@ function TabNavigation() {
         activeBackgroundColor: theme.whitePrimary,
         inactiveTintColor: theme.textGray2,
         inactiveBackgroundColor: theme.whitePrimary,
+        labelStyle: { fontFamily: 'SairaSemiCondensed-Medium' },
       }}
     >
       <Tab.Screen

@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   checkboxText: {
-    color: colors.textGray3,
-    fontWeight: '600',
+    color: colors.textGray2,
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -60,6 +60,7 @@ export default function SignUp() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: colors.textRed,
         textColor: colors.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

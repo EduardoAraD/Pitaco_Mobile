@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   cardTextName: {
     marginTop: 7,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfo: {
     width: 140,
@@ -69,16 +69,16 @@ const styles = StyleSheet.create({
   },
   cardInfoText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
     marginLeft: 4,
   },
   cardInfoTextSemi: {
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     fontSize: 20,
   },
   cardInfoTextDestaque: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardAction: {
     flex: 1,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   cardActionTextUndone: {
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
     // color: theme.textRed
   },
   cardActionButton: {
@@ -118,6 +118,7 @@ export default function Dashboard() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
     const matchResponse = await servicesChampionship.getCurrentRodada(
@@ -132,6 +133,7 @@ export default function Dashboard() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: theme.textRed,
         textColor: theme.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
     setLoading(false);
@@ -188,7 +190,13 @@ export default function Dashboard() {
             </View>
           </View>
           <View style={styles.cardAction}>
-            <Text style={{ fontWeight: '600', color: theme.greenPrimary }}>
+            <Text
+              style={{
+                fontWeight: '600',
+                color: theme.greenPrimary,
+                fontFamily: 'SairaSemiCondensed-Medium',
+              }}
+            >
               Faça seus Pitacos para os próximos jogos
             </Text>
             <Link to="/Pitaco">

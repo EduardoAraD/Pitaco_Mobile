@@ -31,18 +31,19 @@ const styles = StyleSheet.create({
   },
   textCardStadium: {
     fontSize: 9,
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
   textCardHora: {
     fontSize: 7,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   textCardPlacar: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   textCardName: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
 });
 

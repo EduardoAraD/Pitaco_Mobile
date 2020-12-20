@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   img: {
     height: 30,
@@ -25,13 +25,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   textName: {
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     fontSize: 16,
     flex: 1,
   },
   textPoint: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
 });
 

@@ -6,7 +6,7 @@ import { useAuth } from '../../contexts/auth';
 const styles = StyleSheet.create({
   textbutton: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   buttonContinuar: {
     height: 64,

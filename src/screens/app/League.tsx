@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
   viewTitleText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
     textAlign: 'center',
   },
   buttomContainer: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -131,7 +131,13 @@ export default function LeagueScreen() {
           { backgroundColor: theme.whitePrimary, elevation: 0 },
         ]}
       >
-        <Text style={{ fontSize: 12, color: theme.textGray3 }}>
+        <Text
+          style={{
+            fontSize: 12,
+            color: theme.textGray3,
+            fontFamily: 'SairaSemiCondensed-Medium',
+          }}
+        >
           Você possui uma liga
         </Text>
       </View>
@@ -140,7 +146,13 @@ export default function LeagueScreen() {
         <TouchableOpacity
           style={[styles.buttom, { backgroundColor: theme.greenSecundary }]}
         >
-          <Text style={{ fontSize: 12, color: theme.textWhite }}>
+          <Text
+            style={{
+              fontSize: 12,
+              color: theme.textWhite,
+              fontFamily: 'SairaSemiCondensed-Medium',
+            }}
+          >
             Criar Liga
           </Text>
         </TouchableOpacity>
@@ -160,7 +172,13 @@ export default function LeagueScreen() {
           <TouchableOpacity
             style={[styles.buttom, { backgroundColor: theme.greenSecundary }]}
           >
-            <Text style={{ fontSize: 12, color: theme.textWhite }}>
+            <Text
+              style={{
+                fontSize: 12,
+                color: theme.textWhite,
+                fontFamily: 'SairaSemiCondensed-Medium',
+              }}
+            >
               Escolher Clube
             </Text>
           </TouchableOpacity>
@@ -206,7 +224,13 @@ export default function LeagueScreen() {
                   { backgroundColor: theme.greenSecundary },
                 ]}
               >
-                <Text style={{ fontSize: 12, color: theme.textWhite }}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: theme.textWhite,
+                    fontFamily: 'SairaSemiCondensed-Medium',
+                  }}
+                >
                   Procurar
                 </Text>
               </TouchableOpacity>

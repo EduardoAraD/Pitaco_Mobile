@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   cardInfoUserName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoUserClub: {
     flexDirection: 'row',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   cardInfoUserClubeName: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoUserClubeImg: {
     height: 20,
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   cardActionButtomText: {
     fontSize: 10,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
 });
 
@@ -92,6 +92,7 @@ export default function Solicitation() {
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: color,
       textColor: theme.textWhite,
+      fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
 

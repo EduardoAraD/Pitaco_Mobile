@@ -42,6 +42,7 @@ export default function ResetPassword() {
         duration: Snackbar.LENGTH_LONG,
         backgroundColor: colors.textRed,
         textColor: colors.textWhite,
+        fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }

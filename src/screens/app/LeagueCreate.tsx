@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   labelNota: {
     fontSize: 10,
-    fontWeight: '600',
+    fontFamily: 'SairaSemiCondensed-Light',
   },
   input: {
     width: '100%',
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderWidth: 1,
     fontSize: 20,
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
   img: {
     height: 100,
@@ -71,6 +72,7 @@ export default function LeagueCreate() {
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: theme.textRed,
       textColor: theme.textWhite,
+      fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
 
@@ -115,7 +117,13 @@ export default function LeagueCreate() {
         />
         <View style={styles.inputTextView}>
           <View style={styles.labelView}>
-            <Text style={{ fontWeight: '600', color: theme.textGray3 }}>
+            <Text
+              style={{
+                fontWeight: '600',
+                color: theme.textGray3,
+                fontFamily: 'SairaSemiCondensed-Medium',
+              }}
+            >
               Descrição
             </Text>
             <Text style={[styles.labelNota, { color: theme.textGray3 }]}>
@@ -139,7 +147,13 @@ export default function LeagueCreate() {
           />
         </View>
         <View style={styles.inputTextView}>
-          <Text style={{ fontWeight: '600', color: theme.textGray3 }}>
+          <Text
+            style={{
+              fontWeight: '600',
+              color: theme.textGray3,
+              fontFamily: 'SairaSemiCondensed-Medium',
+            }}
+          >
             Escoha um Símbolo para Liga
           </Text>
           <ScrollView horizontal>
