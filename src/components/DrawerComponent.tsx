@@ -23,20 +23,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   userInfoImg: {
-    height: 40,
-    width: 40,
-    marginRight: 10,
+    height: 45,
+    width: 45,
+    marginRight: 8,
   },
   userInfo: {
     flex: 1,
     justifyContent: 'space-between',
   },
   userInfoName: {
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'SairaSemiCondensed-Bold',
   },
   userInfoClube: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'SairaSemiCondensed-Light',
   },
   drawerSection: {
@@ -87,7 +87,10 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
               style={styles.userInfoImg}
             />
             <View style={styles.userInfo}>
-              <Text style={[styles.userInfoName, { color: theme.textGray1 }]}>
+              <Text
+                style={[styles.userInfoName, { color: theme.textGray1 }]}
+                numberOfLines={1}
+              >
                 {user?.name}
               </Text>
               {user?.heartClub ? (
