@@ -68,7 +68,10 @@ export default function CardUser({ user }: Props) {
         source={{ uri: user.avatar }}
       />
       <View style={styles.cardInfo}>
-        <Text style={[styles.cardInfoName, { color: theme.greenPrimary }]}>
+        <Text
+          style={[styles.cardInfoName, { color: theme.greenPrimary }]}
+          numberOfLines={1}
+        >
           @{user.name}
         </Text>
         <View style={styles.cardInfoClube}>

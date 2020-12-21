@@ -11,17 +11,18 @@ import { User } from '../models/User';
 
 const styles = StyleSheet.create({
   card: {
-    height: 90,
+    height: 70,
     width: '100%',
     flexDirection: 'row',
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     marginVertical: 10,
     borderRadius: 20,
     elevation: 3,
   },
   cardImg: {
-    height: 70,
-    width: 70,
+    height: 60,
+    width: 60,
   },
   cardInfo: {
     flex: 1,
@@ -29,11 +30,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   cardInfoTitle: {
-    fontSize: 20,
+    fontSize: 15,
     fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoDono: {
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: 'SairaSemiCondensed-Light',
   },
   cardInfoUser: {
@@ -42,16 +43,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   cardInfoUserPos: {
-    fontSize: 16,
+    fontSize: 13,
     fontFamily: 'SairaSemiCondensed-Light',
   },
   cardInfoUserName: {
     marginLeft: 2,
-    fontSize: 18,
+    fontSize: 15,
     fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoUserPoint: {
-    fontSize: 18,
+    fontSize: 15,
     fontFamily: 'SairaSemiCondensed-Bold',
     flex: 1,
     textAlign: 'right',
@@ -115,7 +116,10 @@ export default function CardLeague({ league, user, isClicked = true }: Props) {
     >
       <Image style={styles.cardImg} resizeMode="contain" source={league.logo} />
       <View style={styles.cardInfo}>
-        <Text style={[styles.cardInfoTitle, { color: theme.greenPrimary }]}>
+        <Text
+          style={[styles.cardInfoTitle, { color: theme.greenPrimary }]}
+          numberOfLines={1}
+        >
           {league.name}
         </Text>
         {viewDono()}
@@ -123,7 +127,10 @@ export default function CardLeague({ league, user, isClicked = true }: Props) {
           <Text style={[styles.cardInfoUserPos, { color: theme.textGray3 }]}>
             {position ? `${position}.` : ''}
           </Text>
-          <Text style={[styles.cardInfoUserName, { color: theme.textGray1 }]}>
+          <Text
+            style={[styles.cardInfoUserName, { color: theme.textGray1 }]}
+            numberOfLines={1}
+          >
             {userPoint?.user.name || ''}
           </Text>
           <Text

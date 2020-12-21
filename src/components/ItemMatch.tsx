@@ -66,7 +66,10 @@ export default function ItemMatch({ match }: Props) {
             resizeMode="contain"
             source={{ uri: match.clubeHome.logo }}
           />
-          <Text style={[styles.textCardName, { color: theme.textGray2 }]}>
+          <Text
+            style={[styles.textCardName, { color: theme.textGray2 }]}
+            numberOfLines={1}
+          >
             {match.clubeHome.name}
           </Text>
         </View>
@@ -86,7 +89,10 @@ export default function ItemMatch({ match }: Props) {
             resizeMode="contain"
             source={{ uri: match.clubeAway.logo }}
           />
-          <Text style={[styles.textCardName, { color: theme.textGray2 }]}>
+          <Text
+            style={[styles.textCardName, { color: theme.textGray2 }]}
+            numberOfLines={1}
+          >
             {match.clubeAway.name}
           </Text>
         </View>
