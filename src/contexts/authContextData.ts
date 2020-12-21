@@ -29,7 +29,6 @@ export interface AuthContextData {
     confirmPassword: string
   ): Promise<{ success: string; error: string }>;
   onChangeThemeDark(): Promise<void>;
-  currentRodadaChampionship(rodadaId: number): void;
   updateUser(user: User): void;
 }
 
@@ -70,9 +69,6 @@ export function init(): AuthContextData {
     },
     onChangeThemeDark: async () => {
       await AsyncStorage.setItem('@Pitaco:default', 'true');
-    },
-    currentRodadaChampionship: (rodadaId: number) => {
-      AsyncStorage.setItem('@Pitaco:default', rodadaId.toString());
     },
     updateUser: (userNew: User) => {
       AsyncStorage.setItem('@Pitaco:default', JSON.stringify(userNew));

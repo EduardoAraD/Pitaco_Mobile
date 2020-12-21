@@ -44,6 +44,7 @@ export function AuthProvider({ children }: PropsAuthProvider) {
         if (error === '') {
           api.defaults.headers.Authorization = `Bearer ${data.token}`;
           setChampionship(data.championship);
+          setCurrentRodada(data.rodada);
           setUser(data.user);
           if (storageTheme === 'true') {
             setThemeDark(true);
@@ -64,6 +65,7 @@ export function AuthProvider({ children }: PropsAuthProvider) {
     const { data, error } = await auth.signIn(email, password);
     if (error === '') {
       setChampionship(data.championship);
+      setCurrentRodada(data.rodada);
       setUser(data.user);
 
       api.defaults.headers.Authorization = `Bearer ${data.token}`;
@@ -95,6 +97,7 @@ export function AuthProvider({ children }: PropsAuthProvider) {
     );
     if (error === '') {
       setChampionship(data.championship);
+      setCurrentRodada(data.rodada);
       setUser(data.user);
 
       api.defaults.headers.Authorization = `Bearer ${data.token}`;
@@ -144,10 +147,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
     return auth.resetPassword(email, password, confirmPassword);
   }
 
-  function currentRodadaChampionship(rodadaId: number) {
-    setCurrentRodada(rodadaId);
-  }
-
   function updateUser(userNew: User) {
     setUser(userNew);
   }
@@ -168,7 +167,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
         forgotPassword,
         resetPassword,
         onChangeThemeDark,
-        currentRodadaChampionship,
         updateUser,
       }}
     >

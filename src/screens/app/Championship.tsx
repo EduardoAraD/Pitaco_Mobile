@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 const allRodadas: Rodada[] = [];
 
 export default function Championship() {
-  const { theme, championship } = useAuth();
+  const { theme, championship, currentRodada } = useAuth();
   const [loading, setLoading] = useState(false);
   const [viewOptionStandingMatch, setViewOptionStandingMatch] = useState(true);
   const [itemsStanding, setItemsStanding] = useState<ItemStanding[]>([]);
@@ -99,8 +99,9 @@ export default function Championship() {
     } else {
       snackbarMessageError(standingResponse.error);
     }
-    const matchResponse = await servicesChampionship.getCurrentRodada(
-      championship
+    const matchResponse = await servicesChampionship.getRodada(
+      championship,
+      currentRodada
     );
     if (matchResponse.error === '') {
       setNumberRodada(matchResponse.data.number);

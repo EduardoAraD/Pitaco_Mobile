@@ -8,6 +8,7 @@ interface Response {
     token: string;
     user: User;
     championship: number;
+    rodada: number;
   };
   error: string;
 }
@@ -27,6 +28,7 @@ async function signIn(email: string, password: string): Promise<Response> {
           token: '',
           user: initUser(),
           championship: -1,
+          rodada: 0,
         },
         error,
       };
@@ -54,6 +56,30 @@ async function register(
           token: '',
           user: initUser(),
           championship: -1,
+          rodada: 0,
+        },
+        error,
+      };
+      return response;
+    });
+}
+
+async function initUserApp(email: string): Promise<Response> {
+  return api
+    .post('/init-user', { email })
+    .then((resp: AxiosResponse) => {
+      const { data } = resp;
+      const response: Response = { data, error: '' };
+      return response;
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error;
+      const response: Response = {
+        data: {
+          token: '',
+          user: initUser(),
+          championship: -1,
+          rodada: 0,
         },
         error,
       };
@@ -91,28 +117,6 @@ async function resetPassword(
     .catch((err: AxiosError) => {
       const error = err.response?.data.error;
       return { success: '', error };
-    });
-}
-
-async function initUserApp(email: string): Promise<Response> {
-  return api
-    .post('/init-user', { email })
-    .then((resp: AxiosResponse) => {
-      const { data } = resp;
-      const response: Response = { data, error: '' };
-      return response;
-    })
-    .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      const response: Response = {
-        data: {
-          token: '',
-          user: initUser(),
-          championship: -1,
-        },
-        error,
-      };
-      return response;
     });
 }
 

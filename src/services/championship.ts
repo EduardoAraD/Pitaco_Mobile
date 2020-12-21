@@ -31,21 +31,6 @@ interface RodadaResponse {
   error: string;
 }
 
-async function getCurrentRodada(
-  championshipId: number
-): Promise<RodadaResponse> {
-  return api
-    .get(`/championship/${championshipId}/currentRodada`)
-    .then((resp: AxiosResponse) => {
-      const { data } = resp;
-      return { data, error: '' };
-    })
-    .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: initRodada(), error };
-    });
-}
-
 async function getRodada(
   championship: number,
   rodada: number
@@ -75,4 +60,4 @@ async function getClubes(): Promise<{ data: Clube[]; error: string }> {
     });
 }
 
-export { getStandingChampionship, getCurrentRodada, getRodada, getClubes };
+export { getStandingChampionship, getRodada, getClubes };

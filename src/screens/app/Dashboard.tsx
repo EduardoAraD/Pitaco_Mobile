@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Dashboard() {
-  const { theme, user, championship, currentRodadaChampionship } = useAuth();
+  const { theme, user, championship, currentRodada } = useAuth();
   const [loading, setLoading] = useState(true);
   const [standing, setStanding] = useState<ItemStanding[]>([]);
   const [rodada, setRodada] = useState<Rodada>(initRodada());
@@ -121,12 +121,12 @@ export default function Dashboard() {
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
-    const matchResponse = await servicesChampionship.getCurrentRodada(
-      championship
+    const matchResponse = await servicesChampionship.getRodada(
+      championship,
+      currentRodada
     );
     if (matchResponse.error === '') {
       setRodada(matchResponse.data);
-      currentRodadaChampionship(matchResponse.data.number);
     } else {
       Snackbar.show({
         text: matchResponse.error,
