@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, RefreshControl } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -91,6 +91,7 @@ type ParamList = {
 
 export default function LeagueShow() {
   const { theme } = useAuth();
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigation();
   const { league, isDono, user } = useRoute<
     RouteProp<ParamList, 'LeagueScreen'>
@@ -127,6 +128,12 @@ export default function LeagueShow() {
       );
     }
     return <View />;
+  }
+
+  async function onRefreshData() {
+    setRefresh(true);
+    await loadingData();
+    setRefresh(false);
   }
 
   function handleNavigateExclusion() {
@@ -206,7 +213,16 @@ export default function LeagueShow() {
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
       <Header title={league.name} back border />
-      <ScrollView style={styles.scroll}>
+      <ScrollView
+        style={styles.scroll}
+        refreshControl={
+          <RefreshControl
+            colors={[theme.greenSecundary]}
+            refreshing={refresh}
+            onRefresh={onRefreshData}
+          />
+        }
+      >
         <View
           style={[styles.cardLeague, { backgroundColor: theme.whitePrimary }]}
         >
