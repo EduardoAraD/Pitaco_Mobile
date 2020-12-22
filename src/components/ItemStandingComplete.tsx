@@ -108,6 +108,21 @@ export default function ItemStandingComplete({ item }: Props) {
     );
   }
 
+  function colorBorderLeft() {
+    switch (item.status) {
+      case 'L':
+        return theme.bluePrimary;
+      case 'LQ':
+        return theme.blueSecundary;
+      case 'S':
+        return theme.yellowPrimary;
+      case 'R':
+        return theme.textRed;
+      default:
+        return theme.whitePrimary;
+    }
+  }
+
   return (
     <View
       style={[
@@ -115,7 +130,7 @@ export default function ItemStandingComplete({ item }: Props) {
         {
           backgroundColor: theme.whitePrimary,
           borderTopColor: theme.textGray4,
-          borderLeftColor: theme.bluePrimary,
+          borderLeftColor: colorBorderLeft(),
         },
       ]}
     >

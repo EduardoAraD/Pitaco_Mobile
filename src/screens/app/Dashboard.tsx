@@ -223,6 +223,7 @@ export default function Dashboard() {
               matchs={item.matchs}
               golsDiff={item.golsDiff}
               positionVariation={item.positionVariation}
+              status={item.status}
             />
           ))}
           <View

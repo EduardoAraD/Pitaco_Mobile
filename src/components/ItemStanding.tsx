@@ -65,6 +65,7 @@ interface Props {
   golsScore: number;
   golsDiff: number;
   positionVariation: number;
+  status: string;
 }
 
 export default function ItemStanding({
@@ -76,6 +77,7 @@ export default function ItemStanding({
   golsScore,
   golsDiff,
   positionVariation,
+  status,
 }: Props) {
   const { theme } = useAuth();
 
@@ -108,6 +110,21 @@ export default function ItemStanding({
     );
   }
 
+  function colorBorderLeft() {
+    switch (status) {
+      case 'L':
+        return theme.bluePrimary;
+      case 'LQ':
+        return theme.blueSecundary;
+      case 'S':
+        return theme.yellowPrimary;
+      case 'R':
+        return theme.textRed;
+      default:
+        return theme.whitePrimary;
+    }
+  }
+
   return (
     <View
       style={[
@@ -115,7 +132,7 @@ export default function ItemStanding({
         {
           backgroundColor: theme.whitePrimary,
           borderBottomColor: theme.textGray4,
-          borderLeftColor: theme.bluePrimary,
+          borderLeftColor: colorBorderLeft(),
         },
       ]}
     >

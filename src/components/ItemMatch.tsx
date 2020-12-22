@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: '100%',
     paddingVertical: 2,
+    paddingHorizontal: 4,
     alignItems: 'center',
     borderTopWidth: 1,
   },
