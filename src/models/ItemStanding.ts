@@ -13,4 +13,5 @@ export interface ItemStanding {
   golsDiff: number;
   porcentage: number;
   positionVariation: number;
+  status: string;
 }

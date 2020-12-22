@@ -11,5 +11,4 @@ export interface Match {
   golsHome: number;
   golsAway: number;
   status: string;
-  finishPitaco: boolean;
 }
