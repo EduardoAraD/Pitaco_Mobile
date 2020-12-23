@@ -8,6 +8,7 @@ import { useAuth } from '../../contexts/auth';
 
 import InputComponent from '../../components/InputComponent';
 import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent';
+import LoadingResponse from '../../components/LoadingResponse';
 
 import colors from '../../assets/theme/light';
 import logoPitacoImg from '../../assets/images/logo_pitaco_green.png';
@@ -43,11 +44,12 @@ const styles = StyleSheet.create({
 
 export default function Login() {
   const { signIn } = useAuth();
-
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   async function handleSignIn() {
+    setLoading(true);
     const error = await signIn(email, password);
     if (error !== '') {
       Snackbar.show({
@@ -58,10 +60,12 @@ export default function Login() {
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
+    setLoading(false);
   }
 
   return (
     <View style={styles.container}>
+      {loading ? <LoadingResponse /> : <View />}
       <ScrollView style={styles.scroll}>
         <Image
           style={styles.leagueImg}

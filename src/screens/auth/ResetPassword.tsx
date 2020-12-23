@@ -11,6 +11,7 @@ import InputComponent from '../../components/InputComponent';
 import ButtonConfirm from '../../components/buttons/BottonConfirmComponent';
 
 import colors from '../../assets/theme/light';
+import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,10 +26,12 @@ export default function ResetPassword() {
   const { resetPassword } = useAuth();
 
   const [codig, setCodig] = useState('');
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   async function handleConfirm() {
+    setLoading(true);
     const { success, error } = await resetPassword(
       codig,
       password,
@@ -45,10 +48,12 @@ export default function ResetPassword() {
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
+    setLoading(false);
   }
 
   return (
     <View style={styles.container}>
+      {loading ? <LoadingResponse /> : <View />}
       <ScrollView>
         <View style={{ height: 20 }} />
         <TitleComponent text="Escreva o código recebido pelo e-mail junto com a nova senha" />

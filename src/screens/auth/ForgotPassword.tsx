@@ -10,6 +10,7 @@ import InputComponent from '../../components/InputComponent';
 import ContinuarComponent from '../../components/buttons/ContinuarComponent';
 
 import colors from '../../assets/theme/light';
+import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,10 +36,11 @@ const styles = StyleSheet.create({
 export default function ForgotPassword() {
   const navigation = useNavigation();
   const { forgotPassword } = useAuth();
-
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
 
   async function handleForgotPassword() {
+    setLoading(true);
     const { success, error } = await forgotPassword(email);
     if (success !== '') {
       Snackbar.show({
@@ -58,10 +60,12 @@ export default function ForgotPassword() {
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
+    setLoading(false);
   }
 
   return (
     <View style={styles.container}>
+      {loading ? <LoadingResponse /> : <View />}
       <TitleComponent text="Será enviado um código para seu email para redefinição de senha" />
       <View style={styles.containerEmail}>
         <InputComponent

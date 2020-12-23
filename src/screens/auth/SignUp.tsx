@@ -13,6 +13,7 @@ import InputComponent from '../../components/InputComponent';
 import ModalComponent from '../../components/ModalComponent';
 
 import colors from '../../assets/theme/light';
+import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 
 export default function SignUp() {
   const { signUp } = useAuth();
-
+  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -47,6 +48,7 @@ export default function SignUp() {
   const [modalVisible, setModalVisible] = useState(false);
 
   async function handleSignUp() {
+    setLoading(true);
     const error = await signUp(
       name,
       email,
@@ -63,10 +65,12 @@ export default function SignUp() {
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
+    setLoading(false);
   }
 
   return (
     <View style={styles.container}>
+      {loading ? <LoadingResponse /> : <View />}
       <ScrollView>
         <TitleComponent text="Cadastre-se e desafie seus amigos no Pitaco" />
         <View style={styles.inputContent}>
