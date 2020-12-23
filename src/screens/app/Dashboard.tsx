@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
   cardInfoContent: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   cardInfoText: {
-    fontSize: 18,
+    fontSize: 17,
     fontFamily: 'SairaSemiCondensed-Light',
     marginLeft: 4,
   },
@@ -156,7 +156,10 @@ export default function Dashboard() {
                 resizeMode="contain"
                 source={{ uri: user?.avatar }}
               />
-              <Text style={[styles.cardTextName, { color: theme.textGray1 }]}>
+              <Text
+                style={[styles.cardTextName, { color: theme.textGray1 }]}
+                numberOfLines={1}
+              >
                 {user?.name}
               </Text>
             </View>

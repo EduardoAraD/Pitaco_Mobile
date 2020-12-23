@@ -21,6 +21,7 @@ import { Match } from '../../models/Match';
 import { Pitaco } from '../../models/Pitaco';
 
 import * as servicesPitaco from '../../services/pitaco';
+import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -97,6 +98,7 @@ let allRodadas: RodadaPitaco[] = [];
 
 export default function PitacoScreen() {
   const { theme, user, championship, currentRodada } = useAuth();
+  const [loadingResponse, setLoadingResponse] = useState(false);
   const [loading, setLoading] = useState(true);
   const [viewRodada, setViewRodada] = useState(true);
   const [numberRodada, setNumberRodada] = useState(currentRodada);
@@ -285,6 +287,7 @@ export default function PitacoScreen() {
   }
 
   async function handleConfirm() {
+    setLoadingResponse(true);
     function pitacoMatchForPitacoRequest(pitMatch: PitacoMatch[]) {
       return pitMatch
         .filter(
@@ -352,10 +355,12 @@ export default function PitacoScreen() {
     } else {
       messageSnackbarError(error);
     }
+    setLoadingResponse(false);
   }
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+      {loadingResponse ? <LoadingResponse /> : <View />}
       <CardTitlePage title="Pitacos encerram 2h antes do jogo" />
       <ScrollView style={styles.scroll}>
         <DoubleConfirm

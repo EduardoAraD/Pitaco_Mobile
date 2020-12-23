@@ -12,6 +12,7 @@ import { Clube, initClube } from '../../models/Clube';
 
 import { chooseClub } from '../../services/club';
 import { getClubes } from '../../services/championship';
+import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   viewSearch: {
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
 
 export default function HeartClub() {
   const { theme, user, updateUser } = useAuth();
+  const [loadingResponse, setLoadingResponse] = useState(false);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [clubChoose, setClubChoose] = useState<Clube>(
@@ -110,6 +112,7 @@ export default function HeartClub() {
   }
 
   async function handleConfirmButtom() {
+    setLoadingResponse(true);
     if (clubChoose.name) {
       const { data, error } = await chooseClub(
         user?.email || '',
@@ -127,6 +130,7 @@ export default function HeartClub() {
     } else {
       messageSnackbar('Clube não escolhido.', theme.textRed);
     }
+    setLoadingResponse(false);
   }
 
   function viewClubChoose() {
@@ -157,6 +161,7 @@ export default function HeartClub() {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+      {loadingResponse ? <LoadingResponse /> : <View />}
       <View style={styles.viewSearch}>
         <Text style={[styles.titleText, { color: theme.greenPrimary }]}>
           Escolha o Clube de Coração
