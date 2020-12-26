@@ -69,54 +69,59 @@ export default function SignUp() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       {loading ? <LoadingResponse /> : <View />}
-      <ScrollView>
-        <TitleComponent text="Cadastre-se e desafie seus amigos no Pitaco" />
-        <View style={styles.inputContent}>
-          <InputComponent
-            label="Nome"
-            placeholder="Nome"
-            onChange={setName}
-            value={name}
-          />
-          <InputComponent
-            label="E-mail"
-            placeholder="E-mail"
-            keyboardType="email-address"
-            onChange={setEmail}
-            value={email}
-          />
-          <InputComponent
-            label="Senha"
-            placeholder="Senha"
-            password
-            onChange={setPassword}
-            value={password}
-          />
-          <InputComponent
-            label="Confirme a senha"
-            placeholder="Senha"
-            password
-            onChange={setConfirmPassword}
-            value={confirmPassword}
-          />
-          <View style={styles.checkboxContent}>
-            <CheckBox
-              value={acceptTerms}
-              onValueChange={(value) => setAcceptTerms(value)}
+      <View style={styles.container}>
+        <ScrollView>
+          <TitleComponent text="Cadastre-se e desafie seus amigos no Pitaco" />
+          <View style={styles.inputContent}>
+            <InputComponent
+              label="Nome"
+              placeholder="Nome"
+              onChange={setName}
+              value={name}
             />
-            <TouchableOpacity
-              style={{ marginLeft: 2, padding: 5 }}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.checkboxText}>Termos de uso</Text>
-            </TouchableOpacity>
+            <InputComponent
+              label="E-mail"
+              placeholder="E-mail"
+              keyboardType="email-address"
+              onChange={setEmail}
+              value={email}
+            />
+            <InputComponent
+              label="Senha"
+              placeholder="Senha"
+              password
+              onChange={setPassword}
+              value={password}
+            />
+            <InputComponent
+              label="Confirme a senha"
+              placeholder="Senha"
+              password
+              onChange={setConfirmPassword}
+              value={confirmPassword}
+            />
+            <View style={styles.checkboxContent}>
+              <CheckBox
+                value={acceptTerms}
+                onValueChange={(value) => setAcceptTerms(value)}
+              />
+              <TouchableOpacity
+                style={{ marginLeft: 2, padding: 5 }}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.checkboxText}>Termos de uso</Text>
+              </TouchableOpacity>
+            </View>
+            <ModalComponent
+              visible={modalVisible}
+              setVisible={setModalVisible}
+            />
           </View>
-          <ModalComponent visible={modalVisible} setVisible={setModalVisible} />
-        </View>
-        <ButtonConfirm onPress={handleSignUp} />
-      </ScrollView>
+          <ButtonConfirm onPress={handleSignUp} />
+        </ScrollView>
+      </View>
     </View>
   );
 }

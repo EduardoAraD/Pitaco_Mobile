@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   cardInfoActionButtom: {
     height: 20,
-    width: 100,
+    width: 80,
     borderRadius: 10,
     elevation: 2,
     justifyContent: 'center',
