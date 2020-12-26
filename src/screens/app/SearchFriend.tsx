@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
 import { useAuth } from '../../contexts/auth';
@@ -9,7 +9,7 @@ import SearchInput from '../../components/SearchInput';
 
 import { User } from '../../models/User';
 
-import { addFriend, getListNotFriends } from '../../services/friend';
+import { addFriend, getListNotFriendsPage } from '../../services/friend';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -70,31 +70,48 @@ const styles = StyleSheet.create({
 });
 
 export default function SearchFriend() {
+  const limit = 10;
   const { theme, user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [pageCurrent, setPageCurrent] = useState(1);
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState<User[]>([]);
-  const [usersFilter, setUsersFilter] = useState<User[]>([]);
+  const [total, setTotal] = useState(0);
 
   async function loadingData() {
     setLoading(true);
-    const { data, error } = await getListNotFriends(user?.email || '');
+    const { data, error } = await getListNotFriendsPage(
+      pageCurrent,
+      limit,
+      search,
+      user?.email || ''
+    );
     if (error === '') {
-      setUsersFilter(data);
-      setUsers(data);
+      setUsers(data.users);
+      setTotal(data.total);
     }
     setLoading(false);
   }
 
   useEffect(() => {
     loadingData();
+    return () => {};
   }, []);
 
-  function handleSearchUser() {
-    const filter = users.filter((item) =>
-      item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+  async function handleSearchUser() {
+    setLoading(true);
+    setPageCurrent(1);
+    const { data, error } = await getListNotFriendsPage(
+      1,
+      limit,
+      search,
+      user?.email || ''
     );
-    setUsersFilter(filter);
+    if (error === '') {
+      setUsers(data.users);
+      setTotal(data.total);
+    }
+    setLoading(false);
   }
 
   function messageSnackbar(message: string, color: string) {
@@ -115,10 +132,88 @@ export default function SearchFriend() {
     if (error === '') {
       users.splice(index, 1);
       setUsers([...users]);
+      setTotal(total - 1);
       messageSnackbar(success, theme.greenSecundary);
     } else {
       messageSnackbar(error, theme.textRed);
     }
+  }
+
+  function renderItem(item: User, index: number) {
+    return (
+      <View
+        style={[styles.card, { backgroundColor: theme.whitePrimary }]}
+        key={item.email}
+      >
+        <Image
+          style={styles.cardImg}
+          resizeMode="contain"
+          source={{ uri: item.avatar }}
+        />
+        <View style={styles.cardInfo}>
+          <Text style={[styles.cardInfoName, { color: theme.textGray2 }]}>
+            @{item.name}
+          </Text>
+          <View style={styles.cardInfoAction}>
+            <View style={styles.cardInfoClub}>
+              <Text style={{ fontSize: 12, color: theme.textGray3 }}>
+                {item.heartClub.name}
+              </Text>
+              <Image
+                style={styles.cardInfoClubImg}
+                resizeMode="contain"
+                source={{ uri: item.heartClub.logo }}
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.cardInfoActionButtom,
+                { backgroundColor: theme.bluePrimary },
+              ]}
+              onPress={() => handleAddUserFriend(item, index)}
+            >
+              <Text
+                style={[
+                  styles.cardInfoActionButtomText,
+                  { color: theme.textWhite },
+                ]}
+              >
+                Adicionar
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  function renderFooter() {
+    return loading ? (
+      <View style={{ margin: 10, alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={theme.greenPrimary} />
+      </View>
+    ) : (
+      <View />
+    );
+  }
+
+  async function handleLoadMore() {
+    if (users.length >= total) return;
+    setLoading(true);
+    setPageCurrent(pageCurrent + 1);
+    const { data, error } = await getListNotFriendsPage(
+      pageCurrent,
+      limit,
+      search,
+      user?.email || ''
+    );
+    if (error === '') {
+      // users.concat(data.users);
+      setUsers(users.concat(data.users));
+    } else {
+      messageSnackbar(error, theme.textRed);
+    }
+    setLoading(false);
   }
 
   return (
@@ -129,59 +224,15 @@ export default function SearchFriend() {
         onPress={handleSearchUser}
         title="Pitaqueiros"
       />
-      {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color={theme.greenPrimary} />
-        </View>
-      ) : (
-        <ScrollView style={styles.scroll}>
-          {usersFilter.map((item, index) => (
-            <View
-              style={[styles.card, { backgroundColor: theme.whitePrimary }]}
-              key={item.email}
-            >
-              <Image
-                style={styles.cardImg}
-                resizeMode="contain"
-                source={{ uri: item.avatar }}
-              />
-              <View style={styles.cardInfo}>
-                <Text style={[styles.cardInfoName, { color: theme.textGray2 }]}>
-                  @{item.name}
-                </Text>
-                <View style={styles.cardInfoAction}>
-                  <View style={styles.cardInfoClub}>
-                    <Text style={{ fontSize: 12, color: theme.textGray3 }}>
-                      {item.heartClub.name}
-                    </Text>
-                    <Image
-                      style={styles.cardInfoClubImg}
-                      resizeMode="contain"
-                      source={{ uri: item.heartClub.logo }}
-                    />
-                  </View>
-                  <TouchableOpacity
-                    style={[
-                      styles.cardInfoActionButtom,
-                      { backgroundColor: theme.bluePrimary },
-                    ]}
-                    onPress={() => handleAddUserFriend(item, index)}
-                  >
-                    <Text
-                      style={[
-                        styles.cardInfoActionButtomText,
-                        { color: theme.textWhite },
-                      ]}
-                    >
-                      Adicionar
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          ))}
-        </ScrollView>
-      )}
+      <FlatList
+        style={styles.scroll}
+        data={users}
+        renderItem={({ item, index }) => renderItem(item, index)}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={renderFooter}
+        onEndReached={async () => handleLoadMore()}
+        onEndReachedThreshold={0}
+      />
     </View>
   );
 }

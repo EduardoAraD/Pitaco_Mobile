@@ -65,6 +65,7 @@ export default function FriendsUser() {
 
   useEffect(() => {
     loadingData();
+    return () => {};
   }, []);
 
   async function onRefreshData() {
