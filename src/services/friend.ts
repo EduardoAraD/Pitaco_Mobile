@@ -7,6 +7,17 @@ interface ListUserResponse {
   error: string;
 }
 
+interface ListUserPageResponse {
+  data: {
+    page: number;
+    limit: number;
+    filter: string;
+    users: User[];
+    total: number;
+  };
+  error: string;
+}
+
 async function getFriends(email: string): Promise<ListUserResponse> {
   return api
     .post('/friends', { email })
@@ -33,6 +44,27 @@ async function getListNotFriends(email: string): Promise<ListUserResponse> {
     });
 }
 
+async function getListNotFriendsPage(
+  page: number,
+  limit: number,
+  filter: string,
+  email: string
+): Promise<ListUserPageResponse> {
+  return api
+    .post('/not-friends-page', { email, page, limit, filter })
+    .then((resp: AxiosResponse) => {
+      const response = resp.data;
+      return { data: response, error: '' };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error;
+      return {
+        data: { limit: 1, page: 1, users: [], filter: '', total: 0 },
+        error,
+      };
+    });
+}
+
 async function addFriend(
   emailUser: string,
   emailFriend: string
@@ -48,4 +80,4 @@ async function addFriend(
     });
 }
 
-export { getFriends, getListNotFriends, addFriend };
+export { getFriends, getListNotFriends, getListNotFriendsPage, addFriend };
