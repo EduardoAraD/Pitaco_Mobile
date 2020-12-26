@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     width: '100%',
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     borderTopWidth: 1,
   },
   text: {
@@ -28,10 +28,11 @@ const styles = StyleSheet.create({
     fontFamily: 'SairaSemiCondensed-Bold',
     fontSize: 16,
     flex: 1,
+    marginRight: 10,
   },
   textPoint: {
-    fontSize: 14,
-    fontFamily: 'SairaSemiCondensed-Bold',
+    fontSize: 17,
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
 });
 
@@ -53,6 +54,7 @@ export default function ItemStandingLeague({ point, position, isUser }: Props) {
         source={{ uri: point.user.avatar }}
       />
       <Text
+        numberOfLines={1}
         style={[
           styles.textName,
           { color: isUser ? theme.greenPrimary : theme.textGray2 },
