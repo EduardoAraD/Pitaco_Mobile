@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -61,31 +61,25 @@ const styles = StyleSheet.create({
 
 interface Props {
   league: League;
+  isLeagueHeartClub?: boolean;
+  clubeId?: number;
+  position: number;
+  point: Point;
   user: User;
   isClicked?: boolean;
 }
 
-export default function CardLeague({ league, user, isClicked = true }: Props) {
+export default function CardLeague({
+  league,
+  isLeagueHeartClub = false,
+  clubeId = 0,
+  user,
+  position,
+  point,
+  isClicked = true,
+}: Props) {
   const { theme } = useAuth();
   const navigation = useNavigation();
-
-  const [userPoint, setUserPoint] = useState<Point>();
-  const [position, setPosition] = useState('');
-
-  function loadingData() {
-    const pointUser = league.points.find(
-      (point) => point.user.email === user?.email
-    );
-    if (pointUser) {
-      const index = league.points.indexOf(pointUser) + 1;
-      setUserPoint(pointUser);
-      setPosition(index.toString());
-    }
-  }
-
-  useEffect(() => {
-    loadingData();
-  }, []);
 
   function viewDono() {
     if (league.dono.name) {
@@ -105,7 +99,15 @@ export default function CardLeague({ league, user, isClicked = true }: Props) {
   function handleNavigateLeague() {
     if (isClicked) {
       const isDono = league.dono.email === user?.email;
-      navigation.navigate('LeagueShowScreen', { league, isDono, user });
+      navigation.navigate('LeagueShowScreen', {
+        league,
+        isLeagueHeartClub,
+        clubeId,
+        isDono,
+        user,
+        position,
+        point,
+      });
     }
   }
 
@@ -131,12 +133,12 @@ export default function CardLeague({ league, user, isClicked = true }: Props) {
             style={[styles.cardInfoUserName, { color: theme.textGray1 }]}
             numberOfLines={1}
           >
-            {userPoint?.user.name || ''}
+            {point.user.name || ''}
           </Text>
           <Text
             style={[styles.cardInfoUserPoint, { color: theme.greenPrimary }]}
           >
-            {userPoint?.points || ''}
+            {point.points || ''}
           </Text>
         </View>
       </View>

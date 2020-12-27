@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
   },
   cardInput: {
     flexDirection: 'row',
-    width: '100%',
   },
   cardClube: {
     flex: 1,
