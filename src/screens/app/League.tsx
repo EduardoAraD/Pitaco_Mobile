@@ -9,7 +9,7 @@ import { useAuth } from '../../contexts/auth';
 import LoadingPage from './LoadingPage';
 import CardLeague from '../../components/CardLeague';
 
-import { initLeague, League } from '../../models/League';
+import { initLeaguePoint, LeaguePoint } from '../../models/League';
 import { initUser } from '../../models/User';
 
 import * as servicesLeague from '../../services/league';
@@ -60,10 +60,14 @@ export default function LeagueScreen() {
   const { user, theme, championship } = useAuth();
   const [refresh, setRefresh] = useState(false);
   const [loadingScreen, setLoadingScreen] = useState(true);
-  const [leaguePitaco, setLeaguePitaco] = useState<League>(initLeague());
-  const [leagueHeartClub, setLeagueHeartClub] = useState<League | null>(null);
-  const [leagueUser, setLeagueUser] = useState<League | null>(null);
-  const [leagueGuest, setLeagueGuest] = useState<League[]>([]);
+  const [leaguePitaco, setLeaguePitaco] = useState<LeaguePoint>(
+    initLeaguePoint()
+  );
+  const [leagueHeartClub, setLeagueHeartClub] = useState<LeaguePoint | null>(
+    null
+  );
+  const [leagueUser, setLeagueUser] = useState<LeaguePoint | null>(null);
+  const [leagueGuest, setLeagueGuest] = useState<LeaguePoint[]>([]);
 
   function snackbarMessageError(message: string) {
     Snackbar.show({
@@ -76,7 +80,8 @@ export default function LeagueScreen() {
 
   async function loadingData() {
     const leaguePitacoResponse = await servicesLeague.getLeaguePitaco(
-      championship
+      championship,
+      user?.email || ''
     );
     if (leaguePitacoResponse.error === '') {
       setLeaguePitaco(leaguePitacoResponse.data);
@@ -86,7 +91,8 @@ export default function LeagueScreen() {
     if (user?.heartClub.id) {
       const leagueHeartClubResponse = await servicesLeague.getLeagueHeartPitaco(
         championship,
-        user.heartClub.id
+        user.heartClub.id,
+        user?.email || ''
       );
       if (leagueHeartClubResponse.error === '') {
         setLeagueHeartClub(leagueHeartClubResponse.data);
@@ -115,6 +121,7 @@ export default function LeagueScreen() {
 
   useEffect(() => {
     loadingData();
+    return () => {};
   }, []);
 
   async function onRefreshData() {
@@ -162,7 +169,14 @@ export default function LeagueScreen() {
 
   function leagueOfClubeFavorite() {
     return leagueHeartClub ? (
-      <CardLeague league={leagueHeartClub} user={user || initUser()} />
+      <CardLeague
+        league={leagueHeartClub.league}
+        user={user || initUser()}
+        position={leagueHeartClub.position}
+        point={leagueHeartClub.point}
+        isLeagueHeartClub
+        clubeId={user?.heartClub.id || 0}
+      />
     ) : (
       <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>
         <Text style={[styles.cardText, { color: theme.textGray2 }]}>
@@ -207,7 +221,12 @@ export default function LeagueScreen() {
               Ligas Gerais
             </Text>
           </View>
-          <CardLeague league={leaguePitaco} user={user || initUser()} />
+          <CardLeague
+            league={leaguePitaco.league}
+            user={user || initUser()}
+            position={leaguePitaco.position}
+            point={leaguePitaco.point}
+          />
           {leagueOfClubeFavorite()}
           <View
             style={[styles.viewTitle, { borderBottomColor: theme.textGray4 }]}
@@ -237,16 +256,23 @@ export default function LeagueScreen() {
             </Link>
             {createLeagueView()}
           </View>
-          {leagueUser?.name ? (
-            <CardLeague league={leagueUser} user={user || initUser()} />
+          {leagueUser?.league ? (
+            <CardLeague
+              league={leagueUser.league}
+              user={user || initUser()}
+              position={leagueUser.position}
+              point={leagueUser.point}
+            />
           ) : (
             <View />
           )}
-          {leagueGuest.map((league) => (
+          {leagueGuest.map((leaguePoint) => (
             <CardLeague
-              key={league.id}
-              league={league}
+              key={leaguePoint.league.id}
+              league={leaguePoint.league}
               user={user || initUser()}
+              position={leaguePoint.position}
+              point={leaguePoint.point}
             />
           ))}
         </ScrollView>
