@@ -208,7 +208,6 @@ export default function SearchFriend() {
       user?.email || ''
     );
     if (error === '') {
-      // users.concat(data.users);
       setUsers(users.concat(data.users));
     } else {
       messageSnackbar(error, theme.textRed);
