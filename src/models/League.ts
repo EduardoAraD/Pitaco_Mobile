@@ -1,5 +1,5 @@
 import { ImageSourcePropType } from 'react-native';
-import { Point } from './Point';
+import { initPoint, Point } from './Point';
 import { User, initUser } from './User';
 
 export interface League {
@@ -9,6 +9,12 @@ export interface League {
   logo: ImageSourcePropType;
   dono: User;
   points: Point[];
+}
+
+export interface LeaguePoint {
+  league: League;
+  position: number;
+  point: Point;
 }
 
 export function initLeague(): League {
@@ -22,5 +28,13 @@ export function initLeague(): League {
     },
     dono: initUser(),
     points: [],
+  };
+}
+
+export function initLeaguePoint(): LeaguePoint {
+  return {
+    league: initLeague(),
+    position: -1,
+    point: initPoint(),
   };
 }
