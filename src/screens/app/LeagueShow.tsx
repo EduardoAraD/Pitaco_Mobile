@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, RefreshControl } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-
 import Snackbar from 'react-native-snackbar';
+
 import { useAuth } from '../../contexts/auth';
 
 import Header from '../../components/HeaderComponent';
@@ -13,7 +13,11 @@ import { League } from '../../models/League';
 import { User } from '../../models/User';
 import { Point } from '../../models/Point';
 
-import { showLeague, createSolicitation } from '../../services/league';
+import {
+  createSolicitation,
+  showPointLeaguePage,
+  showPointLeagueHeartClubPage,
+} from '../../services/league';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -63,6 +67,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'SairaSemiCondensed-Bold',
   },
+  viewPoint: {
+    marginVertical: 10,
+    width: '100%',
+    elevation: 2,
+    borderRadius: 6,
+  },
   cardStanding: {
     marginVertical: 20,
     width: '100%',
@@ -84,8 +94,12 @@ const styles = StyleSheet.create({
 type ParamList = {
   LeagueScreen: {
     league: League;
+    isLeagueHeartClub: boolean;
+    clubeId: number;
     isDono: boolean;
     user: User;
+    position: number;
+    point: Point;
   };
 };
 
@@ -93,16 +107,48 @@ export default function LeagueShow() {
   const { theme } = useAuth();
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigation();
-  const { league, isDono, user } = useRoute<
-    RouteProp<ParamList, 'LeagueScreen'>
-  >().params;
+  const {
+    league,
+    isDono,
+    isLeagueHeartClub,
+    clubeId,
+    user,
+    position,
+    point,
+  } = useRoute<RouteProp<ParamList, 'LeagueScreen'>>().params;
+  const limit = 20;
   const [points, setPoints] = useState<Point[]>(league.points);
+  const [pageCurrent, setPageCurrent] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  function messageSnackbar(message: string, color: string) {
+    Snackbar.show({
+      text: message,
+      duration: Snackbar.LENGTH_LONG,
+      backgroundColor: color,
+      textColor: theme.textWhite,
+      fontFamily: 'SairaSemiCondensed-Medium',
+    });
+  }
 
   async function loadingData() {
-    if (league.points.length === 0) {
-      const { data, error } = await showLeague(league.id);
+    setPageCurrent(1);
+    if (isLeagueHeartClub) {
+      const { data, error } = await showPointLeagueHeartClubPage(
+        league.id,
+        clubeId,
+        1,
+        limit
+      );
       if (error === '') {
         setPoints(data.points);
+        setTotal(data.total);
+      }
+    } else {
+      const { data, error } = await showPointLeaguePage(league.id, 1, limit);
+      if (error === '') {
+        setPoints(data.points);
+        setTotal(data.total);
       }
     }
   }
@@ -144,16 +190,6 @@ export default function LeagueShow() {
     navigate.navigate('SolicitationScreen', { league });
   }
 
-  function messageSnackbar(message: string, color: string) {
-    Snackbar.show({
-      text: message,
-      duration: Snackbar.LENGTH_LONG,
-      backgroundColor: color,
-      textColor: theme.textWhite,
-      fontFamily: 'SairaSemiCondensed-Medium',
-    });
-  }
-
   async function handleParticipationLeague() {
     const { success, error } = await createSolicitation(league.id, user.email);
     if (error === '') {
@@ -189,10 +225,7 @@ export default function LeagueShow() {
         </View>
       );
     }
-    const notParticipating =
-      league.points.filter((point) => point.user.email === user.email)
-        .length === 0;
-    if (notParticipating) {
+    if (!point) {
       return (
         <TouchableOpacity
           onPress={handleParticipationLeague}
@@ -210,6 +243,44 @@ export default function LeagueShow() {
     return <View />;
   }
 
+  function viewPointUser() {
+    return point ? (
+      <View style={[styles.viewPoint, { backgroundColor: theme.whitePrimary }]}>
+        <ItemStandingLeague position={position} isUser point={point} />
+      </View>
+    ) : (
+      <View />
+    );
+  }
+
+  async function handleLoadMore() {
+    if (isLeagueHeartClub) {
+      const { data, error } = await showPointLeagueHeartClubPage(
+        league.id,
+        clubeId,
+        pageCurrent + 1,
+        limit
+      );
+      if (error === '') {
+        setPoints(points.concat(data.points));
+      } else {
+        messageSnackbar(error, theme.textRed);
+      }
+    } else {
+      const { data, error } = await showPointLeaguePage(
+        league.id,
+        pageCurrent + 1,
+        limit
+      );
+      if (error === '') {
+        setPoints(points.concat(data.points));
+      } else {
+        messageSnackbar(error, theme.textRed);
+      }
+    }
+    setPageCurrent(pageCurrent + 1);
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
       <Header title={league.name} back border />
@@ -222,6 +293,7 @@ export default function LeagueShow() {
             onRefresh={onRefreshData}
           />
         }
+        onMomentumScrollEnd={points.length < total ? handleLoadMore : undefined}
       >
         <View
           style={[styles.cardLeague, { backgroundColor: theme.whitePrimary }]}
@@ -241,6 +313,7 @@ export default function LeagueShow() {
           </View>
         </View>
         {viewButtomActions()}
+        {viewPointUser()}
         <View
           style={[styles.cardStanding, { backgroundColor: theme.whitePrimary }]}
         >
@@ -253,12 +326,12 @@ export default function LeagueShow() {
               Classificação
             </Text>
           </View>
-          {points.map((point, index) => (
+          {points.map((item, index) => (
             <ItemStandingLeague
-              key={point.user.email}
+              key={index.toString()}
               position={index + 1}
-              isUser={point.user.email === user.email}
-              point={point}
+              isUser={item.user.email === user.email}
+              point={item}
             />
           ))}
         </View>

@@ -377,7 +377,7 @@ async function showPointLeagueHeartClubPage(
   limit: number
 ): Promise<PointLeagueResponse> {
   return api
-    .post('/leagues-points', { id, clubeId, page, limit })
+    .post('/leagues-heartClub-points', { id, clubeId, page, limit })
     .then((resp: AxiosResponse) => {
       const response = resp.data;
       const pageRes = response.page;
