@@ -5,6 +5,9 @@ import { useAuth } from '../contexts/auth';
 
 import { Match } from '../models/Match';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   cardContainer: {
     width: '100%',
@@ -53,7 +56,8 @@ interface Props {
 }
 
 export default function ItemMatch({ match }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={[styles.cardContainer, { borderColor: theme.textGray4 }]}>

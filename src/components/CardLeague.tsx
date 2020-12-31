@@ -9,6 +9,9 @@ import { League } from '../models/League';
 import { Point } from '../models/Point';
 import { User } from '../models/User';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   card: {
     height: 70,
@@ -78,7 +81,8 @@ export default function CardLeague({
   point,
   isClicked = true,
 }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const navigation = useNavigation();
 
   function viewDono() {

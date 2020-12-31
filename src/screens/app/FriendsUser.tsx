@@ -10,6 +10,9 @@ import CardUser from '../../components/CardUser';
 
 import { User } from '../../models/User';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import { getFriends } from '../../services/friend';
 
 const styles = StyleSheet.create({
@@ -44,7 +47,8 @@ const styles = StyleSheet.create({
 });
 
 export default function FriendsUser() {
-  const { theme, user } = useAuth();
+  const { themeDark, user } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [refresh, setRefresh] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
 

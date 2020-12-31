@@ -16,12 +16,15 @@ import ButtomConfirm from '../../components/buttons/BottonConfirmComponent';
 import DoubleConfirm from '../../components/buttons/DoubleButton';
 import CardTitlePage from '../../components/CardTitlePage';
 import InputMatch from '../../components/InputMatch';
+import LoadingResponse from '../../components/LoadingResponse';
 
 import { Match } from '../../models/Match';
 import { Pitaco } from '../../models/Pitaco';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import * as servicesPitaco from '../../services/pitaco';
-import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -97,7 +100,8 @@ interface PitacoRequest {
 let allRodadas: RodadaPitaco[] = [];
 
 export default function PitacoScreen() {
-  const { theme, user, championship, currentRodada } = useAuth();
+  const { themeDark, user, championship, currentRodada } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [loading, setLoading] = useState(true);
   const [viewRodada, setViewRodada] = useState(true);

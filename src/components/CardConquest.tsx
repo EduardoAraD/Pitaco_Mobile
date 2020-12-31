@@ -5,6 +5,9 @@ import { Conquest } from '../models/Conquest';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   card: {
     height: 50,
@@ -39,7 +42,8 @@ interface Props {
 }
 
 export default function CardConquest({ conquest }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>

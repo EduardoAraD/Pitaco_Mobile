@@ -8,9 +8,9 @@ import { useAuth } from '../../contexts/auth';
 import TitleComponent from '../../components/TitleComponent';
 import InputComponent from '../../components/InputComponent';
 import ContinuarComponent from '../../components/buttons/ContinuarComponent';
+import LoadingResponse from '../../components/LoadingResponse';
 
 import colors from '../../assets/theme/light';
-import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   container: {

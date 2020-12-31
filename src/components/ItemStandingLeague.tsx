@@ -5,6 +5,9 @@ import { useAuth } from '../contexts/auth';
 
 import { Point } from '../models/Point';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   container: {
     height: 40,
@@ -43,7 +46,8 @@ interface Props {
 }
 
 export default function ItemStandingLeague({ point, position, isUser }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={[styles.container, { borderTopColor: theme.textGray4 }]}>

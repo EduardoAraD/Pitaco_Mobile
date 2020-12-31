@@ -14,6 +14,9 @@ import { ItemStanding } from '../../models/ItemStanding';
 import { Match } from '../../models/Match';
 import { Rodada } from '../../models/Rodada';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import * as servicesChampionship from '../../services/championship';
 
 const styles = StyleSheet.create({
@@ -73,7 +76,8 @@ const styles = StyleSheet.create({
 const allRodadas: Rodada[] = [];
 
 export default function Championship() {
-  const { theme, championship, currentRodada } = useAuth();
+  const { themeDark, championship, currentRodada } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loading, setLoading] = useState(false);
   const [viewOptionStandingMatch, setViewOptionStandingMatch] = useState(true);
   const [itemsStanding, setItemsStanding] = useState<ItemStanding[]>([]);

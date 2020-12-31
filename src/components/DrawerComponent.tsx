@@ -11,6 +11,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 Icon.loadFont();
 
 const styles = StyleSheet.create({
@@ -61,7 +64,8 @@ const styles = StyleSheet.create({
 });
 
 export default function DrawerComponent(props: DrawerContentComponentProps) {
-  const { user, themeDark, theme, signOut, onChangeThemeDark } = useAuth();
+  const { user, themeDark, signOut, onChangeThemeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   const toggleTheme = async () => {
     await onChangeThemeDark();

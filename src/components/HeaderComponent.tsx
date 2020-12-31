@@ -6,6 +6,9 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   header: {
     padding: 12,
@@ -30,7 +33,8 @@ export default function HeaderComponent({
   back = false,
   border = false,
 }: HeaderProps) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const navigation = useNavigation();
 
   return (

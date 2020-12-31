@@ -3,6 +3,9 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   titleCard: {
     height: 50,
@@ -21,7 +24,8 @@ interface Props {
 }
 
 export default function CardTitlePage({ title }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={[styles.titleCard, { backgroundColor: theme.whitePrimary }]}>

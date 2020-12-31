@@ -6,6 +6,9 @@ import { useAuth } from '../contexts/auth';
 
 import { ItemStanding } from '../models/ItemStanding';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 4,
@@ -62,7 +65,8 @@ interface Props {
 }
 
 export default function ItemStandingComplete({ item }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   function textVariacao(num: number) {
     if (num > 0)

@@ -6,6 +6,9 @@ import { useAuth } from '../contexts/auth';
 
 import { Clube } from '../models/Clube';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -79,7 +82,8 @@ export default function ItemStanding({
   positionVariation,
   status,
 }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   function textVariacao(num: number) {
     if (num > 0)

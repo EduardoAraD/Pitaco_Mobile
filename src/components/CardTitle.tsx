@@ -5,6 +5,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   card: {
     width: '100%',
@@ -44,7 +47,8 @@ interface Props {
 }
 
 export default function CardTitle({ title, children }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>

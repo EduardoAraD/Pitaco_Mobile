@@ -10,6 +10,9 @@ import SearchInput from '../../components/SearchInput';
 
 import { League } from '../../models/League';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import { getLeaguesPage } from '../../services/league';
 
 const styles = StyleSheet.create({
@@ -54,7 +57,8 @@ const styles = StyleSheet.create({
 
 export default function SearchLeague() {
   const navigation = useNavigation();
-  const { user, theme, championship } = useAuth();
+  const { user, themeDark, championship } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const limit = 10;
   const [loading, setLoading] = useState(false);
   const [pageCurrent, setPageCurrent] = useState(1);

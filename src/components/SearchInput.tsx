@@ -4,6 +4,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   viewSearch: {
     margin: 20,
@@ -59,7 +62,8 @@ export default function SearchInput({
   setValue,
   onPress,
 }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <>

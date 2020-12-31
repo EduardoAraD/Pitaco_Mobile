@@ -7,6 +7,9 @@ import { useAuth } from '../contexts/auth';
 
 import { Match } from '../models/Match';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   card: {
     width: '100%',
@@ -123,7 +126,8 @@ export default function InputMatch({
   notFinishPitaco,
   match,
 }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [visible, setVisible] = useState(false);
 
   function visibleView() {

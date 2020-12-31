@@ -13,6 +13,9 @@ import { League } from '../../models/League';
 
 import { getSolitationLeague, resultSolicitation } from '../../services/league';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: 20,
@@ -81,7 +84,8 @@ type ParamList = {
 };
 
 export default function Solicitation() {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [refresh, setRefresh] = useState(false);
   const { league } = useRoute<RouteProp<ParamList, 'League'>>().params;
   const [users, setUsers] = useState<User[]>([]);

@@ -3,6 +3,9 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import { useAuth } from '../../contexts/auth';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 const styles = StyleSheet.create({
   botton: {
     width: '100%',
@@ -23,7 +26,8 @@ interface Props {
 }
 
 export default function ButtonConfirmComponent(props: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <TouchableOpacity

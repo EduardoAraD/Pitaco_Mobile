@@ -12,6 +12,9 @@ import CardConquest from '../../components/CardConquest';
 import { User } from '../../models/User';
 import { League } from '../../models/League';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import { getCommomLeagues } from '../../services/league';
 
 const styles = StyleSheet.create({
@@ -98,7 +101,8 @@ type ParamList = {
 };
 
 export default function FriendShow() {
-  const { theme, user } = useAuth();
+  const { themeDark, user } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const route = useRoute<RouteProp<ParamList, 'Friend'>>();
   const { friend } = route.params;
   const [leagues, setLeagues] = useState<League[]>([]);

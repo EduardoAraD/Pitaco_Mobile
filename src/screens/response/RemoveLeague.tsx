@@ -9,8 +9,12 @@ import { useAuth } from '../../contexts/auth';
 
 import { League } from '../../models/League';
 import { initUser, User } from '../../models/User';
+import { Point } from '../../models/Point';
 
 import { deleteLeague } from '../../services/league';
+
+import ThemeLight from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,13 +41,18 @@ type ParamList = {
   League: {
     league: League;
     user: User;
+    position: number;
+    point: Point;
   };
 };
 
 export default function RemoveLeague() {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLight;
   const navigation = useNavigation();
-  const { league, user } = useRoute<RouteProp<ParamList, 'League'>>().params;
+  const { league, user, position, point } = useRoute<
+    RouteProp<ParamList, 'League'>
+  >().params;
 
   async function handleDeleteLeague() {
     const { success, error } = await deleteLeague(league.id, user?.email || '');
@@ -77,7 +86,13 @@ export default function RemoveLeague() {
       <Text style={[styles.text, { color: theme.textWhite }]}>
         Você quer mesmo excluir a liga {league.name}?
       </Text>
-      <CardLeague league={league} user={user || initUser()} />
+      <CardLeague
+        isClicked={false}
+        league={league}
+        user={user || initUser()}
+        point={point}
+        position={position}
+      />
       <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}

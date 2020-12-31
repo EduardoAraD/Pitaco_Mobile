@@ -7,12 +7,15 @@ import { useAuth } from '../../contexts/auth';
 
 import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent';
 import SearchInput from '../../components/SearchInput';
+import LoadingResponse from '../../components/LoadingResponse';
 
 import { Clube, initClube } from '../../models/Clube';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import { chooseClub } from '../../services/club';
 import { getClubes } from '../../services/championship';
-import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   viewSearch: {
@@ -62,7 +65,8 @@ const styles = StyleSheet.create({
 });
 
 export default function HeartClub() {
-  const { theme, user, updateUser } = useAuth();
+  const { themeDark, user, updateUser } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');

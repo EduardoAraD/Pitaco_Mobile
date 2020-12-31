@@ -14,6 +14,9 @@ import { initUser } from '../../models/User';
 
 import { createLeague } from '../../services/league';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -31,7 +34,8 @@ type ParamList = {
 
 export default function LeagueCreatePreView() {
   const navigation = useNavigation();
-  const { user, theme, championship } = useAuth();
+  const { user, themeDark, championship } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const route = useRoute<RouteProp<ParamList, 'LeagueCreateScreen'>>();
   const { league, escudo } = route.params;
 
@@ -61,7 +65,13 @@ export default function LeagueCreatePreView() {
       style={[styles.container, { backgroundColor: theme.backgroundWhite }]}
     >
       <TitleComponent text="Pré visualização da sua Liga" />
-      <CardLeague league={league} user={user || initUser()} isClicked={false} />
+      <CardLeague
+        league={league}
+        user={user || initUser()}
+        isClicked={false}
+        point={league.points[0]}
+        position={1}
+      />
       <ButtonConfirmComponent onPress={handleCreateLeague} />
     </View>
   );

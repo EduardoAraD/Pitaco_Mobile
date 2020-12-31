@@ -15,6 +15,9 @@ import ItemMatch from '../../components/ItemMatch';
 import { ItemStanding } from '../../models/ItemStanding';
 import { initRodada, Rodada } from '../../models/Rodada';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import * as servicesChampionship from '../../services/championship';
 
 const styles = StyleSheet.create({
@@ -100,10 +103,11 @@ const styles = StyleSheet.create({
 });
 
 export default function Dashboard() {
-  const { theme, user, championship, currentRodada } = useAuth();
+  const { themeDark, user, championship, currentRodada } = useAuth();
   const [loading, setLoading] = useState(true);
   const [standing, setStanding] = useState<ItemStanding[]>([]);
   const [rodada, setRodada] = useState<Rodada>(initRodada());
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   async function loadingData() {
     setLoading(true);
@@ -141,8 +145,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadingData();
-    return () => {};
-  }, []);
+  }, [user]);
 
   return !loading ? (
     <View

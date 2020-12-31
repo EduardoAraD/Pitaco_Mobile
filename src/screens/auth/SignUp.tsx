@@ -11,9 +11,9 @@ import TitleComponent from '../../components/TitleComponent';
 import ButtonConfirm from '../../components/buttons/BottonConfirmComponent';
 import InputComponent from '../../components/InputComponent';
 import ModalComponent from '../../components/ModalComponent';
+import LoadingResponse from '../../components/LoadingResponse';
 
 import colors from '../../assets/theme/light';
-import LoadingResponse from '../../components/LoadingResponse';
 
 const styles = StyleSheet.create({
   container: {

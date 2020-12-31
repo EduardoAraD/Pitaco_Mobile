@@ -13,6 +13,9 @@ import { League } from '../../models/League';
 import { User } from '../../models/User';
 import { Point } from '../../models/Point';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import {
   createSolicitation,
   showPointLeaguePage,
@@ -104,7 +107,8 @@ type ParamList = {
 };
 
 export default function LeagueShow() {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigation();
   const {
@@ -183,7 +187,7 @@ export default function LeagueShow() {
   }
 
   function handleNavigateExclusion() {
-    navigate.navigate('RemoveLeagueScreen', { league, user });
+    navigate.navigate('RemoveLeagueScreen', { league, user, position, point });
   }
 
   function handleNavigateSolicitation() {

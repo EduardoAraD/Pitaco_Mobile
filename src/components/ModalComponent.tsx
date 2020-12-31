@@ -10,6 +10,9 @@ import {
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
@@ -65,7 +68,8 @@ interface Props {
 }
 
 export default function ModalComponent({ visible, setVisible }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <Modal animationType="fade" transparent visible={visible}>

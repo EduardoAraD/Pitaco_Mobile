@@ -9,6 +9,9 @@ import SearchInput from '../../components/SearchInput';
 
 import { User } from '../../models/User';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import { addFriend, getListNotFriendsPage } from '../../services/friend';
 
 const styles = StyleSheet.create({
@@ -71,7 +74,8 @@ const styles = StyleSheet.create({
 
 export default function SearchFriend() {
   const limit = 10;
-  const { theme, user } = useAuth();
+  const { themeDark, user } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loading, setLoading] = useState(false);
   const [pageCurrent, setPageCurrent] = useState(1);
   const [search, setSearch] = useState('');

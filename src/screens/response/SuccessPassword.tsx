@@ -5,6 +5,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useAuth } from '../../contexts/auth';
 
+import ThemeLight from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -27,7 +30,8 @@ const styles = StyleSheet.create({
 });
 
 export default function SucessPassword() {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLight;
   const navigation = useNavigation();
 
   function handleContinuar() {

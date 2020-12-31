@@ -9,6 +9,8 @@ import { useAuth } from '../../contexts/auth';
 import ContinuarComponent from '../../components/buttons/ContinuarComponent';
 import InputComponent from '../../components/InputComponent';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
 import Trophy1Img from '../../assets/images/trophy1.png';
 import Trophy2Img from '../../assets/images/trophy2.png';
 import Trophy3Img from '../../assets/images/trophy3.png';
@@ -60,7 +62,8 @@ const simboloData = [
 ];
 
 export default function LeagueCreate() {
-  const { user, theme } = useAuth();
+  const { user, themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const navigation = useNavigation();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -135,7 +138,7 @@ export default function LeagueCreate() {
               styles.input,
               {
                 backgroundColor: theme.whitePrimary,
-                color: theme.textGray3,
+                color: theme.textGray2,
                 borderColor: theme.textGray3,
               },
             ]}

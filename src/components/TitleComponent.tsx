@@ -3,6 +3,9 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 interface Props {
   text: string;
 }
@@ -23,7 +26,8 @@ const styles = StyleSheet.create({
 });
 
 export default function TitleComponent({ text }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={[styles.content, { borderBottomColor: theme.textGray4 }]}>

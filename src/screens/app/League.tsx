@@ -12,6 +12,9 @@ import CardLeague from '../../components/CardLeague';
 import { initLeaguePoint, LeaguePoint } from '../../models/League';
 import { initUser } from '../../models/User';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 import * as servicesLeague from '../../services/league';
 
 const styles = StyleSheet.create({
@@ -57,7 +60,8 @@ const styles = StyleSheet.create({
 });
 
 export default function LeagueScreen() {
-  const { user, theme, championship } = useAuth();
+  const { user, themeDark, championship } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const [refresh, setRefresh] = useState(false);
   const [loadingScreen, setLoadingScreen] = useState(true);
   const [leaguePitaco, setLeaguePitaco] = useState<LeaguePoint>(

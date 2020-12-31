@@ -4,6 +4,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { useAuth } from '../contexts/auth';
+
 import DashboardRoute from './app/dashboard.routes';
 import PitacoRoute from './app/pitaco.routes';
 import ChampionshipRoute from './app/championship.routes';
@@ -13,7 +15,8 @@ import FriendRoute from './app/friend.routes';
 
 import DrawerComponent from '../components/DrawerComponent';
 
-import { useAuth } from '../contexts/auth';
+import ThemeDark from '../assets/theme/dark';
+import ThemeLight from '../assets/theme/light';
 
 Icon.loadFont();
 
@@ -25,7 +28,8 @@ interface PropsTabBarIcon {
 }
 
 function TabNavigation() {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLight;
 
   return (
     <Tab.Navigator

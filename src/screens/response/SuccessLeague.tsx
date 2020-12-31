@@ -10,6 +10,9 @@ import CardLeague from '../../components/CardLeague';
 import { League } from '../../models/League';
 import { initUser } from '../../models/User';
 
+import ThemeLight from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -38,7 +41,8 @@ type ParamList = {
 };
 
 export default function SucessLeague() {
-  const { theme, user } = useAuth();
+  const { themeDark, user } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLight;
   const navigation = useNavigation();
   const route = useRoute<RouteProp<ParamList, 'LeagueCreatePreScreen'>>();
   const { league } = route.params;
@@ -52,7 +56,13 @@ export default function SucessLeague() {
       <Text style={[styles.text, { color: theme.textWhite }]}>
         Liga cadastrada com sucesso.
       </Text>
-      <CardLeague league={league} user={user || initUser()} />
+      <CardLeague
+        league={league}
+        user={user || initUser()}
+        isClicked={false}
+        point={league.points[0]}
+        position={1}
+      />
       <TouchableOpacity
         onPress={handleContinuar}
         style={[styles.bottom, { backgroundColor: theme.greenSecundary }]}

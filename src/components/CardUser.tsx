@@ -7,6 +7,9 @@ import { useAuth } from '../contexts/auth';
 
 import { User } from '../models/User';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   card: {
     height: 70,
@@ -50,7 +53,8 @@ interface Props {
 }
 
 export default function CardUser({ user }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
   const navigate = useNavigation();
 
   function handleNavigateFriendShow() {

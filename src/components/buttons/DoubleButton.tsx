@@ -4,6 +4,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useAuth } from '../../contexts/auth';
 
+import ThemeLigth from '../../assets/theme/light';
+import ThemeDark from '../../assets/theme/dark';
+
 const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
@@ -50,7 +53,8 @@ export default function DoubleButtom({
   option,
   setOption,
 }: Props) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={styles.buttonContainer}>

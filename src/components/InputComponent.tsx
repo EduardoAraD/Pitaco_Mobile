@@ -3,6 +3,9 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 import { useAuth } from '../contexts/auth';
 
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -56,7 +59,8 @@ export default function InputComponent({
   password = false,
   onChange,
 }: PropsInput) {
-  const { theme } = useAuth();
+  const { themeDark } = useAuth();
+  const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
     <View style={styles.container}>
