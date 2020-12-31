@@ -6,9 +6,6 @@ import api from '../services/api';
 
 import { User } from '../models/User';
 
-import { ColorsTheme } from '../assets/theme/theme';
-import colorsLight from '../assets/theme/light';
-import colorsDark from '../assets/theme/dark';
 import { AuthContextData, init } from './authContextData';
 
 const AuthContext = createContext<AuthContextData>(init());
@@ -23,7 +20,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
   const [championship, setChampionship] = useState(0);
   const [loading, setLoading] = useState(true);
   const [themeDark, setThemeDark] = useState(false);
-  const [theme, setTheme] = useState<ColorsTheme>(colorsLight);
 
   useEffect(() => {
     async function loadStorageData() {
@@ -48,10 +44,8 @@ export function AuthProvider({ children }: PropsAuthProvider) {
           setUser(data.user);
           if (storageTheme === 'true') {
             setThemeDark(true);
-            setTheme(colorsDark);
           } else {
             setThemeDark(false);
-            setTheme(colorsLight);
           }
         }
       }
@@ -119,7 +113,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
       setChampionship(0);
       setCurrentRodada(0);
       setThemeDark(false);
-      setTheme(colorsLight);
     });
   }
 
@@ -128,10 +121,8 @@ export function AuthProvider({ children }: PropsAuthProvider) {
     setThemeDark(booleanTheme);
     if (booleanTheme) {
       await AsyncStorage.setItem('@Pitaco:theme', 'true');
-      setTheme(colorsDark);
     } else {
       await AsyncStorage.setItem('@Pitaco:theme', 'false');
-      setTheme(colorsLight);
     }
   }
 
@@ -158,7 +149,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
         user,
         loading,
         themeDark,
-        theme,
         championship,
         currentRodada,
         signIn,

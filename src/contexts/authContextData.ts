@@ -1,6 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import colorsLight from '../assets/theme/light';
-import { ColorsTheme } from '../assets/theme/theme';
 import * as auth from '../services/auth';
 import { User } from '../models/User';
 
@@ -9,7 +7,6 @@ export interface AuthContextData {
   user: User | null;
   loading: boolean;
   themeDark: boolean;
-  theme: ColorsTheme;
   championship: number;
   currentRodada: number;
 
@@ -38,7 +35,6 @@ export function init(): AuthContextData {
     user: null,
     loading: false,
     themeDark: false,
-    theme: colorsLight,
     championship: 0,
     currentRodada: 0,
     signIn: async (email: string, password: string) => {
