@@ -6,7 +6,7 @@ import Snackbar from 'react-native-snackbar';
 
 import { useAuth } from '../../contexts/auth';
 
-import LoadingPage from './LoadingPage';
+import LoadingPage from '../../components/LoadingPage';
 import CardLeague from '../../components/CardLeague';
 
 import { initLeaguePoint, LeaguePoint } from '../../models/League';
@@ -45,16 +45,17 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   card: {
-    height: 90,
+    height: 70,
     width: '100%',
-    padding: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
     marginVertical: 10,
     borderRadius: 20,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   cardText: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'SairaSemiCondensed-Light',
   },
 });

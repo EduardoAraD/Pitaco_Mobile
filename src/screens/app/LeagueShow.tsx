@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  RefreshControl,
+  ActivityIndicator,
+} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
@@ -120,10 +127,9 @@ export default function LeagueShow() {
     position,
     point,
   } = useRoute<RouteProp<ParamList, 'LeagueScreen'>>().params;
-  const limit = 20;
+  const limit = 50;
   const [points, setPoints] = useState<Point[]>(league.points);
-  const [pageCurrent, setPageCurrent] = useState(1);
-  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   function messageSnackbar(message: string, color: string) {
     Snackbar.show({
@@ -136,7 +142,7 @@ export default function LeagueShow() {
   }
 
   async function loadingData() {
-    setPageCurrent(1);
+    setLoading(true);
     if (isLeagueHeartClub) {
       const { data, error } = await showPointLeagueHeartClubPage(
         league.id,
@@ -146,15 +152,14 @@ export default function LeagueShow() {
       );
       if (error === '') {
         setPoints(data.points);
-        setTotal(data.total);
       }
     } else {
       const { data, error } = await showPointLeaguePage(league.id, 1, limit);
       if (error === '') {
         setPoints(data.points);
-        setTotal(data.total);
       }
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -257,34 +262,6 @@ export default function LeagueShow() {
     );
   }
 
-  async function handleLoadMore() {
-    if (isLeagueHeartClub) {
-      const { data, error } = await showPointLeagueHeartClubPage(
-        league.id,
-        clubeId,
-        pageCurrent + 1,
-        limit
-      );
-      if (error === '') {
-        setPoints(points.concat(data.points));
-      } else {
-        messageSnackbar(error, theme.textRed);
-      }
-    } else {
-      const { data, error } = await showPointLeaguePage(
-        league.id,
-        pageCurrent + 1,
-        limit
-      );
-      if (error === '') {
-        setPoints(points.concat(data.points));
-      } else {
-        messageSnackbar(error, theme.textRed);
-      }
-    }
-    setPageCurrent(pageCurrent + 1);
-  }
-
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
       <Header title={league.name} back border />
@@ -297,7 +274,6 @@ export default function LeagueShow() {
             onRefresh={onRefreshData}
           />
         }
-        onMomentumScrollEnd={points.length < total ? handleLoadMore : undefined}
       >
         <View
           style={[styles.cardLeague, { backgroundColor: theme.whitePrimary }]}
@@ -330,14 +306,20 @@ export default function LeagueShow() {
               Classificação
             </Text>
           </View>
-          {points.map((item, index) => (
-            <ItemStandingLeague
-              key={index.toString()}
-              position={index + 1}
-              isUser={item.user.email === user.email}
-              point={item}
-            />
-          ))}
+          {loading ? (
+            <View style={{ margin: 10, alignItems: 'center' }}>
+              <ActivityIndicator size="small" color={theme.greenPrimary} />
+            </View>
+          ) : (
+            points.map((item, index) => (
+              <ItemStandingLeague
+                key={index.toString()}
+                position={index + 1}
+                isUser={item.user.email === user.email}
+                point={item}
+              />
+            ))
+          )}
         </View>
       </ScrollView>
     </View>
