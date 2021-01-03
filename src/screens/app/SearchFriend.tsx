@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 });
 
 export default function SearchFriend() {
-  const limit = 10;
+  const limit = 20;
   const { themeDark, user } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loading, setLoading] = useState(false);
@@ -155,7 +155,10 @@ export default function SearchFriend() {
           source={{ uri: item.avatar }}
         />
         <View style={styles.cardInfo}>
-          <Text style={[styles.cardInfoName, { color: theme.textGray2 }]}>
+          <Text
+            style={[styles.cardInfoName, { color: theme.textGray2 }]}
+            numberOfLines={1}
+          >
             @{item.name}
           </Text>
           <View style={styles.cardInfoAction}>
@@ -204,9 +207,8 @@ export default function SearchFriend() {
   async function handleLoadMore() {
     if (users.length >= total) return;
     setLoading(true);
-    setPageCurrent(pageCurrent + 1);
     const { data, error } = await getListNotFriendsPage(
-      pageCurrent,
+      pageCurrent + 1,
       limit,
       search,
       user?.email || ''
@@ -216,6 +218,7 @@ export default function SearchFriend() {
     } else {
       messageSnackbar(error, theme.textRed);
     }
+    setPageCurrent(pageCurrent + 1);
     setLoading(false);
   }
 
@@ -234,7 +237,7 @@ export default function SearchFriend() {
         keyExtractor={(item, index) => index.toString()}
         ListFooterComponent={renderFooter}
         onEndReached={async () => handleLoadMore()}
-        onEndReachedThreshold={0}
+        onEndReachedThreshold={1}
       />
     </View>
   );

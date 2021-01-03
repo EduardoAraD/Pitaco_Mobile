@@ -7,7 +7,7 @@ import Snackbar from 'react-native-snackbar';
 
 import { useAuth } from '../../contexts/auth';
 
-import LoadingPage from './LoadingPage';
+import LoadingPage from '../../components/LoadingPage';
 import CardTitle from '../../components/CardTitle';
 import ItemStandingComponent from '../../components/ItemStanding';
 import ItemMatch from '../../components/ItemMatch';

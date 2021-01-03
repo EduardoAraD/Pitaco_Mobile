@@ -4,17 +4,18 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
-import CardLeague from '../../components/CardLeague';
 import { useAuth } from '../../contexts/auth';
+
+import CardLeague from '../../components/CardLeague';
 
 import { League } from '../../models/League';
 import { initUser, User } from '../../models/User';
 import { Point } from '../../models/Point';
 
-import { deleteLeague } from '../../services/league';
-
 import ThemeLight from '../../assets/theme/light';
 import ThemeDark from '../../assets/theme/dark';
+
+import { deleteLeague } from '../../services/league';
 
 const styles = StyleSheet.create({
   container: {

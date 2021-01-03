@@ -329,6 +329,7 @@ export default function PitacoScreen() {
     );
     if (pitacosReq.length === 0) {
       messageSnackbarError('Nenhum Pitaco foi registrado');
+      setLoadingResponse(false);
       return;
     }
     const { pitacos, error } = await servicesPitaco.createPitacoMatch(

@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderTopWidth: 1,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   text: {
     fontSize: 14,
@@ -50,7 +52,15 @@ export default function ItemStandingLeague({ point, position, isUser }: Props) {
   const theme = themeDark ? ThemeDark : ThemeLigth;
 
   return (
-    <View style={[styles.container, { borderTopColor: theme.textGray4 }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          borderTopColor: theme.textGray4,
+          backgroundColor: theme.whitePrimary,
+        },
+      ]}
+    >
       <Text style={[styles.text, { color: theme.textGray3 }]}>{position}.</Text>
       <Image
         style={styles.img}
