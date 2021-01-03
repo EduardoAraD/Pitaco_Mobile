@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
+import { useNavigation } from '@react-navigation/native';
 
 import { useAuth } from '../../contexts/auth';
 
-import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent';
 import SearchInput from '../../components/SearchInput';
-import LoadingResponse from '../../components/LoadingResponse';
 
-import { Clube, initClube } from '../../models/Clube';
+import { Clube } from '../../models/Clube';
 
 import ThemeLigth from '../../assets/theme/light';
 import ThemeDark from '../../assets/theme/dark';
 
-import { chooseClub } from '../../services/club';
 import { getClubes } from '../../services/championship';
 
 const styles = StyleSheet.create({
@@ -65,14 +63,11 @@ const styles = StyleSheet.create({
 });
 
 export default function HeartClub() {
-  const { themeDark, user, updateUser } = useAuth();
+  const navigate = useNavigation();
+  const { themeDark } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
-  const [loadingResponse, setLoadingResponse] = useState(false);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
-  const [clubChoose, setClubChoose] = useState<Clube>(
-    user?.heartClub || initClube()
-  );
   const [clubes, setClubes] = useState<Clube[]>([]);
   const [clubesFilter, setClubesFilter] = useState<Clube[]>([]);
 
@@ -105,67 +100,12 @@ export default function HeartClub() {
     setClubesFilter(clubFilter);
   }
 
-  function messageSnackbar(message: string, color: string) {
-    Snackbar.show({
-      text: message,
-      duration: Snackbar.LENGTH_LONG,
-      backgroundColor: color,
-      textColor: theme.textWhite,
-      fontFamily: 'SairaSemiCondensed-Medium',
-    });
-  }
-
-  async function handleConfirmButtom() {
-    setLoadingResponse(true);
-    if (clubChoose.name) {
-      const { data, error } = await chooseClub(
-        user?.email || '',
-        clubChoose.id
-      );
-      if (error === '') {
-        if (user) {
-          user.heartClub = data.heartClub;
-          updateUser({ ...user });
-        }
-        messageSnackbar('Clube escolhido com sucesso.', theme.greenSecundary);
-      } else {
-        messageSnackbar(error, theme.textRed);
-      }
-    } else {
-      messageSnackbar('Clube não escolhido.', theme.textRed);
-    }
-    setLoadingResponse(false);
-  }
-
-  function viewClubChoose() {
-    return clubChoose.name ? (
-      <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>
-        <Image
-          style={styles.cardImg}
-          resizeMode="contain"
-          source={{ uri: clubChoose.logo }}
-        />
-        <Text style={[styles.cardText, { color: theme.textGray2 }]}>
-          {clubChoose.name}
-        </Text>
-      </View>
-    ) : (
-      <View
-        style={[
-          styles.card,
-          { justifyContent: 'center', backgroundColor: theme.whitePrimary },
-        ]}
-      >
-        <Text style={[styles.cardText, { color: theme.textGray2 }]}>
-          Sem Clube
-        </Text>
-      </View>
-    );
+  function handleChooseClub(club: Clube) {
+    navigate.navigate('ClubShowScreen', { clube: club });
   }
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
-      {loadingResponse ? <LoadingResponse /> : <View />}
       <View style={styles.viewSearch}>
         <Text style={[styles.titleText, { color: theme.greenPrimary }]}>
           Escolha o Clube de Coração
@@ -186,7 +126,7 @@ export default function HeartClub() {
               <TouchableOpacity
                 style={[styles.card, { backgroundColor: theme.whitePrimary }]}
                 key={club.id}
-                onPress={() => setClubChoose(club)}
+                onPress={() => handleChooseClub(club)}
               >
                 <Image
                   style={styles.cardImg}
@@ -200,13 +140,6 @@ export default function HeartClub() {
             ))}
           </ScrollView>
         )}
-      </View>
-      <View style={[styles.viewInfo, { borderTopColor: theme.textGray4 }]}>
-        <Text style={[styles.titleTextInfo, { color: theme.greenPrimary }]}>
-          Clube escolhido
-        </Text>
-        {viewClubChoose()}
-        <ButtonConfirmComponent onPress={handleConfirmButtom} />
       </View>
     </View>
   );
