@@ -52,33 +52,35 @@ export default function ResetPassword() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       {loading ? <LoadingResponse /> : <View />}
-      <ScrollView>
-        <View style={{ height: 20 }} />
-        <TitleComponent text="Escreva o código recebido pelo e-mail junto com a nova senha" />
-        <InputComponent
-          label="Código"
-          placeholder="Código"
-          value={codig}
-          onChange={setCodig}
-        />
-        <InputComponent
-          label="Senha"
-          placeholder="Senha"
-          password
-          value={password}
-          onChange={setPassword}
-        />
-        <InputComponent
-          label="Confirme a senha"
-          placeholder="Senha"
-          password
-          value={confirmPassword}
-          onChange={setConfirmPassword}
-        />
-      </ScrollView>
-      <ButtonConfirm onPress={handleConfirm} />
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={{ height: 20 }} />
+          <TitleComponent text="Escreva o código recebido pelo e-mail junto com a nova senha" />
+          <InputComponent
+            label="Código"
+            placeholder="Código"
+            value={codig}
+            onChange={setCodig}
+          />
+          <InputComponent
+            label="Senha"
+            placeholder="Senha"
+            password
+            value={password}
+            onChange={setPassword}
+          />
+          <InputComponent
+            label="Confirme a senha"
+            placeholder="Senha"
+            password
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+          />
+        </ScrollView>
+        <ButtonConfirm onPress={handleConfirm} />
+      </View>
     </View>
   );
 }

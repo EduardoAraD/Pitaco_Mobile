@@ -73,11 +73,11 @@ export default function SignUp() {
       {loading ? <LoadingResponse /> : <View />}
       <View style={styles.container}>
         <ScrollView>
-          <TitleComponent text="Cadastre-se e desafie seus amigos no Pitaco" />
+          <TitleComponent text="Cadastre-se e desafie seus amigos no Appitacos" />
           <View style={styles.inputContent}>
             <InputComponent
-              label="Nome"
-              placeholder="Nome"
+              label="Nickname"
+              placeholder="Nickname"
               onChange={setName}
               value={name}
             />

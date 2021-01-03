@@ -64,19 +64,21 @@ export default function ForgotPassword() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       {loading ? <LoadingResponse /> : <View />}
-      <TitleComponent text="Será enviado um código para seu email para redefinição de senha" />
-      <View style={styles.containerEmail}>
-        <InputComponent
-          label="E-mail"
-          placeholder="E-mail"
-          onChange={setEmail}
-          value={email}
-          keyboardType="email-address"
-        />
+      <View style={styles.container}>
+        <TitleComponent text="Será enviado um código para seu email para redefinição de senha" />
+        <View style={styles.containerEmail}>
+          <InputComponent
+            label="E-mail"
+            placeholder="E-mail"
+            onChange={setEmail}
+            value={email}
+            keyboardType="email-address"
+          />
+        </View>
+        <ContinuarComponent onPress={handleForgotPassword} />
       </View>
-      <ContinuarComponent onPress={handleForgotPassword} />
     </View>
   );
 }
