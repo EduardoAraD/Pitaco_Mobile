@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../contexts/auth';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
+import ThemeLigth from '../assets/theme/light';
+import ThemeDark from '../assets/theme/dark';
 
 const styles = StyleSheet.create({
   container: {
