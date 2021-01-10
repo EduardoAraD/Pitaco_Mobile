@@ -227,11 +227,11 @@ async function getLeagueGuest(
 }
 
 async function getCommomLeagues(
-  email1: string,
-  email2: string
+  emailUser: string,
+  emailFriend: string
 ): Promise<ListLeagueResponse> {
   return api
-    .post('/commom-leagues', { email1, email2 })
+    .post('/commom-leagues', { emailUser, emailFriend })
     .then((resp: AxiosResponse) => {
       const response = resp.data;
       const leagues: League[] = response.map((item: LeagueDB) => {
@@ -274,7 +274,7 @@ async function getLeaguesPage(
       const limitRes = response.limit;
       const filterRes = response.filter;
       const { total } = response;
-      const leagues: League[] = response.league.map((item: LeagueDB) => {
+      const leagues: League[] = response.leagues.map((item: LeagueDB) => {
         return {
           id: item.id,
           name: item.name,

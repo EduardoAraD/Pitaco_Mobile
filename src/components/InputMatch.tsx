@@ -143,8 +143,16 @@ export default function InputMatch({
         >
           {match.clubeHome.name}
         </Text>
-        <Text style={[styles.cardVisiblePlacar, { color: theme.textGray1 }]}>
-          {match.status === 'finished'
+        <Text
+          style={[
+            styles.cardVisiblePlacar,
+            {
+              color:
+                match.status === 'progress' ? theme.textBlue : theme.textGray1,
+            },
+          ]}
+        >
+          {match.status !== 'notstarted'
             ? `${match.golsHome} - ${match.golsAway}`
             : ' - '}
         </Text>
@@ -159,7 +167,7 @@ export default function InputMatch({
   }
 
   function colorPoint(val: number) {
-    if (!notFinishPitaco && golsAway !== '' && golsHome !== '') {
+    if (match.status !== 'notstarted' && golsAway !== '' && golsHome !== '') {
       switch (val) {
         case 10:
           return theme.greenPrimary;

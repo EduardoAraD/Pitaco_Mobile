@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useAuth } from '../contexts/auth';
 
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   areaText: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   textValor: {
     width: 20,
@@ -68,7 +69,7 @@ export default function ItemStandingComplete({ item }: Props) {
   const { themeDark } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
 
-  function textVariacao(num: number) {
+  /* function textVariacao(num: number) {
     if (num > 0)
       return (
         <View style={styles.areaVariacao}>
@@ -110,7 +111,7 @@ export default function ItemStandingComplete({ item }: Props) {
         </Text>
       </View>
     );
-  }
+  } */
 
   function colorBorderLeft() {
     switch (item.status) {
@@ -151,7 +152,7 @@ export default function ItemStandingComplete({ item }: Props) {
           {item.clube.name}
         </Text>
         <View style={styles.areaText}>
-          {textVariacao(0)}
+          {/* textVariacao(0) */}
           <Text style={[styles.textValor, { color: theme.textGray2 }]}>
             {item.points}
           </Text>

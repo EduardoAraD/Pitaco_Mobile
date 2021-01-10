@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   textCardPlacar: {
     fontSize: 25,
-    fontFamily: 'SairaSemiCondensed-Bold',
+    fontFamily: 'SairaSemiCondensed-SemiBold',
   },
   textCardName: {
     fontSize: 12,
@@ -82,8 +82,18 @@ export default function ItemMatch({ match }: Props) {
           <Text
             style={[styles.textCardHora, { color: theme.textGray3 }]}
           >{`${match.date} - ${match.hour}`}</Text>
-          <Text style={[styles.textCardPlacar, { color: theme.textGray1 }]}>
-            {match.status === 'finished'
+          <Text
+            style={[
+              styles.textCardPlacar,
+              {
+                color:
+                  match.status === 'progress'
+                    ? theme.textBlue
+                    : theme.textGray1,
+              },
+            ]}
+          >
+            {match.status !== 'notstarted'
               ? `${match.golsHome} - ${match.golsAway}`
               : '  -  '}
           </Text>

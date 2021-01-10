@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useAuth } from '../contexts/auth';
 
@@ -79,13 +79,13 @@ export default function ItemStanding({
   wins,
   golsScore,
   golsDiff,
-  positionVariation,
+  // positionVariation,
   status,
 }: Props) {
   const { themeDark } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
 
-  function textVariacao(num: number) {
+  /* function textVariacao(num: number) {
     if (num > 0)
       return (
         <View style={styles.areaVariacao}>
@@ -112,7 +112,7 @@ export default function ItemStanding({
         </Text>
       </View>
     );
-  }
+  } */
 
   function colorBorderLeft() {
     switch (status) {
@@ -153,7 +153,8 @@ export default function ItemStanding({
           {clube.name}
         </Text>
         <View style={styles.areaText}>
-          {textVariacao(positionVariation || 0)}
+          {/* textVariacao(positionVariation || 0) */}
+          <View style={{ width: '40%' }} />
           <Text style={[styles.textValor, { color: theme.textGray2 }]}>
             {points}
           </Text>

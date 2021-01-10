@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   cardInfoTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'SairaSemiCondensed-Bold',
   },
   cardInfoDono: {
