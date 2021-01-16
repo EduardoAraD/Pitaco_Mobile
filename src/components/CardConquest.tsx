@@ -31,6 +31,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'SairaSemiCondensed-Bold',
   },
+  cardInfoDescri: {
+    fontSize: 11,
+    marginRight: 5,
+    fontFamily: 'SairaSemiCondensed-Medium',
+  },
   cardInfoPos: {
     fontSize: 10,
     fontFamily: 'SairaSemiCondensed-Medium',
@@ -56,9 +61,14 @@ export default function CardConquest({ conquest }: Props) {
         <Text style={[styles.cardInfoName, { color: theme.yellowPrimary }]}>
           {conquest.league.name}
         </Text>
-        <Text style={[styles.cardInfoPos, { color: theme.textGray2 }]}>
-          {conquest.position}° Lugar
-        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={[styles.cardInfoDescri, { color: theme.greenPrimary }]}>
+            {conquest.description.toUpperCase()}
+          </Text>
+          <Text style={[styles.cardInfoPos, { color: theme.textGray2 }]}>
+            {conquest.position}° Lugar
+          </Text>
+        </View>
       </View>
     </View>
   );

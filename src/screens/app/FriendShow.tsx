@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   },
   scrollHor: {
     marginVertical: 10,
+    paddingBottom: 5,
   },
   scrollVer: {
     marginTop: 15,
@@ -186,7 +187,7 @@ export default function FriendShow() {
         </Text>
         <ScrollView style={styles.scrollHor} horizontal>
           {friend.conquests.map((conquest) => (
-            <CardConquest conquest={conquest} key={conquest.league.id} />
+            <CardConquest conquest={conquest} key={conquest.id} />
           ))}
         </ScrollView>
         <Text style={[styles.textTitle, { color: theme.greenPrimary }]}>
