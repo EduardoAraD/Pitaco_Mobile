@@ -1,35 +1,9 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import api from './api';
 
-import { initLeague, League } from '../models/League';
+import { initLeague, League, logoTrophy } from '../models/League';
 import { Point, initPoint } from '../models/Point';
 import { User } from '../models/User';
-
-import Trophy1Img from '../assets/images/trophy1.png';
-import Trophy2Img from '../assets/images/trophy2.png';
-import Trophy3Img from '../assets/images/trophy3.png';
-import Trophy4Img from '../assets/images/trophy4.png';
-import Trophy5Img from '../assets/images/trophy5.png';
-import Trophy6Img from '../assets/images/trophy6.png';
-
-function logoTrophy(val: string) {
-  switch (val) {
-    case '0':
-      return Trophy1Img;
-    case '1':
-      return Trophy2Img;
-    case '2':
-      return Trophy3Img;
-    case '3':
-      return Trophy4Img;
-    case '4':
-      return Trophy5Img;
-    case '5':
-      return Trophy6Img;
-    default:
-      return { uri: val };
-  }
-}
 
 interface LeaguePointResponse {
   data: {
