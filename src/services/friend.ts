@@ -1,5 +1,7 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { User } from '../models/User';
+import { Conquest } from '../models/Conquest';
+import { User, UserApi, initUser } from '../models/User';
+import { logoTrophy } from '../models/League';
 import api from './api';
 
 interface ListUserResponse {
@@ -23,7 +25,33 @@ async function getFriends(email: string): Promise<ListUserResponse> {
     .post('/friends', { email })
     .then((resp: AxiosResponse) => {
       const response = resp.data;
-      return { data: response, error: '' };
+      const data: User[] = response.map((item: UserApi) => {
+        const user: User = {
+          name: item.name,
+          avatar: item.avatar,
+          email: item.email,
+          points: item.points,
+          heartClub: item.heartClub,
+          conquests: item.conquests.map((itemConquest) => {
+            const conquest: Conquest = {
+              id: itemConquest.id,
+              league: {
+                name: itemConquest.league.name,
+                description: itemConquest.league.description,
+                dono: initUser(),
+                id: itemConquest.league.id,
+                logo: logoTrophy(itemConquest.league.trophy),
+                points: [],
+              },
+              position: itemConquest.position,
+              description: itemConquest.description,
+            };
+            return conquest;
+          }),
+        };
+        return user;
+      });
+      return { data, error: '' };
     })
     .catch((err: AxiosError) => {
       const error = err.response?.data.error;
