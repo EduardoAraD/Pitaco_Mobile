@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   cardStandingTitleText: {
     fontSize: 14,
-    fontFamily: 'SairaSemiCondensed-Light',
+    fontFamily: 'SairaSemiCondensed-Medium',
   },
 });
 
@@ -285,7 +285,7 @@ export default function LeagueShow() {
           />
           <View style={styles.cardLeagueInfo}>
             <Text
-              style={[styles.cardLeagueInfoDescrip, { color: theme.textGray3 }]}
+              style={[styles.cardLeagueInfoDescrip, { color: theme.textGray2 }]}
             >
               {league.description}
             </Text>

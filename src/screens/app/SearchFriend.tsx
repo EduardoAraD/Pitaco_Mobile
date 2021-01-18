@@ -6,6 +6,7 @@ import Snackbar from 'react-native-snackbar';
 import { useAuth } from '../../contexts/auth';
 
 import SearchInput from '../../components/SearchInput';
+import LoadingResponse from '../../components/LoadingResponse';
 
 import { User } from '../../models/User';
 
@@ -77,6 +78,7 @@ export default function SearchFriend() {
   const { themeDark, user } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loading, setLoading] = useState(false);
+  const [loadingResponse, setLoadingResponse] = useState(false);
   const [pageCurrent, setPageCurrent] = useState(1);
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState<User[]>([]);
@@ -103,7 +105,7 @@ export default function SearchFriend() {
   }, []);
 
   async function handleSearchUser() {
-    setLoading(true);
+    setLoadingResponse(true);
     setPageCurrent(1);
     const { data, error } = await getListNotFriendsPage(
       1,
@@ -115,7 +117,7 @@ export default function SearchFriend() {
       setUsers(data.users);
       setTotal(data.total);
     }
-    setLoading(false);
+    setLoadingResponse(false);
   }
 
   function messageSnackbar(message: string, color: string) {
@@ -129,6 +131,7 @@ export default function SearchFriend() {
   }
 
   async function handleAddUserFriend(userOfList: User, index: number) {
+    setLoadingResponse(true);
     const { success, error } = await addFriend(
       user?.email || '',
       userOfList.email
@@ -141,6 +144,7 @@ export default function SearchFriend() {
     } else {
       messageSnackbar(error, theme.textRed);
     }
+    setLoadingResponse(false);
   }
 
   function renderItem(item: User, index: number) {
@@ -224,6 +228,7 @@ export default function SearchFriend() {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+      {loadingResponse ? <LoadingResponse /> : <View />}
       <SearchInput
         value={search}
         setValue={setSearch}

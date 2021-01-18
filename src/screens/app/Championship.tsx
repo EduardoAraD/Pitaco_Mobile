@@ -149,7 +149,7 @@ export default function Championship() {
         style={[styles.cardStanding, { backgroundColor: theme.whitePrimary }]}
       >
         <View style={styles.cardTitleStanding}>
-          <Text style={[styles.cardTitleText, { color: theme.textGray3 }]}>
+          <Text style={[styles.cardTitleText, { color: theme.textGray2 }]}>
             Classificação - Brasileiro A 20/21
           </Text>
           <View
