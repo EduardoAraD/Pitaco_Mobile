@@ -5,6 +5,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import { useAuth } from '../../contexts/auth';
 
 import TitleComponent from '../../components/TitleComponent';
@@ -38,6 +39,7 @@ const styles = StyleSheet.create({
 });
 
 export default function SignUp() {
+  const navigation = useNavigation();
   const { signUp } = useAuth();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
@@ -64,6 +66,13 @@ export default function SignUp() {
         textColor: colors.textWhite,
         fontFamily: 'SairaSemiCondensed-Medium',
       });
+    } else {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Dashboard' }],
+        })
+      );
     }
     setLoading(false);
   }

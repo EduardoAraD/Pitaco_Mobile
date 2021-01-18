@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { Link } from '@react-navigation/native';
+import { Link, useNavigation, CommonActions } from '@react-navigation/native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Login() {
+  const navigation = useNavigation();
   const { signIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -59,6 +60,13 @@ export default function Login() {
         textColor: colors.textWhite,
         fontFamily: 'SairaSemiCondensed-Medium',
       });
+    } else {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'Dashboard' }],
+        })
+      );
     }
     setLoading(false);
   }

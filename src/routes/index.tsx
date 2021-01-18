@@ -4,7 +4,6 @@ import Lottie from 'lottie-react-native';
 import { useAuth } from '../contexts/auth';
 
 import AuthRoutes from './auth.routes';
-import AppRoutes from './app.routes';
 
 import colors from '../assets/theme/light';
 
@@ -34,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Routes() {
-  const { signed, loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return (
@@ -53,5 +52,5 @@ export default function Routes() {
     );
   }
 
-  return signed ? <AppRoutes /> : <AuthRoutes />;
+  return <AuthRoutes />;
 }

@@ -9,6 +9,7 @@ import {
 import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import { useAuth } from '../contexts/auth';
 
 import ThemeLigth from '../assets/theme/light';
@@ -64,6 +65,8 @@ const styles = StyleSheet.create({
 });
 
 export default function DrawerComponent(props: DrawerContentComponentProps) {
+  const navigation = useNavigation();
+
   const { user, themeDark, signOut, onChangeThemeDark } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
 
@@ -72,6 +75,12 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
   };
 
   function handleSignOut() {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      })
+    );
     signOut();
   }
 
