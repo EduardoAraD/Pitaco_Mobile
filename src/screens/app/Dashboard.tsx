@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { Link } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Snackbar from 'react-native-snackbar';
 
 import { useAuth } from '../../contexts/auth';
 
@@ -19,6 +18,7 @@ import ThemeLigth from '../../assets/theme/light';
 import ThemeDark from '../../assets/theme/dark';
 
 import * as servicesChampionship from '../../services/championship';
+import { getPitacoMatchToday } from '../../services/pitaco';
 
 const styles = StyleSheet.create({
   container: {
@@ -107,6 +107,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [standing, setStanding] = useState<ItemStanding[]>([]);
   const [rodada, setRodada] = useState<Rodada>(initRodada());
+  const [textAction, setTextAction] = useState(0);
   const theme = themeDark ? ThemeDark : ThemeLigth;
 
   async function loadingData() {
@@ -116,29 +117,38 @@ export default function Dashboard() {
     );
     if (standingResponse.error === '') {
       setStanding(standingResponse.data.filter((item, index) => index < 6));
-    } else {
-      Snackbar.show({
-        text: standingResponse.error,
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
-        fontFamily: 'SairaSemiCondensed-Medium',
-      });
     }
-    const matchResponse = await servicesChampionship.getRodada(
-      championship,
-      currentRodada
-    );
-    if (matchResponse.error === '') {
-      setRodada(matchResponse.data);
-    } else {
-      Snackbar.show({
-        text: matchResponse.error,
-        duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
-        fontFamily: 'SairaSemiCondensed-Medium',
-      });
+
+    const pitacoResponse = await getPitacoMatchToday(user?.email || '');
+    if (pitacoResponse.error === '') {
+      const pitacos = pitacoResponse.data;
+      if (pitacos.length !== 0) {
+        let notPitaco = false;
+        const matchs = pitacos.map((item) => {
+          if (item.pitaco.golsAway === '' || item.pitaco.golsHome === '')
+            notPitaco = true;
+          return item.match;
+        });
+        const rodadaAux: Rodada = {
+          matchs,
+          name: '',
+          number: 0,
+          prev: 0,
+          prox: 0,
+        };
+        setRodada(rodadaAux);
+        if (notPitaco) setTextAction(2);
+        else setTextAction(1);
+      } else {
+        const matchResponse = await servicesChampionship.getRodada(
+          championship,
+          currentRodada
+        );
+        if (matchResponse.error === '') {
+          setRodada(matchResponse.data);
+          setTextAction(0);
+        }
+      }
     }
     setLoading(false);
   }
@@ -146,6 +156,41 @@ export default function Dashboard() {
   useEffect(() => {
     loadingData();
   }, [user]);
+
+  function colorTextAction(val: number) {
+    switch (val) {
+      case 1:
+        return theme.greenPrimary;
+      case 2:
+        return theme.textRed;
+      default:
+        return theme.textGray1;
+    }
+  }
+
+  function textOptionAction(val: number) {
+    switch (val) {
+      case 1:
+        return 'Tudo pronto, boa sorte pitaqueiro.';
+      case 2:
+        return 'Faça seus Pitacos para os jogos de hoje.';
+      default:
+        return 'Os jogos acontecerão em dias, prepare-se.';
+    }
+  }
+
+  function textActionUser() {
+    return (
+      <Text
+        style={{
+          color: colorTextAction(textAction),
+          fontFamily: 'SairaSemiCondensed-Medium',
+        }}
+      >
+        {textOptionAction(textAction)}
+      </Text>
+    );
+  }
 
   return !loading ? (
     <View
@@ -197,15 +242,7 @@ export default function Dashboard() {
             </View>
           </View>
           <View style={styles.cardAction}>
-            <Text
-              style={{
-                fontWeight: '600',
-                color: theme.greenPrimary,
-                fontFamily: 'SairaSemiCondensed-Medium',
-              }}
-            >
-              Faça seus Pitacos para os próximos jogos
-            </Text>
+            {textActionUser()}
             <Link to="/Pitaco">
               <TouchableOpacity
                 style={[
@@ -243,7 +280,13 @@ export default function Dashboard() {
             <Icon name="dots-vertical" color={theme.textGray3} />
           </View>
         </CardTitle>
-        <CardTitle title={`Jogos da ${rodada.number}° rodada`}>
+        <CardTitle
+          title={
+            rodada.number !== 0
+              ? `Jogos da ${rodada.number}° rodada`
+              : 'Jogos de Hoje'
+          }
+        >
           {rodada.matchs.map((match) => (
             <ItemMatch key={match.id} match={match} />
           ))}
