@@ -61,7 +61,7 @@ export default function ItemStandingLeague({ point, position, isUser }: Props) {
         },
       ]}
     >
-      <Text style={[styles.text, { color: theme.textGray3 }]}>{position}.</Text>
+      <Text style={[styles.text, { color: theme.textGray2 }]}>{position}.</Text>
       <Image
         style={styles.img}
         resizeMode="contain"
@@ -82,7 +82,7 @@ export default function ItemStandingLeague({ point, position, isUser }: Props) {
       <Text
         style={[
           styles.text,
-          { color: theme.textGray3, width: 34, textAlign: 'right' },
+          { color: theme.textGray2, width: 34, textAlign: 'right' },
         ]}
       >
         {point.exactScore}

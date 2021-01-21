@@ -135,7 +135,23 @@ export default function PitacoScreen() {
       currentRodada
     );
     if (responseRodada.data !== []) {
-      setArrayMatchs(responseRodada.data);
+      const pitacosMatch: PitacoMatch[] = [];
+      for (let i = 0; i < responseRodada.data.length; i += 1) {
+        let add = false;
+        const pitacoMatchRodada = responseRodada.data[i];
+        for (let j = 0; j < responseToday.data.length; j += 1) {
+          const pitacoMatchToday = responseToday.data[j];
+          if (pitacoMatchToday.match.id === pitacoMatchRodada.match.id) {
+            pitacosMatch.push(pitacoMatchToday);
+            add = true;
+            break;
+          }
+        }
+        if (!add) {
+          pitacosMatch.push(pitacoMatchRodada);
+        }
+      }
+      setArrayMatchs(pitacosMatch);
       setNumberRodada(currentRodada);
       allRodadas.push({ rodada: currentRodada, matchs: responseRodada.data });
     } else {
@@ -162,8 +178,24 @@ export default function PitacoScreen() {
           newNumber
         );
         if (responseRodada.data !== []) {
-          setArrayMatchs(responseRodada.data);
-          allRodadas.push({ rodada: newNumber, matchs: responseRodada.data });
+          const pitacosMatch: PitacoMatch[] = [];
+          for (let i = 0; i < responseRodada.data.length; i += 1) {
+            let add = false;
+            const pitacoMatchRodada = responseRodada.data[i];
+            for (let j = 0; j < arrayMatchsToday.length; j += 1) {
+              const pitacoMatchToday = arrayMatchsToday[j];
+              if (pitacoMatchToday.match.id === pitacoMatchRodada.match.id) {
+                pitacosMatch.push(pitacoMatchToday);
+                add = true;
+                break;
+              }
+            }
+            if (!add) {
+              pitacosMatch.push(pitacoMatchRodada);
+            }
+          }
+          setArrayMatchs(pitacosMatch);
+          allRodadas.push({ rodada: newNumber, matchs: pitacosMatch });
         } else {
           messageSnackbarError(responseRodada.error);
         }
