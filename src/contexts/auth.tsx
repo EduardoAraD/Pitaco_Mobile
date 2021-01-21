@@ -108,11 +108,13 @@ export function AuthProvider({ children }: PropsAuthProvider) {
   }
 
   function signOut() {
+    setLoading(true);
     setUser(null);
     setChampionship(0);
     setCurrentRodada(0);
     setThemeDark(false);
     AsyncStorage.clear();
+    setLoading(false);
   }
 
   async function onChangeThemeDark() {

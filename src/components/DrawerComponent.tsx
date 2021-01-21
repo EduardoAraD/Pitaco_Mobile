@@ -138,7 +138,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                 <Icon name="home-outline" color={color} size={size} />
               )}
               onPress={() => {
-                props.navigation.navigate('Dashboard');
+                props.navigation.navigate('DashboardPage');
               }}
             />
             <DrawerItem
