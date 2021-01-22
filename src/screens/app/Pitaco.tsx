@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -81,6 +82,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  textNotMatch: {
+    fontSize: 16,
+    fontFamily: 'SairaSemiCondensed-Medium',
+    textAlign: 'center',
+  },
 });
 
 interface PitacoMatch {
@@ -104,6 +110,7 @@ export default function PitacoScreen() {
   const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [viewRodada, setViewRodada] = useState(true);
   const [numberRodada, setNumberRodada] = useState(currentRodada);
   const [arrayMatchs, setArrayMatchs] = useState<PitacoMatch[]>([]);
@@ -313,9 +320,7 @@ export default function PitacoScreen() {
     }
     return (
       <View style={{ padding: 10 }}>
-        <Text
-          style={{ fontSize: 16, color: theme.textGray4, textAlign: 'center' }}
-        >
+        <Text style={[styles.textNotMatch, { color: theme.textGray4 }]}>
           Sem Jogos
         </Text>
       </View>
@@ -395,11 +400,26 @@ export default function PitacoScreen() {
     setLoadingResponse(false);
   }
 
+  async function onRefreshData() {
+    setRefresh(true);
+    await loadingData();
+    setRefresh(false);
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
       {loadingResponse ? <LoadingResponse /> : <View />}
       <CardTitlePage title="Pitacos encerram 2h antes do jogo" />
-      <ScrollView style={styles.scroll}>
+      <ScrollView
+        style={styles.scroll}
+        refreshControl={
+          <RefreshControl
+            colors={[theme.greenSecundary]}
+            refreshing={refresh}
+            onRefresh={onRefreshData}
+          />
+        }
+      >
         <DoubleConfirm
           nameOption1="Hoje"
           nameOption2="Rodada"

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Snackbar from 'react-native-snackbar';
@@ -79,6 +85,7 @@ export default function Championship() {
   const { themeDark, championship, currentRodada } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [viewOptionStandingMatch, setViewOptionStandingMatch] = useState(true);
   const [itemsStanding, setItemsStanding] = useState<ItemStanding[]>([]);
   const [numberRodada, setNumberRodada] = useState(1);
@@ -223,9 +230,24 @@ export default function Championship() {
     );
   }
 
+  async function onRefreshData() {
+    setRefresh(true);
+    await loadingData();
+    setRefresh(false);
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
-      <ScrollView style={styles.scroll}>
+      <ScrollView
+        style={styles.scroll}
+        refreshControl={
+          <RefreshControl
+            colors={[theme.greenSecundary]}
+            refreshing={refresh}
+            onRefresh={onRefreshData}
+          />
+        }
+      >
         <DoubleButtom
           nameOption1="Jogos"
           nameOption2="Tabela"

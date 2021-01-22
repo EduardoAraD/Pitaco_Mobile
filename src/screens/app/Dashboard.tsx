@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import { Link } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -108,6 +115,7 @@ export default function Dashboard() {
   const [standing, setStanding] = useState<ItemStanding[]>([]);
   const [rodada, setRodada] = useState<Rodada>(initRodada());
   const [textAction, setTextAction] = useState(0);
+  const [refresh, setRefresh] = useState(false);
   const theme = themeDark ? ThemeDark : ThemeLigth;
 
   async function loadingData() {
@@ -192,11 +200,26 @@ export default function Dashboard() {
     );
   }
 
+  async function onRefreshData() {
+    setRefresh(true);
+    await loadingData();
+    setRefresh(false);
+  }
+
   return !loading ? (
     <View
       style={[styles.container, { backgroundColor: theme.backgroundWhite }]}
     >
-      <ScrollView style={styles.scroll}>
+      <ScrollView
+        style={styles.scroll}
+        refreshControl={
+          <RefreshControl
+            colors={[theme.greenSecundary]}
+            refreshing={refresh}
+            onRefresh={onRefreshData}
+          />
+        }
+      >
         <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>
           <View style={[styles.cardPerfil, { borderColor: theme.textGray4 }]}>
             <View style={styles.cardUser}>
