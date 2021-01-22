@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+  RouteProp,
+  CommonActions,
+} from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useAuth } from '../../contexts/auth';
@@ -48,7 +53,12 @@ export default function SucessLeague() {
   const { league } = route.params;
 
   function handleContinuar() {
-    navigation.navigate('LeagueScreen');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'LeagueScreen' }],
+      })
+    );
   }
 
   return (

@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   cardStanding: {
     marginVertical: 20,
     width: '100%',
+    minHeight: 120,
     borderRadius: 20,
     elevation: 3,
   },
@@ -106,6 +107,7 @@ const styles = StyleSheet.create({
   contentItensPicker: {
     position: 'absolute',
     width: 110,
+    height: 80,
     right: 10,
     top: 41,
     zIndex: 999,

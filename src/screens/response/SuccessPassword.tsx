@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useAuth } from '../../contexts/auth';
@@ -35,7 +35,12 @@ export default function SucessPassword() {
   const navigation = useNavigation();
 
   function handleContinuar() {
-    navigation.navigate('Login');
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      })
+    );
   }
 
   return (

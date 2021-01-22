@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  CommonActions,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
@@ -35,6 +40,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     height: 42,
     borderRadius: 10,
+    elevation: 3,
   },
 });
 
@@ -66,7 +72,12 @@ export default function RemoveLeague() {
         fontFamily: 'SairaSemiCondensed-Medium',
       });
 
-      navigation.navigate('LeagueScreen');
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'LeagueScreen' }],
+        })
+      );
     } else {
       Snackbar.show({
         text: error,
@@ -85,7 +96,7 @@ export default function RemoveLeague() {
         barStyle="light-content"
       />
       <Text style={[styles.text, { color: theme.textWhite }]}>
-        Você quer mesmo excluir a liga {league.name}?
+        Você quer mesmo excluir {`"${league.name}"`}?
       </Text>
       <CardLeague
         isClicked={false}
@@ -97,7 +108,7 @@ export default function RemoveLeague() {
       <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={[styles.buttom, { backgroundColor: theme.blueSecundary }]}
+          style={[styles.buttom, { backgroundColor: theme.textRed }]}
         >
           <Text style={[styles.text, { color: theme.textWhite }]}>Não</Text>
         </TouchableOpacity>
