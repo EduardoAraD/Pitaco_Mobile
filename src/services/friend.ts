@@ -54,8 +54,11 @@ async function getFriends(email: string): Promise<ListUserResponse> {
       return { data, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -67,8 +70,11 @@ async function getListNotFriends(email: string): Promise<ListUserResponse> {
       return { data: response, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -85,10 +91,10 @@ async function getListNotFriendsPage(
       return { data: response, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: { limit: 1, page: 1, users: [], filter: '', total: 0 },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -103,8 +109,11 @@ async function addFriend(
       return { success: 'Pitaqueiro adicionado como amigo.', error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { success: '', error };
+      const error = err.response?.data.error || err.message;
+      return {
+        success: '',
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 

@@ -20,8 +20,11 @@ async function getStandingChampionship(
       return response;
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      const response = { data: [], error };
+      const error = err.response?.data.error || err.message;
+      const response = {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
       return response;
     });
 }
@@ -42,8 +45,11 @@ async function getRodada(
       return { data, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: initRodada(), error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: initRodada(),
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -55,8 +61,11 @@ async function getClubes(): Promise<{ data: Clube[]; error: string }> {
       return { data, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 

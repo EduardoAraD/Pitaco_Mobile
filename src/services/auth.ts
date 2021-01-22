@@ -22,7 +22,7 @@ async function signIn(email: string, password: string): Promise<Response> {
       return response;
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       const response: Response = {
         data: {
           token: '',
@@ -30,7 +30,7 @@ async function signIn(email: string, password: string): Promise<Response> {
           championship: -1,
           rodada: 0,
         },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
       return response;
     });
@@ -50,7 +50,7 @@ async function register(
       return response;
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       const response: Response = {
         data: {
           token: '',
@@ -58,7 +58,7 @@ async function register(
           championship: -1,
           rodada: 0,
         },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
       return response;
     });
@@ -73,7 +73,7 @@ async function initUserApp(email: string): Promise<Response> {
       return response;
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       const response: Response = {
         data: {
           token: '',
@@ -81,7 +81,7 @@ async function initUserApp(email: string): Promise<Response> {
           championship: -1,
           rodada: 0,
         },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
       return response;
     });
@@ -99,8 +99,11 @@ async function forgotPassword(email: string): Promise<MessageResponse> {
       return { success: 'E-mail enviado com sucesso', error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { success: '', error };
+      const error = err.response?.data.error || err.message;
+      return {
+        success: '',
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -115,8 +118,11 @@ async function resetPassword(
       return { success: 'Senha alterada com sucesso', error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { success: '', error };
+      const error = err.response?.data.error || err.message;
+      return {
+        success: '',
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 

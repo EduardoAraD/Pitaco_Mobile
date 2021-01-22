@@ -44,8 +44,11 @@ async function getPitacoMatchToday(
       return { data: matchPitaco, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -78,8 +81,11 @@ async function getPitacoMatchRodada(
       return { data: matchPitaco, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -100,8 +106,11 @@ async function createPitacoMatch(
       return { pitacos: response, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { pitacos: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        pitacos: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 

@@ -13,8 +13,11 @@ async function chooseClub(
       return { data: response, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: initUser(), error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: initUser(),
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 

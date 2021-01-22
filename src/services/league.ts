@@ -40,10 +40,10 @@ async function getLeaguePitaco(
       return { data: { position, point, league }, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: { league: initLeague(), point: initPoint(), position: -1 },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -70,10 +70,10 @@ async function getLeagueHeartPitaco(
       return { data: { position, point, league }, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: { league: initLeague(), point: initPoint(), position: -1 },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -99,10 +99,10 @@ async function getLeagueDono(
       return { data: { position, point, league }, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: { league: initLeague(), point: initPoint(), position: -1 },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -129,8 +129,11 @@ async function createLeague(
       return { data: league, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: initLeague(), error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: initLeague(),
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -195,8 +198,11 @@ async function getLeagueGuest(
       return { data: leaguesResp, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -221,8 +227,11 @@ async function getCommomLeagues(
       return { data: leagues, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -270,10 +279,10 @@ async function getLeaguesPage(
       };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: { limit: 1, page: 1, filter: '', total: 0, leagues: [] },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -294,8 +303,11 @@ async function showLeague(id: number): Promise<LeagueResponse> {
       return { data: league, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: initLeague(), error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: initLeague(),
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -347,10 +359,10 @@ async function showPointLeaguePage(
       };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: { limit: 1, page: 1, filter: '', total: 0, points: [] },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -381,10 +393,10 @@ async function showPointLeagueHeartClubPage(
       };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: { limit: 1, page: 1, filter: '', total: 0, points: [] },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -416,7 +428,7 @@ async function showPointLeaguePageRodada(
       };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: {
           limit: 1,
@@ -426,7 +438,7 @@ async function showPointLeaguePageRodada(
           points: [],
           rodada: 0,
         },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -465,7 +477,7 @@ async function showPointLeagueHeartClubPageRodada(
       };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
+      const error = err.response?.data.error || err.message;
       return {
         data: {
           limit: 1,
@@ -475,7 +487,7 @@ async function showPointLeagueHeartClubPageRodada(
           points: [],
           rodada: 0,
         },
-        error,
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
       };
     });
 }
@@ -490,8 +502,11 @@ async function getSolitationLeague(
       return { data: response, error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { data: [], error };
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -510,8 +525,11 @@ async function createSolicitation(
       return { success: 'Solicitação realizada com sucesso', error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { success: '', error };
+      const error = err.response?.data.error || err.message;
+      return {
+        success: '',
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -528,8 +546,11 @@ async function resultSolicitation(
       return { success: 'Removido a solicitação do pitaqueiro.', error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { success: '', error };
+      const error = err.response?.data.error || err.message;
+      return {
+        success: '',
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
@@ -543,8 +564,11 @@ async function deleteLeague(
       return { success: 'Liga excluída com sucesso', error: '' };
     })
     .catch((err: AxiosError) => {
-      const error = err.response?.data.error;
-      return { success: '', error };
+      const error = err.response?.data.error || err.message;
+      return {
+        success: '',
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
     });
 }
 
