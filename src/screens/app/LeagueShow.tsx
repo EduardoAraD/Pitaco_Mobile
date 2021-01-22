@@ -10,6 +10,7 @@ import {
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useAuth } from '../../contexts/auth';
 
@@ -23,11 +24,7 @@ import { Point } from '../../models/Point';
 import ThemeLigth from '../../assets/theme/light';
 import ThemeDark from '../../assets/theme/dark';
 
-import {
-  createSolicitation,
-  showPointLeaguePage,
-  showPointLeagueHeartClubPage,
-} from '../../services/league';
+import * as servicesLeague from '../../services/league';
 
 const styles = StyleSheet.create({
   scroll: {
@@ -91,13 +88,34 @@ const styles = StyleSheet.create({
   },
   cardStandingTitle: {
     height: 40,
-    paddingLeft: 15,
-    justifyContent: 'center',
+    paddingHorizontal: 15,
+    justifyContent: 'space-between',
+    alignItems: 'center',
     borderBottomWidth: 1,
+    flexDirection: 'row',
   },
   cardStandingTitleText: {
     fontSize: 14,
     fontFamily: 'SairaSemiCondensed-Medium',
+  },
+  picker: {
+    width: 100,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  contentItensPicker: {
+    position: 'absolute',
+    width: 110,
+    right: 10,
+    top: 41,
+    zIndex: 999,
+    elevation: 5,
+  },
+  itemPicker: {
+    justifyContent: 'center',
+    height: 40,
+    borderBottomWidth: 1,
+    paddingHorizontal: 4,
   },
 });
 
@@ -114,7 +132,7 @@ type ParamList = {
 };
 
 export default function LeagueShow() {
-  const { themeDark } = useAuth();
+  const { themeDark, championship } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigation();
@@ -130,6 +148,9 @@ export default function LeagueShow() {
   const limit = 50;
   const [points, setPoints] = useState<Point[]>(league.points);
   const [loading, setLoading] = useState(false);
+  const [modeClassification, setModeClassification] = useState(1);
+  const [visibleSelect, setVisibleSelect] = useState(false);
+  const [numRodada, setNumRodada] = useState(0);
 
   function messageSnackbar(message: string, color: string) {
     Snackbar.show({
@@ -144,9 +165,38 @@ export default function LeagueShow() {
   async function loadingData() {
     setLoading(true);
     if (isLeagueHeartClub) {
-      const { data, error } = await showPointLeagueHeartClubPage(
+      if (modeClassification === 1) {
+        const {
+          data,
+          error,
+        } = await servicesLeague.showPointLeagueHeartClubPage(
+          league.id,
+          clubeId,
+          1,
+          limit
+        );
+        if (error === '') {
+          setPoints(data.points);
+        }
+      } else {
+        const {
+          data,
+          error,
+        } = await servicesLeague.showPointLeagueHeartClubPageRodada(
+          league.id,
+          clubeId,
+          1,
+          limit,
+          championship
+        );
+        if (error === '') {
+          setPoints(data.points);
+          setNumRodada(data.rodada);
+        }
+      }
+    } else if (modeClassification === 1) {
+      const { data, error } = await servicesLeague.showPointLeaguePage(
         league.id,
-        clubeId,
         1,
         limit
       );
@@ -154,9 +204,15 @@ export default function LeagueShow() {
         setPoints(data.points);
       }
     } else {
-      const { data, error } = await showPointLeaguePage(league.id, 1, limit);
+      const { data, error } = await servicesLeague.showPointLeaguePageRodada(
+        league.id,
+        1,
+        limit,
+        championship
+      );
       if (error === '') {
         setPoints(data.points);
+        setNumRodada(data.rodada);
       }
     }
     setLoading(false);
@@ -200,12 +256,50 @@ export default function LeagueShow() {
   }
 
   async function handleParticipationLeague() {
-    const { success, error } = await createSolicitation(league.id, user.email);
+    const { success, error } = await servicesLeague.createSolicitation(
+      league.id,
+      user.email
+    );
     if (error === '') {
       messageSnackbar(success, theme.greenSecundary);
     } else {
       messageSnackbar(error, theme.textRed);
     }
+  }
+
+  async function updateModeClassification(value: number) {
+    setModeClassification(value);
+    setVisibleSelect(false);
+    await loadingData();
+  }
+
+  function itemSelect(text: string, value: number) {
+    return (
+      <TouchableOpacity
+        style={[styles.itemPicker, { borderBottomColor: theme.textGray2 }]}
+        onPress={() => updateModeClassification(value)}
+      >
+        <Text
+          style={[styles.cardStandingTitleText, { color: theme.textGray2 }]}
+        >
+          {text}
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+
+  function itemsSelect() {
+    return (
+      <View
+        style={[
+          styles.contentItensPicker,
+          { backgroundColor: themeDark ? theme.textGray4 : theme.whitePrimary },
+        ]}
+      >
+        {itemSelect('Total', 1)}
+        {itemSelect('Última rodada', 2)}
+      </View>
+    );
   }
 
   function viewButtomActions() {
@@ -303,9 +397,30 @@ export default function LeagueShow() {
             <Text
               style={[styles.cardStandingTitleText, { color: theme.textGray2 }]}
             >
-              Classificação
+              {modeClassification === 1
+                ? 'Classificação'
+                : `Classificação ${numRodada}° Rodada`}
             </Text>
+            <TouchableOpacity
+              style={styles.picker}
+              onPress={() => setVisibleSelect(!visibleSelect)}
+            >
+              <Text
+                style={[
+                  styles.cardStandingTitleText,
+                  { color: theme.textGray2 },
+                ]}
+              >
+                {modeClassification === 1 ? 'Todos' : 'Última rodada'}
+              </Text>
+              <Icon
+                name={visibleSelect ? 'chevron-up' : 'chevron-down'}
+                color={theme.textGray2}
+                size={20}
+              />
+            </TouchableOpacity>
           </View>
+          {visibleSelect ? itemsSelect() : <View />}
           {loading ? (
             <View style={{ margin: 10, alignItems: 'center' }}>
               <ActivityIndicator size="small" color={theme.greenPrimary} />

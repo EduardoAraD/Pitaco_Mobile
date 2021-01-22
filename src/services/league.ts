@@ -311,6 +311,17 @@ interface PointLeagueResponse {
   error: string;
 }
 
+interface PointLeagueRodadaResponse {
+  data: {
+    limit: number;
+    page: number;
+    points: Point[];
+    total: number;
+    rodada: number;
+  };
+  error: string;
+}
+
 async function showPointLeaguePage(
   id: number,
   page: number,
@@ -373,6 +384,97 @@ async function showPointLeagueHeartClubPage(
       const error = err.response?.data.error;
       return {
         data: { limit: 1, page: 1, filter: '', total: 0, points: [] },
+        error,
+      };
+    });
+}
+
+async function showPointLeaguePageRodada(
+  id: number,
+  page: number,
+  limit: number,
+  championship: number
+): Promise<PointLeagueRodadaResponse> {
+  return api
+    .post('/leagues-points-last', { id, page, limit, championship })
+    .then((resp: AxiosResponse) => {
+      const response = resp.data;
+      const pageRes = response.page;
+      const limitRes = response.limit;
+      const filterRes = response.filter;
+      const { total, points, rodada } = response;
+      return {
+        data: {
+          page: pageRes,
+          limit: limitRes,
+          filter: filterRes,
+          points,
+          total,
+          rodada,
+        },
+        error: '',
+      };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error;
+      return {
+        data: {
+          limit: 1,
+          page: 1,
+          filter: '',
+          total: 0,
+          points: [],
+          rodada: 0,
+        },
+        error,
+      };
+    });
+}
+
+async function showPointLeagueHeartClubPageRodada(
+  id: number,
+  clubeId: number,
+  page: number,
+  limit: number,
+  championship: number
+): Promise<PointLeagueRodadaResponse> {
+  return api
+    .post('/leagues-heartClub-points-last', {
+      id,
+      clubeId,
+      page,
+      limit,
+      championship,
+    })
+    .then((resp: AxiosResponse) => {
+      const response = resp.data;
+      const pageRes = response.page;
+      const limitRes = response.limit;
+      const filterRes = response.filter;
+      const { total, points, rodada } = response;
+      return {
+        data: {
+          page: pageRes,
+          limit: limitRes,
+          filter: filterRes,
+          points,
+          total,
+          rodada,
+        },
+        error: '',
+      };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error;
+      return {
+        data: {
+          limit: 1,
+          page: 1,
+          filter: '',
+          total: 0,
+          points: [],
+          rodada: 0,
+        },
         error,
       };
     });
@@ -456,7 +558,9 @@ export {
   getLeaguesPage,
   showLeague,
   showPointLeaguePage,
+  showPointLeaguePageRodada,
   showPointLeagueHeartClubPage,
+  showPointLeagueHeartClubPageRodada,
   deleteLeague,
   getSolitationLeague,
   createSolicitation,
