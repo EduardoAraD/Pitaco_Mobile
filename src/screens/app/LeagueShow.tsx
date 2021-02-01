@@ -134,7 +134,7 @@ type ParamList = {
 };
 
 export default function LeagueShow() {
-  const { themeDark, championship } = useAuth();
+  const { themeDark, championship, currentRodada } = useAuth();
   const theme = themeDark ? ThemeDark : ThemeLigth;
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigation();
@@ -152,7 +152,7 @@ export default function LeagueShow() {
   const [loading, setLoading] = useState(false);
   const [modeClassification, setModeClassification] = useState(1);
   const [visibleSelect, setVisibleSelect] = useState(false);
-  const [numRodada, setNumRodada] = useState(0);
+  const [numRodada, setNumRodada] = useState(currentRodada);
 
   function messageSnackbar(message: string, color: string) {
     Snackbar.show({
@@ -270,9 +270,11 @@ export default function LeagueShow() {
   }
 
   async function updateModeClassification(value: number) {
-    setModeClassification(value);
     setVisibleSelect(false);
-    await loadingData();
+    if (modeClassification !== value) {
+      setModeClassification(value);
+      await loadingData();
+    }
   }
 
   function itemSelect(text: string, value: number) {
