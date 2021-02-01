@@ -206,6 +206,36 @@ async function getLeagueGuest(
     });
 }
 
+async function getLeaguesUser(email: string): Promise<ListLeaguePointResponse> {
+  return api
+    .post('/league-user', { email })
+    .then((resp: AxiosResponse) => {
+      const response = resp.data;
+      const leaguesResp = response.map((item: LeaguePointDB) => {
+        return {
+          point: item.point,
+          position: item.position,
+          league: {
+            id: item.league.id,
+            name: item.league.name,
+            description: item.league.description,
+            dono: item.league.dono,
+            logo: logoTrophy(item.league.trophy),
+            points: item.league.points,
+          },
+        };
+      });
+      return { data: leaguesResp, error: '' };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error || err.message;
+      return {
+        data: [],
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
+    });
+}
+
 async function getCommomLeagues(
   emailUser: string,
   emailFriend: string
@@ -577,6 +607,7 @@ export {
   getLeagueHeartPitaco,
   getLeagueDono,
   getLeagueGuest,
+  getLeaguesUser,
   getCommomLeagues,
   createLeague,
   getLeaguesPage,
