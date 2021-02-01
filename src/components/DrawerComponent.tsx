@@ -88,10 +88,13 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
     <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
-          <View
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('Perfil');
+            }}
             style={[
               styles.userInfoSection,
-              { borderBottomColor: theme.textGray3 },
+              { borderBottomColor: theme.textGray4 },
             ]}
           >
             <Image
@@ -123,7 +126,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                 <View />
               )}
             </View>
-          </View>
+          </TouchableOpacity>
           <View
             style={[
               styles.drawerSection,
@@ -153,7 +156,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
               }}
             />
             <DrawerItem
-              label="Championship"
+              label="Campeonato Brasileiro"
               labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
@@ -164,7 +167,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
               }}
             />
             <DrawerItem
-              label="League"
+              label="Ligas"
               labelStyle={{ fontFamily: 'SairaSemiCondensed-Medium' }}
               inactiveTintColor={theme.textGray2}
               icon={({ color, size }) => (
@@ -218,7 +221,7 @@ export default function DrawerComponent(props: DrawerContentComponentProps) {
                     fontFamily: 'SairaSemiCondensed-Medium',
                   }}
                 >
-                  Dark Theme
+                  Modo Escuro
                 </Text>
                 <View pointerEvents="none">
                   <Switch

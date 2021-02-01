@@ -13,7 +13,7 @@ export default function ChampionshipRoute() {
         name="ChampionshipScreen"
         component={Championship}
         options={{
-          header: () => <Header title="Championship" border />,
+          header: () => <Header title="Campeonato Brasileiro" border />,
         }}
       />
     </Stack.Navigator>

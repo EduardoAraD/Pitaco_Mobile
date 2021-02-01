@@ -12,6 +12,7 @@ import ChampionshipRoute from './app/championship.routes';
 import LeagueRoute from './app/league.routes';
 import HeartClubRoute from './app/heartclub.routes';
 import FriendRoute from './app/friend.routes';
+import PerfilRoute from './app/perfil.routes';
 
 import DrawerComponent from '../components/DrawerComponent';
 
@@ -66,7 +67,7 @@ function TabNavigation() {
         name="Championship"
         component={ChampionshipRoute}
         options={{
-          tabBarLabel: 'Championship',
+          tabBarLabel: 'Campeonato Brasileiro',
           tabBarIcon: ({ color, size }: PropsTabBarIcon) => (
             <Icon name="soccer" color={color} size={size} />
           ),
@@ -76,7 +77,7 @@ function TabNavigation() {
         name="League"
         component={LeagueRoute}
         options={{
-          tabBarLabel: 'League',
+          tabBarLabel: 'Ligas',
           tabBarIcon: ({ color, size }: PropsTabBarIcon) => (
             <Icon name="trophy" color={color} size={size} />
           ),
@@ -97,6 +98,7 @@ export default function AppRoutes() {
       <Drawer.Screen name="HomeDrawer" component={TabNavigation} />
       <Drawer.Screen name="Friend" component={FriendRoute} />
       <Drawer.Screen name="HeartClub" component={HeartClubRoute} />
+      <Drawer.Screen name="Perfil" component={PerfilRoute} />
     </Drawer.Navigator>
   );
 }
