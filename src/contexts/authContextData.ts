@@ -27,6 +27,11 @@ export interface AuthContextData {
   ): Promise<{ success: string; error: string }>;
   onChangeThemeDark(): Promise<void>;
   updateUser(user: User): void;
+  updateUserPerfil(
+    email: string,
+    nickname: string,
+    avatar: string
+  ): Promise<string>;
 }
 
 export function init(): AuthContextData {
@@ -68,6 +73,13 @@ export function init(): AuthContextData {
     },
     updateUser: (userNew: User) => {
       AsyncStorage.setItem('@Pitaco:default', JSON.stringify(userNew));
+    },
+    updateUserPerfil: async (
+      email: string,
+      nickname: string,
+      avatar: string
+    ) => {
+      return (await auth.updateUser(email, nickname, avatar)).error;
     },
   };
 }

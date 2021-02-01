@@ -143,6 +143,19 @@ export function AuthProvider({ children }: PropsAuthProvider) {
     setUser(userNew);
   }
 
+  async function updateUserPerfil(
+    email: string,
+    nickname: string,
+    avatar: string
+  ) {
+    const data = await auth.updateUser(email, nickname, avatar);
+    if (data.error === '') {
+      setUser(data.user);
+      return '';
+    }
+    return data.error;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -159,6 +172,7 @@ export function AuthProvider({ children }: PropsAuthProvider) {
         resetPassword,
         onChangeThemeDark,
         updateUser,
+        updateUserPerfil,
       }}
     >
       {children}

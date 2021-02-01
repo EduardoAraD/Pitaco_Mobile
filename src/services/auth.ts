@@ -126,4 +126,36 @@ async function resetPassword(
     });
 }
 
-export { signIn, register, forgotPassword, resetPassword, initUserApp };
+interface UserResponse {
+  user: User;
+  error: string;
+}
+
+async function updateUser(
+  email: string,
+  nickname: string,
+  avatar: string
+): Promise<UserResponse> {
+  return api
+    .post('/edit-user', { email, nickname, avatar })
+    .then((resp: AxiosResponse) => {
+      const { data } = resp;
+      return { user: data, error: '' };
+    })
+    .catch((err: AxiosError) => {
+      const error = err.response?.data.error || err.message;
+      return {
+        user: initUser(),
+        error: error === 'Network Error' ? 'Sem conexão ao servidor' : error,
+      };
+    });
+}
+
+export {
+  signIn,
+  register,
+  forgotPassword,
+  resetPassword,
+  initUserApp,
+  updateUser,
+};
