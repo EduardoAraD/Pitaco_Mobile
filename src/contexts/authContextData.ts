@@ -6,7 +6,6 @@ export interface AuthContextData {
   signed: boolean;
   user: User | null;
   loading: boolean;
-  themeDark: boolean;
   championship: number;
   currentRodada: number;
 
@@ -25,7 +24,6 @@ export interface AuthContextData {
     password: string,
     confirmPassword: string
   ): Promise<{ success: string; error: string }>;
-  onChangeThemeDark(): Promise<void>;
   updateUser(user: User): void;
   updateUserPerfil(
     email: string,
@@ -39,7 +37,6 @@ export function init(): AuthContextData {
     signed: false,
     user: null,
     loading: false,
-    themeDark: false,
     championship: 0,
     currentRodada: 0,
     signIn: async (email: string, password: string) => {
@@ -67,9 +64,6 @@ export function init(): AuthContextData {
       confirmPassword: string
     ) => {
       return auth.resetPassword(codig, password, confirmPassword);
-    },
-    onChangeThemeDark: async () => {
-      await AsyncStorage.setItem('@Pitaco:default', 'true');
     },
     updateUser: (userNew: User) => {
       AsyncStorage.setItem('@Pitaco:default', JSON.stringify(userNew));

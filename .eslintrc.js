@@ -20,14 +20,17 @@ module.exports = {
   plugins: ["react", "prettier"],
   settings: {
     "import/resolver": {
-        node: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx']
-        },
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
+      },
     },
   },
   rules: {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    "react/jsx-filename-extension": [ "warn", {extensions: [".js", ".jsx", ".ts", ".tsx"]} ],
+    "prettierrc": {
+      "endOfLine": "auto"
+    },
+    "react/jsx-filename-extension": ["warn", { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
     "no-console": ["error", { allow: ["tron"] }],

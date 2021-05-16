@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ThemeContext } from 'styled-components';
 
 import { useAuth } from '../contexts/auth';
 
@@ -11,23 +12,20 @@ import ResetPassword from '../screens/auth/ResetPassword';
 import SuccessPassword from '../screens/response/SuccessPassword';
 import Header from '../components/HeaderComponent';
 
-import ThemeDark from '../assets/theme/dark';
-import ThemeLight from '../assets/theme/light';
-
 const Stack = createStackNavigator();
 
 export default function AuhtRoutes() {
-  const { themeDark, signed } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLight;
+  const { colors } = useContext(ThemeContext);
+  const { signed } = useAuth();
 
   return (
     <Stack.Navigator
       initialRouteName={signed ? 'Dashboard' : 'Login'}
       screenOptions={{
         headerStyle: {
-          backgroundColor: theme.greenPrimary,
+          backgroundColor: colors.greenPrimary,
         },
-        headerTintColor: theme.whitePrimary,
+        headerTintColor: colors.whitePrimary,
         headerTitleStyle: {
           fontWeight: 'bold',
           fontSize: 20,

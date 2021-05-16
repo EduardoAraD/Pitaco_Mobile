@@ -1,31 +1,17 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet, StatusBar } from 'react-native';
 import Lottie from 'lottie-react-native';
+import { ThemeContext } from 'styled-components';
 import { useAuth } from '../contexts/auth';
 
 import AuthRoutes from './auth.routes';
 
-import colors from '../assets/theme/light';
-
 import logoPitaco from '../assets/images/logo_pitaco_white.png';
 import animate from '../assets/animate/17378-soccer-loading.json';
 
+import { Container, ImageLogo, ViewAnimate } from './styles';
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.greenPrimary,
-  },
-  logo: {
-    height: 200,
-    width: 200,
-  },
-  viewAnimate: {
-    position: 'absolute',
-    bottom: 1,
-    right: 1,
-  },
   animate: {
     height: 100,
     width: 100,
@@ -34,12 +20,13 @@ const styles = StyleSheet.create({
 
 export default function Routes() {
   const { loading } = useAuth();
+  const { colors, title } = useContext(ThemeContext);
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <Image source={logoPitaco} style={styles.logo} resizeMode="contain" />
-        <View style={styles.viewAnimate}>
+      <Container>
+        <ImageLogo source={logoPitaco} resizeMode="contain" />
+        <ViewAnimate>
           <Lottie
             style={styles.animate}
             resizeMode="contain"
@@ -47,10 +34,18 @@ export default function Routes() {
             autoPlay
             loop
           />
-        </View>
-      </View>
+        </ViewAnimate>
+      </Container>
     );
   }
 
-  return <AuthRoutes />;
+  return (
+    <>
+      <StatusBar
+        backgroundColor={colors.greenPrimary}
+        barStyle={title === 'dark' ? 'dark-content' : 'light-content'}
+      />
+      <AuthRoutes />
+    </>
+  );
 }

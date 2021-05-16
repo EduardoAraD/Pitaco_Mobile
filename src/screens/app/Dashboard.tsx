@@ -27,88 +27,6 @@ import ThemeDark from '../../assets/theme/dark';
 import * as servicesChampionship from '../../services/championship';
 import { getPitacoMatchToday } from '../../services/pitaco';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scroll: {
-    paddingHorizontal: 20,
-  },
-  card: {
-    height: 200,
-    width: '100%',
-    marginTop: 20,
-    marginBottom: 10,
-    borderRadius: 20,
-    elevation: 2,
-  },
-  cardPerfil: {
-    height: 160,
-    borderBottomWidth: 2,
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  cardUser: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  cardImg: {
-    height: 100,
-    width: 100,
-    borderRadius: 50,
-  },
-  cardTextName: {
-    marginTop: 7,
-    fontSize: 18,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  cardInfo: {
-    width: 140,
-    height: 140,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  cardInfoContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  cardInfoText: {
-    fontSize: 17,
-    fontFamily: 'SairaSemiCondensed-Light',
-    marginLeft: 4,
-  },
-  cardInfoTextSemi: {
-    fontFamily: 'SairaSemiCondensed-Bold',
-    fontSize: 20,
-  },
-  cardInfoTextDestaque: {
-    fontSize: 30,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  cardAction: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  cardActionTextUndone: {
-    fontFamily: 'SairaSemiCondensed-Light',
-    // color: theme.textRed
-  },
-  cardActionButton: {
-    height: 25,
-    width: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
-  },
-});
-
 export default function Dashboard() {
   const { themeDark, user, championship, currentRodada } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -117,6 +35,88 @@ export default function Dashboard() {
   const [textAction, setTextAction] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const theme = themeDark ? ThemeDark : ThemeLigth;
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    scroll: {
+      paddingHorizontal: 20,
+    },
+    card: {
+      height: 200,
+      width: '100%',
+      marginTop: 20,
+      marginBottom: 10,
+      borderRadius: 20,
+      elevation: 2,
+    },
+    cardPerfil: {
+      height: 160,
+      borderBottomWidth: 2,
+      padding: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    cardUser: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    cardImg: {
+      height: 100,
+      width: 100,
+      borderRadius: 50,
+    },
+    cardTextName: {
+      marginTop: 7,
+      fontSize: 18,
+      fontFamily: 'SairaSemiCondensed-Bold',
+    },
+    cardInfo: {
+      width: 140,
+      height: 140,
+      padding: 10,
+      borderWidth: 1,
+      borderRadius: 20,
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+    cardInfoContent: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+    },
+    cardInfoText: {
+      fontSize: 17,
+      fontFamily: 'SairaSemiCondensed-Light',
+      marginLeft: 4,
+    },
+    cardInfoTextSemi: {
+      fontFamily: 'SairaSemiCondensed-Bold',
+      fontSize: 20,
+    },
+    cardInfoTextDestaque: {
+      fontSize: 30,
+      fontFamily: 'SairaSemiCondensed-Bold',
+    },
+    cardAction: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+    cardActionTextUndone: {
+      fontFamily: 'SairaSemiCondensed-Light',
+      // color: theme.textRed
+    },
+    cardActionButton: {
+      height: 25,
+      width: 25,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 15,
+    },
+  });
 
   async function loadingData() {
     setLoading(true);

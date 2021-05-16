@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useContext } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import { useAuth } from '../contexts/auth';
+import { ThemeContext } from 'styled-components';
 
 import DashboardRoute from './app/dashboard.routes';
 import PitacoRoute from './app/pitaco.routes';
@@ -16,9 +15,6 @@ import PerfilRoute from './app/perfil.routes';
 
 import DrawerComponent from '../components/DrawerComponent';
 
-import ThemeDark from '../assets/theme/dark';
-import ThemeLight from '../assets/theme/light';
-
 Icon.loadFont();
 
 const Tab = createBottomTabNavigator();
@@ -29,17 +25,16 @@ interface PropsTabBarIcon {
 }
 
 function TabNavigation() {
-  const { themeDark } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLight;
+  const { colors } = useContext(ThemeContext);
 
   return (
     <Tab.Navigator
       initialRouteName="DashboardPage"
       tabBarOptions={{
-        activeTintColor: theme.greenPrimary,
-        activeBackgroundColor: theme.whitePrimary,
-        inactiveTintColor: theme.textGray2,
-        inactiveBackgroundColor: theme.whitePrimary,
+        activeTintColor: colors.greenPrimary,
+        activeBackgroundColor: colors.whitePrimary,
+        inactiveTintColor: colors.textGray2,
+        inactiveBackgroundColor: colors.whitePrimary,
         labelStyle: { fontFamily: 'SairaSemiCondensed-Medium' },
       }}
     >

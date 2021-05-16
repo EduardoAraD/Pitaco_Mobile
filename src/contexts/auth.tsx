@@ -19,19 +19,16 @@ export function AuthProvider({ children }: PropsAuthProvider) {
   const [currentRodada, setCurrentRodada] = useState(1);
   const [championship, setChampionship] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [themeDark, setThemeDark] = useState(false);
 
   useEffect(() => {
     async function loadStorageData() {
       const values = await AsyncStorage.multiGet([
         '@Pitaco:email',
         '@Pitaco:token',
-        '@Pitaco:theme',
       ]);
 
       const storageEmail = values[0][1];
       const storageToken = values[1][1];
-      const storageTheme = values[2][1];
 
       if (storageEmail && storageToken) {
         api.defaults.headers.Authorization = `Bearer ${storageToken}`;
@@ -42,11 +39,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
           setChampionship(data.championship);
           setCurrentRodada(data.rodada);
           setUser(data.user);
-          if (storageTheme === 'true') {
-            setThemeDark(true);
-          } else {
-            setThemeDark(false);
-          }
         }
       }
       setLoading(false);
@@ -98,9 +90,8 @@ export function AuthProvider({ children }: PropsAuthProvider) {
 
       const emailKey = ['@Pitaco:email', data.user.email];
       const tokenKey = ['@Pitaco:token', data.token];
-      const themeKey = ['@Pitaco:theme', 'false'];
 
-      await AsyncStorage.multiSet([emailKey, tokenKey, themeKey]);
+      await AsyncStorage.multiSet([emailKey, tokenKey]);
 
       return '';
     }
@@ -112,19 +103,8 @@ export function AuthProvider({ children }: PropsAuthProvider) {
     setUser(null);
     setChampionship(0);
     setCurrentRodada(0);
-    setThemeDark(false);
     AsyncStorage.clear();
     setLoading(false);
-  }
-
-  async function onChangeThemeDark() {
-    const booleanTheme = !themeDark;
-    setThemeDark(booleanTheme);
-    if (booleanTheme) {
-      await AsyncStorage.setItem('@Pitaco:theme', 'true');
-    } else {
-      await AsyncStorage.setItem('@Pitaco:theme', 'false');
-    }
   }
 
   async function forgotPassword(email: string) {
@@ -162,7 +142,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
         signed: !!user,
         user,
         loading,
-        themeDark,
         championship,
         currentRodada,
         signIn,
@@ -170,7 +149,6 @@ export function AuthProvider({ children }: PropsAuthProvider) {
         signOut,
         forgotPassword,
         resetPassword,
-        onChangeThemeDark,
         updateUser,
         updateUserPerfil,
       }}
