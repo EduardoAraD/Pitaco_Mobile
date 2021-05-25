@@ -1,28 +1,22 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
+import { ThemeContext } from 'styled-components';
 
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../../../contexts/auth';
 
-import TitleComponent from '../../components/TitleComponent';
-import InputComponent from '../../components/InputComponent';
-import ButtonConfirm from '../../components/buttons/BottonConfirmComponent';
-import LoadingResponse from '../../components/LoadingResponse';
+import TitleComponent from '../../../components/TitleComponent';
+import InputComponent from '../../../components/InputComponent';
+import ButtonConfirm from '../../../components/ButtonConfirm';
+import LoadingResponse from '../../../components/LoadingResponse';
 
-import colors from '../../assets/theme/light';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: colors.backgroundWhite,
-  },
-});
+import { Container, ContainerSafe } from './styles';
 
 export default function ResetPassword() {
   const navigation = useNavigation();
+  const { colors } = useContext(ThemeContext);
   const { resetPassword } = useAuth();
 
   const [codig, setCodig] = useState('');
@@ -52,9 +46,9 @@ export default function ResetPassword() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <ContainerSafe>
       {loading ? <LoadingResponse /> : <View />}
-      <View style={styles.container}>
+      <Container>
         <ScrollView>
           <View style={{ height: 20 }} />
           <TitleComponent text="Escreva o código recebido pelo e-mail junto com a nova senha" />
@@ -80,7 +74,7 @@ export default function ResetPassword() {
           />
         </ScrollView>
         <ButtonConfirm onPress={handleConfirm} />
-      </View>
-    </View>
+      </Container>
+    </ContainerSafe>
   );
 }

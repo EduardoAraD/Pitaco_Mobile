@@ -1,41 +1,22 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
+import { ThemeContext } from 'styled-components';
 
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../../../contexts/auth';
 
-import TitleComponent from '../../components/TitleComponent';
-import InputComponent from '../../components/InputComponent';
-import ContinuarComponent from '../../components/buttons/ContinuarComponent';
-import LoadingResponse from '../../components/LoadingResponse';
+import TitleComponent from '../../../components/TitleComponent';
+import InputComponent from '../../../components/InputComponent';
+import ContinuarComponent from '../../../components/ButtonContinue';
+import LoadingResponse from '../../../components/LoadingResponse';
 
-import colors from '../../assets/theme/light';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: colors.backgroundWhite,
-  },
-  containerEmail: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  buttonEmail: {
-    height: 64,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-
-    backgroundColor: colors.bluePrimary,
-  },
-});
+import { Container, ContainerEmail, ContainerSafe } from './styles';
 
 export default function ForgotPassword() {
   const navigation = useNavigation();
   const { forgotPassword } = useAuth();
+  const { colors } = useContext(ThemeContext);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
 
@@ -64,11 +45,11 @@ export default function ForgotPassword() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <ContainerSafe>
       {loading ? <LoadingResponse /> : <View />}
-      <View style={styles.container}>
+      <Container>
         <TitleComponent text="Será enviado um código para seu email para redefinição de senha" />
-        <View style={styles.containerEmail}>
+        <ContainerEmail>
           <InputComponent
             label="E-mail"
             placeholder="E-mail"
@@ -76,9 +57,9 @@ export default function ForgotPassword() {
             value={email}
             keyboardType="email-address"
           />
-        </View>
+        </ContainerEmail>
         <ContinuarComponent onPress={handleForgotPassword} />
-      </View>
-    </View>
+      </Container>
+    </ContainerSafe>
   );
 }

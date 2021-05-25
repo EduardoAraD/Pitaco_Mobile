@@ -15,43 +15,6 @@ import ColorsDark from '../../assets/theme/dark';
 import ColorsLight from '../../assets/theme/light';
 import LoadingResponse from '../../components/LoadingResponse';
 
-const styles = StyleSheet.create({
-  img: {
-    height: 100,
-    width: 100,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  textImg: {
-    fontFamily: 'SairaSemiCondensed-Regular',
-    textAlign: 'center',
-  },
-  infoUrl: {
-    flexDirection: 'row',
-    marginVertical: 20,
-    alignItems: 'center',
-  },
-  infoUrlValid: {
-    flex: 1,
-    justifyContent: 'space-around',
-  },
-  button: {
-    width: '100%',
-    height: 30,
-    borderRadius: 15,
-    elevation: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textButton: {
-    fontFamily: 'SairaSemiCondensed-Medium',
-    fontSize: 16,
-  },
-});
-
 export default function EditPerfil() {
   const { themeDark, user, updateUserPerfil } = useAuth();
   const theme = themeDark ? ColorsDark : ColorsLight;
