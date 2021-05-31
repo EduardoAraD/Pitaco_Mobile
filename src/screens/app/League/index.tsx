@@ -1,68 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, RefreshControl } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, RefreshControl } from 'react-native';
 import { Link } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
+import { ThemeContext } from 'styled-components';
 
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../../../contexts/auth';
 
-import LoadingPage from '../../components/LoadingPage';
-import CardLeague from '../../components/CardLeague';
+import LoadingPage from '../../../components/LoadingPage';
+import CardLeague from '../../../components/CardLeague';
 
-import { initLeaguePoint, LeaguePoint } from '../../models/League';
-import { initUser } from '../../models/User';
+import { initLeaguePoint, LeaguePoint } from '../../../models/League';
+import { initUser } from '../../../models/User';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
+import * as servicesLeague from '../../../services/league';
 
-import * as servicesLeague from '../../services/league';
-
-const styles = StyleSheet.create({
-  scroll: {
-    paddingHorizontal: 20,
-  },
-  viewTitle: {
-    marginTop: 10,
-    borderBottomWidth: 1,
-  },
-  viewTitleText: {
-    fontSize: 20,
-    fontFamily: 'SairaSemiCondensed-Bold',
-    textAlign: 'center',
-  },
-  buttomContainer: {
-    flexDirection: 'row',
-    marginVertical: 5,
-    height: 30,
-    justifyContent: 'space-between',
-  },
-  buttom: {
-    height: 30,
-    width: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 15,
-    elevation: 2,
-  },
-  card: {
-    height: 70,
-    width: '100%',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    marginVertical: 10,
-    borderRadius: 20,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  cardText: {
-    fontSize: 14,
-    fontFamily: 'SairaSemiCondensed-Light',
-  },
-});
+import {
+  ButtomStyle,
+  TextButtom,
+  CardStyle,
+  ButtonContainer,
+  CardText,
+  ContainerSafe,
+  ScrollStyle,
+  ViewButtonStyle,
+  ViewTitle,
+  ViewTitleText,
+  TextDefault,
+} from './styles';
 
 export default function LeagueScreen() {
-  const { user, themeDark, championship } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLigth;
+  const { colors } = useContext(ThemeContext);
+  const { user, championship } = useAuth();
   const [refresh, setRefresh] = useState(false);
   const [loadingScreen, setLoadingScreen] = useState(true);
   const [leaguePitaco, setLeaguePitaco] = useState<LeaguePoint>(
@@ -78,8 +46,8 @@ export default function LeagueScreen() {
     Snackbar.show({
       text: message,
       duration: Snackbar.LENGTH_LONG,
-      backgroundColor: theme.textRed,
-      textColor: theme.textWhite,
+      backgroundColor: colors.textRed,
+      textColor: colors.textWhite,
     });
   }
 
@@ -137,37 +105,14 @@ export default function LeagueScreen() {
 
   function createLeagueView() {
     return leagueUser ? (
-      <View
-        style={[
-          styles.buttom,
-          { backgroundColor: theme.whitePrimary, elevation: 0 },
-        ]}
-      >
-        <Text
-          style={{
-            fontSize: 12,
-            color: theme.textGray3,
-            fontFamily: 'SairaSemiCondensed-Medium',
-          }}
-        >
-          Você possui uma liga
-        </Text>
-      </View>
+      <ViewButtonStyle>
+        <TextDefault>Você possui uma liga</TextDefault>
+      </ViewButtonStyle>
     ) : (
       <Link to="/LeagueCreateScreen">
-        <TouchableOpacity
-          style={[styles.buttom, { backgroundColor: theme.greenSecundary }]}
-        >
-          <Text
-            style={{
-              fontSize: 12,
-              color: theme.textWhite,
-              fontFamily: 'SairaSemiCondensed-Medium',
-            }}
-          >
-            Criar Liga
-          </Text>
-        </TouchableOpacity>
+        <ButtomStyle>
+          <TextButtom>Criar Liga</TextButtom>
+        </ButtomStyle>
       </Link>
     );
   }
@@ -183,49 +128,32 @@ export default function LeagueScreen() {
         clubeId={user?.heartClub.id || 0}
       />
     ) : (
-      <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>
-        <Text style={[styles.cardText, { color: theme.textGray2 }]}>
-          Você não escolheu seu clube de coração
-        </Text>
+      <CardStyle>
+        <CardText>Você não escolheu seu clube de coração</CardText>
         <Link to="/HeartClub">
-          <TouchableOpacity
-            style={[styles.buttom, { backgroundColor: theme.greenSecundary }]}
-          >
-            <Text
-              style={{
-                fontSize: 12,
-                color: theme.textWhite,
-                fontFamily: 'SairaSemiCondensed-Medium',
-              }}
-            >
-              Escolher Clube
-            </Text>
-          </TouchableOpacity>
+          <ButtomStyle>
+            <TextButtom>Escolher Clube</TextButtom>
+          </ButtomStyle>
         </Link>
-      </View>
+      </CardStyle>
     );
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+    <ContainerSafe>
       {!loadingScreen ? (
-        <ScrollView
-          style={styles.scroll}
+        <ScrollStyle
           refreshControl={
             <RefreshControl
-              colors={[theme.greenSecundary]}
+              colors={[colors.greenSecundary]}
               refreshing={refresh}
               onRefresh={onRefreshData}
             />
           }
         >
-          <View
-            style={[styles.viewTitle, { borderBottomColor: theme.textGray4 }]}
-          >
-            <Text style={[styles.viewTitleText, { color: theme.greenPrimary }]}>
-              Ligas Gerais
-            </Text>
-          </View>
+          <ViewTitle>
+            <ViewTitleText>Ligas Gerais</ViewTitleText>
+          </ViewTitle>
           <CardLeague
             league={leaguePitaco.league}
             user={user || initUser()}
@@ -233,34 +161,17 @@ export default function LeagueScreen() {
             point={leaguePitaco.point}
           />
           {leagueOfClubeFavorite()}
-          <View
-            style={[styles.viewTitle, { borderBottomColor: theme.textGray4 }]}
-          >
-            <Text style={[styles.viewTitleText, { color: theme.greenPrimary }]}>
-              Ligas com Amigos
-            </Text>
-          </View>
-          <View style={styles.buttomContainer}>
+          <ViewTitle>
+            <ViewTitleText>Ligas com Amigos</ViewTitleText>
+          </ViewTitle>
+          <ButtonContainer>
             <Link to="/SearchLeagueScreen">
-              <TouchableOpacity
-                style={[
-                  styles.buttom,
-                  { backgroundColor: theme.greenSecundary },
-                ]}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: theme.textWhite,
-                    fontFamily: 'SairaSemiCondensed-Medium',
-                  }}
-                >
-                  Procurar
-                </Text>
-              </TouchableOpacity>
+              <ButtomStyle>
+                <TextButtom>Procurar</TextButtom>
+              </ButtomStyle>
             </Link>
             {createLeagueView()}
-          </View>
+          </ButtonContainer>
           {leagueUser?.league ? (
             <CardLeague
               league={leagueUser.league}
@@ -280,10 +191,10 @@ export default function LeagueScreen() {
               point={leaguePoint.point}
             />
           ))}
-        </ScrollView>
+        </ScrollStyle>
       ) : (
         <LoadingPage />
       )}
-    </View>
+    </ContainerSafe>
   );
 }

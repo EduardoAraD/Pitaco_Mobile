@@ -1,54 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, RefreshControl } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { RefreshControl } from 'react-native';
 import { Link } from '@react-navigation/native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
-import { useAuth } from '../../contexts/auth';
+import { ThemeContext } from 'styled-components';
+import { useAuth } from '../../../contexts/auth';
 
-import CardUser from '../../components/CardUser';
+import CardUser from '../../../components/CardUser';
 
-import { User } from '../../models/User';
+import { User } from '../../../models/User';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
+import { getFriends } from '../../../services/friend';
 
-import { getFriends } from '../../services/friend';
-
-const styles = StyleSheet.create({
-  viewTitle: {
-    marginTop: 30,
-    marginHorizontal: 20,
-    paddingBottom: 30,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-  },
-  titleText: {
-    fontSize: 20,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  titleButton: {
-    height: 30,
-    width: 150,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    elevation: 2,
-  },
-  titleButtonText: {
-    fontSize: 12,
-    fontFamily: 'SairaSemiCondensed-Light',
-  },
-  scroll: {
-    paddingHorizontal: 20,
-  },
-});
+import {
+  ContainerSafe,
+  ScrollStyle,
+  TextTitle,
+  TitleButton,
+  TitleButtonText,
+  ViewTitle,
+} from './styles';
 
 export default function FriendsUser() {
-  const { themeDark, user } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLigth;
+  const { user } = useAuth();
+  const { colors } = useContext(ThemeContext);
   const [refresh, setRefresh] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
 
@@ -60,8 +35,8 @@ export default function FriendsUser() {
       Snackbar.show({
         text: error,
         duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
+        backgroundColor: colors.textRed,
+        textColor: colors.textWhite,
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
@@ -79,29 +54,20 @@ export default function FriendsUser() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
-      <View style={[styles.viewTitle, { borderBottomColor: theme.textGray4 }]}>
-        <Text style={[styles.titleText, { color: theme.greenPrimary }]}>
-          Seus Amigos
-        </Text>
+    <ContainerSafe>
+      <ViewTitle>
+        <TextTitle>Seus Amigos</TextTitle>
         <Link to="/SearchFriend">
-          <TouchableOpacity
-            style={[
-              styles.titleButton,
-              { backgroundColor: theme.greenSecundary },
-            ]}
-          >
-            <Text style={[styles.titleButtonText, { color: theme.textWhite }]}>
-              Procurar Amigos
-            </Text>
-          </TouchableOpacity>
+          <TitleButton>
+            <TitleButtonText>Procurar Amigos</TitleButtonText>
+          </TitleButton>
         </Link>
-      </View>
-      <ScrollView
-        style={styles.scroll}
+      </ViewTitle>
+      {/* isso pode ser um Flatlist */}
+      <ScrollStyle
         refreshControl={
           <RefreshControl
-            colors={[theme.greenSecundary]}
+            colors={[colors.greenSecundary]}
             refreshing={refresh}
             onRefresh={onRefreshData}
           />
@@ -110,7 +76,7 @@ export default function FriendsUser() {
         {users.map((item) => (
           <CardUser user={item} key={item.email} />
         ))}
-      </ScrollView>
-    </View>
+      </ScrollStyle>
+    </ContainerSafe>
   );
 }

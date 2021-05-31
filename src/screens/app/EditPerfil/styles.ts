@@ -1,53 +1,61 @@
 import styled from 'styled-components/native';
 
 export const ContainerSafe = styled.SafeAreaView`
-flex: 1, backgroundColor: theme.backgroundWhite;`;
+  flex: 1;
+  background-color: ${(props) => props.theme.colors.backgroundWhite};
+`;
 
 export const ImgStyle = styled.Image`
-height: 100,
-width: 100,
-marginRight: 10,
-justifyContent: 'center',
-alignItems: 'center',
-borderWidth: 1,
-borderRadius: 10,`;
+  height: 100px;
+  width: 100px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: ${(props) => props.theme.colors.textGray4};
+`;
+
+export const ImgStyleView = styled.View`
+  height: 100px;
+  width: 100px;
+  margin-right: 10px;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: ${(props) => props.theme.colors.textGray4};
+`;
 
 export const TextImg = styled.Text`
-fontFamily: 'SairaSemiCondensed-Regular',
-textAlign: 'center',`;
+  font-family: SairaSemiCondensed-Regular;
+  text-align: center;
+  color: ${(props) => props.theme.colors.textGray2};
+`;
 
 export const InfoUrl = styled.View`
-flexDirection: 'row',
-marginVertical: 20,
-alignItems: 'center',
+  flex-direction: row;
+  margin-vertical: 20px;
+  align-items: center;
 `;
 
 export const InfoUrlvalid = styled.View`
-flex: 1,
-justifyContent: 'space-around',
+  flex: 1;
+  justify-content: space-around;
 `;
 
-export const 
+export const ButtonStyle = styled.TouchableOpacity`
+  width: 100%;
+  height: 30px;
+  border-radius: 15px;
+  elevation: 3;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.colors.greenSecundary};
+`;
 
-const styles = StyleSheet.create({
-    img: {
-    },
-    textImg: {
-    },
-    infoUrl: {
-    },
-    infoUrlValid: {
-    },
-    button: {
-      width: '100%',
-      height: 30,
-      borderRadius: 15,
-      elevation: 3,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    textButton: {
-      fontFamily: 'SairaSemiCondensed-Medium',
-      fontSize: 16,
-    },
-  });
+export const TextButton = styled.Text`
+  font-family: SairaSemiCondensed-Medium;
+  font-size: 16px;
+  color: ${(props) => props.theme.colors.whitePrimary};
+`;

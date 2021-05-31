@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View } from 'react-native';
 import Axios from 'axios';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 
-import { useAuth } from '../../contexts/auth';
+import { ThemeContext } from 'styled-components';
+import { useAuth } from '../../../contexts/auth';
 
-import InputComponent from '../../components/InputComponent';
-import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent';
-import TitleComponent from '../../components/TitleComponent';
+import InputComponent from '../../../components/InputComponent';
+import ButtonConfirmComponent from '../../../components/ButtonConfirm';
+import TitleComponent from '../../../components/TitleComponent';
+import LoadingResponse from '../../../components/LoadingResponse';
 
-import ColorsDark from '../../assets/theme/dark';
-import ColorsLight from '../../assets/theme/light';
-import LoadingResponse from '../../components/LoadingResponse';
+import {
+  ButtonStyle,
+  ImgStyle,
+  ImgStyleView,
+  ContainerSafe,
+  InfoUrl,
+  InfoUrlvalid,
+  TextButton,
+  TextImg,
+} from './styles';
 
 export default function EditPerfil() {
-  const { themeDark, user, updateUserPerfil } = useAuth();
-  const theme = themeDark ? ColorsDark : ColorsLight;
+  const { colors } = useContext(ThemeContext);
+  const { user, updateUserPerfil } = useAuth();
   const navigation = useNavigation();
   const [name, setName] = useState(user?.name || '');
   const [validedUrl, setValidedUrl] = useState(false);
@@ -42,24 +51,18 @@ export default function EditPerfil() {
       text: message,
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: color,
-      textColor: theme.textWhite,
+      textColor: colors.textWhite,
       fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
 
   function getAvatar() {
     return validedUrl ? (
-      <Image
-        style={[styles.img, { borderColor: theme.textGray4 }]}
-        source={{ uri: avatarValid }}
-        resizeMode="contain"
-      />
+      <ImgStyle source={{ uri: avatarValid }} resizeMode="contain" />
     ) : (
-      <View style={[styles.img, { borderColor: theme.textGray4 }]}>
-        <Text style={[styles.textImg, { color: theme.textGray2 }]}>
-          Imagem não encontrada
-        </Text>
-      </View>
+      <ImgStyleView>
+        <TextImg>Imagem não encontrada</TextImg>
+      </ImgStyleView>
     );
   }
 
@@ -67,18 +70,18 @@ export default function EditPerfil() {
     setLoadingResponse(true);
     await checkUrlLogo(avatarValid);
     if (!validedUrl) {
-      messageSnackbar('Link de imagem não validado', theme.textRed);
+      messageSnackbar('Link de imagem não validado', colors.textRed);
       setLoadingResponse(false);
       return;
     }
     const error = await updateUserPerfil(user?.email || '', name, avatar);
     if (error !== '') {
-      messageSnackbar(error, theme.textRed);
+      messageSnackbar(error, colors.textRed);
       setLoadingResponse(false);
       return;
     }
     setLoadingResponse(false);
-    messageSnackbar('Alterado com sucesso!', theme.greenSecundary);
+    messageSnackbar('Alterado com sucesso!', colors.greenSecundary);
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -88,7 +91,7 @@ export default function EditPerfil() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+    <ContainerSafe>
       {loadingResponse ? <LoadingResponse /> : <View />}
       <ScrollView style={{ paddingHorizontal: 20 }}>
         <View style={{ height: 20 }} />
@@ -101,9 +104,9 @@ export default function EditPerfil() {
           value={name}
           onChange={setName}
         />
-        <View style={styles.infoUrl}>
+        <InfoUrl>
           {getAvatar()}
-          <View style={styles.infoUrlValid}>
+          <InfoUrlvalid>
             <InputComponent
               label="Escreva um link de imagem"
               placeholder="Link url"
@@ -111,19 +114,14 @@ export default function EditPerfil() {
               value={avatar}
               onChange={setAvatar}
             />
-            <TouchableOpacity
-              onPress={() => checkUrlLogo(avatar)}
-              style={[styles.button, { backgroundColor: theme.greenSecundary }]}
-            >
-              <Text style={[styles.textButton, { color: theme.whitePrimary }]}>
-                Validar Url
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+            <ButtonStyle onPress={() => checkUrlLogo(avatar)}>
+              <TextButton>Validar Url</TextButton>
+            </ButtonStyle>
+          </InfoUrlvalid>
+        </InfoUrl>
         <View style={{ height: 30 }} />
         <ButtonConfirmComponent onPress={handleConfirm} />
       </ScrollView>
-    </View>
+    </ContainerSafe>
   );
 }

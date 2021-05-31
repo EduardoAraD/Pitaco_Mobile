@@ -1,99 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState, useEffect, useContext } from 'react';
+import { View } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 
-import { useAuth } from '../../contexts/auth';
+import { ThemeContext } from 'styled-components';
+import { useAuth } from '../../../contexts/auth';
 
-import HeaderComponent from '../../components/HeaderComponent';
-import CardConquest from '../../components/CardConquest';
+import HeaderComponent from '../../../components/HeaderComponent';
+import CardConquest from '../../../components/CardConquest';
 
-import { User } from '../../models/User';
-import { League } from '../../models/League';
+import { User } from '../../../models/User';
+import { League } from '../../../models/League';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
+import { getCommomLeagues } from '../../../services/league';
 
-import { getCommomLeagues } from '../../services/league';
-
-const styles = StyleSheet.create({
-  viewBody: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  textTitle: {
-    fontSize: 20,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  viewClub: {
-    paddingVertical: 10,
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  viewClubName: {
-    fontSize: 20,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  viewClubImg: {
-    height: 50,
-    width: 50,
-  },
-  scrollHor: {
-    marginVertical: 10,
-    paddingBottom: 5,
-  },
-  scrollVer: {
-    marginTop: 15,
-  },
-  buttom: {
-    height: 22,
-    width: 150,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttomNot: {
-    height: 22,
-    width: 150,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttomText: {
-    fontSize: 10,
-    fontFamily: 'SairaSemiCondensed-Light',
-  },
-  card: {
-    height: 50,
-    width: '100%',
-    flexDirection: 'row',
-    padding: 5,
-    marginVertical: 5,
-    borderRadius: 10,
-    elevation: 1,
-  },
-  cardImg: {
-    height: 40,
-    width: 40,
-  },
-  cardInfo: {
-    flex: 1,
-    justifyContent: 'space-between',
-    marginLeft: 10,
-  },
-  cardInfoTitle: {
-    fontSize: 16,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  cardInfoDono: {
-    fontSize: 12,
-    fontFamily: 'SairaSemiCondensed-Light',
-  },
-});
+import {
+  // ButtonStyle,
+  CardImg,
+  // ButtonStyleNot,
+  CardInfo,
+  CardInfoDono,
+  // CardInfoTitle,
+  CardStyle,
+  ContainerSafe,
+  ScrollBody,
+  ScrollHorizontal,
+  // TextButtonStyle,
+  TextTitle,
+  ViewCards,
+  ViewClub,
+  ViewClubImg,
+  ViewClubName,
+} from './styles';
 
 type ParamList = {
   Friend: {
@@ -102,8 +40,8 @@ type ParamList = {
 };
 
 export default function FriendShow() {
-  const { themeDark, user } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLigth;
+  const { colors } = useContext(ThemeContext);
+  const { user } = useAuth();
   const route = useRoute<RouteProp<ParamList, 'Friend'>>();
   const { friend } = route.params;
   const [leagues, setLeagues] = useState<League[]>([]);
@@ -119,8 +57,8 @@ export default function FriendShow() {
       Snackbar.show({
         text: error,
         duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
+        backgroundColor: colors.textRed,
+        textColor: colors.textWhite,
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
@@ -133,22 +71,18 @@ export default function FriendShow() {
   function viewDono(league: League) {
     if (league.dono.name) {
       return league.dono.email === friend.email ? (
-        <Text style={[styles.cardInfoDono, { color: theme.yellowPrimary }]}>
-          @{league.dono.name}
-        </Text>
+        <CardInfoDono principal>@{league.dono.name}</CardInfoDono>
       ) : (
-        <Text style={[styles.cardInfoDono, { color: theme.textGray3 }]}>
-          @{league.dono.name}
-        </Text>
+        <CardInfoDono>@{league.dono.name}</CardInfoDono>
       );
     }
     return <View />;
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+    <ContainerSafe>
       <HeaderComponent title={friend.name} back border />
-      <ScrollView style={styles.viewBody}>
+      <ScrollBody>
         <View
           style={{
             flexDirection: 'row',
@@ -156,66 +90,40 @@ export default function FriendShow() {
             marginTop: 20,
           }}
         >
-          <Text style={[styles.textTitle, { color: theme.greenPrimary }]}>
-            Torcedor(a)
-          </Text>
+          <TextTitle>Torcedor(a)</TextTitle>
         </View>
         {friend.heartClub.name ? (
-          <View
-            style={[styles.viewClub, { borderBottomColor: theme.textGray4 }]}
-          >
-            <Text style={[styles.viewClubName, { color: theme.textGray2 }]}>
-              {friend.heartClub.name}
-            </Text>
-            <Image
-              style={styles.viewClubImg}
+          <ViewClub>
+            <ViewClubName>{friend.heartClub.name}</ViewClubName>
+            <ViewClubImg
               resizeMode="contain"
               source={{ uri: friend.heartClub.logo }}
             />
-          </View>
+          </ViewClub>
         ) : (
-          <View
-            style={[styles.viewClub, { borderBottomColor: theme.textGray4 }]}
-          >
-            <Text style={[styles.viewClubName, { color: theme.textGray2 }]}>
-              Sem Clube
-            </Text>
-          </View>
+          <ViewClub>
+            <ViewClubName>Sem Clube</ViewClubName>
+          </ViewClub>
         )}
-        <Text style={[styles.textTitle, { color: theme.greenPrimary }]}>
-          Maiores Conquistas
-        </Text>
-        <ScrollView style={styles.scrollHor} horizontal>
+        <TextTitle>Maiores Conquistas</TextTitle>
+        <ScrollHorizontal horizontal>
           {friend.conquests.map((conquest) => (
             <CardConquest conquest={conquest} key={conquest.id} />
           ))}
-        </ScrollView>
-        <Text style={[styles.textTitle, { color: theme.greenPrimary }]}>
-          Ligas atuais em Comum
-        </Text>
-        <View style={styles.scrollVer}>
+        </ScrollHorizontal>
+        <TextTitle>Ligas atuais em Comum</TextTitle>
+        <ViewCards>
           {leagues.map((league) => (
-            <View
-              style={[styles.card, { backgroundColor: theme.whitePrimary }]}
-              key={league.id}
-            >
-              <Image
-                style={styles.cardImg}
-                resizeMode="contain"
-                source={league.logo}
-              />
-              <View style={styles.cardInfo}>
-                <Text
-                  style={[styles.cardInfoTitle, { color: theme.greenPrimary }]}
-                >
-                  {league.name}
-                </Text>
+            <CardStyle key={league.id}>
+              <CardImg resizeMode="contain" source={league.logo} />
+              <CardInfo>
+                <TextTitle>{league.name}</TextTitle>
                 {viewDono(league)}
-              </View>
-            </View>
+              </CardInfo>
+            </CardStyle>
           ))}
-        </View>
-      </ScrollView>
-    </View>
+        </ViewCards>
+      </ScrollBody>
+    </ContainerSafe>
   );
 }
