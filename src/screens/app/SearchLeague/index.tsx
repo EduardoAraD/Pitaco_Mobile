@@ -1,64 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useState, useEffect, useContext } from 'react';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
+import { ThemeContext } from 'styled-components';
 
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../../../contexts/auth';
 
-import SearchInput from '../../components/SearchInput';
+import SearchInput from '../../../components/SearchInput';
 
-import { League } from '../../models/League';
+import { League } from '../../../models/League';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
+import { getLeaguesPage } from '../../../services/league';
 
-import { getLeaguesPage } from '../../services/league';
-
-const styles = StyleSheet.create({
-  scroll: {
-    paddingHorizontal: 20,
-  },
-  loading: {
-    height: 300,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  card: {
-    height: 60,
-    width: '100%',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginVertical: 5,
-    borderRadius: 20,
-    elevation: 2,
-  },
-  cardImg: {
-    height: 50,
-    width: 50,
-  },
-  cardInfo: {
-    flex: 1,
-    justifyContent: 'space-between',
-    marginLeft: 10,
-  },
-  cardInfoTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  cardInfoDono: {
-    fontSize: 12,
-    fontFamily: 'SairaSemiCondensed-Light',
-  },
-});
+import {
+  ActivityStyle,
+  CardImg,
+  CardInfo,
+  CardInfoDono,
+  CardInfoTitle,
+  CardTouch,
+  ContainerSafe,
+  FlatStyle,
+  LoadingStyle,
+} from './styles';
 
 export default function SearchLeague() {
+  const { colors } = useContext(ThemeContext);
   const navigation = useNavigation();
-  const { user, themeDark, championship } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLigth;
+  const { user, championship } = useAuth();
   const limit = 10;
   const [loading, setLoading] = useState(false);
   const [pageCurrent, setPageCurrent] = useState(1);
@@ -71,7 +40,7 @@ export default function SearchLeague() {
       text: message,
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: color,
-      textColor: theme.textWhite,
+      textColor: colors.textWhite,
       fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
@@ -127,21 +96,18 @@ export default function SearchLeague() {
 
   function renderItem(item: League, index: number) {
     return (
-      <TouchableOpacity
+      <CardTouch
         key={item.id}
-        style={[styles.card, { backgroundColor: theme.whitePrimary }]}
         onPress={() => handleSearchNavigateLeague(index)}
       >
-        <Image style={styles.cardImg} resizeMode="contain" source={item.logo} />
-        <View style={styles.cardInfo}>
-          <Text style={[styles.cardInfoTitle, { color: theme.greenPrimary }]}>
-            {item.name}
-          </Text>
-          <Text style={[styles.cardInfoDono, { color: theme.textGray3 }]}>
+        <CardImg resizeMode="contain" source={item.logo} />
+        <CardInfo>
+          <CardInfoTitle>{item.name}</CardInfoTitle>
+          <CardInfoDono>
             {item.dono?.name !== '' ? `@${item.dono.name}` : ''}
-          </Text>
-        </View>
-      </TouchableOpacity>
+          </CardInfoDono>
+        </CardInfo>
+      </CardTouch>
     );
   }
 
@@ -157,7 +123,7 @@ export default function SearchLeague() {
     if (error === '') {
       setLeagues(leagues.concat(data.leagues));
     } else {
-      messageSnackbar(error, theme.textRed);
+      messageSnackbar(error, colors.textRed);
     }
     setPageCurrent(pageCurrent + 1);
     setLoading(false);
@@ -166,7 +132,7 @@ export default function SearchLeague() {
   function renderFooter() {
     return loading ? (
       <View style={{ margin: 10, alignItems: 'center' }}>
-        <ActivityIndicator size="large" color={theme.greenPrimary} />
+        <ActivityStyle size="large" />
       </View>
     ) : (
       <View />
@@ -174,7 +140,7 @@ export default function SearchLeague() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+    <ContainerSafe>
       <SearchInput
         value={search}
         setValue={setSearch}
@@ -182,12 +148,11 @@ export default function SearchLeague() {
         title="Ligas"
       />
       {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator size="large" color={theme.greenPrimary} />
-        </View>
+        <LoadingStyle>
+          <ActivityStyle size="large" />
+        </LoadingStyle>
       ) : (
-        <FlatList
-          style={styles.scroll}
+        <FlatStyle
           data={leagues}
           renderItem={({ item, index }) => renderItem(item, index)}
           keyExtractor={(item, index) => index.toString()}
@@ -196,6 +161,6 @@ export default function SearchLeague() {
           onEndReachedThreshold={0.1}
         />
       )}
-    </View>
+    </ContainerSafe>
   );
 }
