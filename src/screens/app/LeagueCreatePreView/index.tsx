@@ -1,29 +1,20 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
+import { ThemeContext } from 'styled-components';
 
-import { useAuth } from '../../contexts/auth';
+import { useAuth } from '../../../contexts/auth';
 
-import ButtonConfirmComponent from '../../components/buttons/BottonConfirmComponent';
-import CardLeague from '../../components/CardLeague';
-import TitleComponent from '../../components/TitleComponent';
+import ButtonConfirmComponent from '../../../components/ButtonConfirm';
+import CardLeague from '../../../components/CardLeague';
+import TitleComponent from '../../../components/TitleComponent';
 
-import { League } from '../../models/League';
-import { initUser } from '../../models/User';
+import { League } from '../../../models/League';
+import { initUser } from '../../../models/User';
 
-import { createLeague } from '../../services/league';
+import { createLeague } from '../../../services/league';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    paddingHorizontal: 20,
-  },
-});
+import { ContainerSafe } from './styles';
 
 type ParamList = {
   LeagueCreateScreen: {
@@ -34,8 +25,8 @@ type ParamList = {
 
 export default function LeagueCreatePreView() {
   const navigation = useNavigation();
-  const { user, themeDark, championship } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLigth;
+  const { colors } = useContext(ThemeContext);
+  const { user, championship } = useAuth();
   const route = useRoute<RouteProp<ParamList, 'LeagueCreateScreen'>>();
   const { league, escudo } = route.params;
 
@@ -53,17 +44,15 @@ export default function LeagueCreatePreView() {
       Snackbar.show({
         text: response.error,
         duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.textRed,
-        textColor: theme.textWhite,
+        backgroundColor: colors.textRed,
+        textColor: colors.textWhite,
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     }
   }
 
   return (
-    <View
-      style={[styles.container, { backgroundColor: theme.backgroundWhite }]}
-    >
+    <ContainerSafe>
       <TitleComponent text="Pré visualização da sua Liga" />
       <CardLeague
         league={league}
@@ -73,6 +62,6 @@ export default function LeagueCreatePreView() {
         position={1}
       />
       <ButtonConfirmComponent onPress={handleCreateLeague} />
-    </View>
+    </ContainerSafe>
   );
 }

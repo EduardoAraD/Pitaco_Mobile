@@ -1,93 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
 
-import { useAuth } from '../../contexts/auth';
+import { ThemeContext } from 'styled-components';
+import { useAuth } from '../../../contexts/auth';
 
-import ButtomConfirm from '../../components/buttons/BottonConfirmComponent';
-import DoubleConfirm from '../../components/buttons/DoubleButton';
-import CardTitlePage from '../../components/CardTitlePage';
-import InputMatch from '../../components/InputMatch';
-import LoadingResponse from '../../components/LoadingResponse';
+import ButtomConfirm from '../../../components/ButtonConfirm';
+import DoubleConfirm from '../../../components/DoubleButton';
+import CardTitlePage from '../../../components/CardTitlePage';
+import InputMatch from '../../../components/InputMatch';
+import LoadingResponse from '../../../components/LoadingResponse';
 
-import { Match } from '../../models/Match';
-import { Pitaco } from '../../models/Pitaco';
+import { Match } from '../../../models/Match';
+import { Pitaco } from '../../../models/Pitaco';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
+import * as servicesPitaco from '../../../services/pitaco';
 
-import * as servicesPitaco from '../../services/pitaco';
-
-const styles = StyleSheet.create({
-  scroll: {
-    paddingHorizontal: 20,
-  },
-  scrollButtonContainer: {
-    marginTop: 10,
-    elevation: 2,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  scrollButtonLeft: {
-    height: 50,
-    width: 140,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollButtonRight: {
-    height: 50,
-    width: 140,
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  scrollButtonText: {
-    fontSize: 20,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  card: {
-    width: '100%',
-    marginVertical: 10,
-    borderRadius: 20,
-    elevation: 3,
-  },
-  cardTitle: {
-    height: 40,
-    padding: 5,
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-  },
-  cardTitleText: {
-    fontSize: 18,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  loading: {
-    height: 300,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textNotMatch: {
-    fontSize: 16,
-    fontFamily: 'SairaSemiCondensed-Medium',
-    textAlign: 'center',
-  },
-});
+import {
+  ActivityStyle,
+  CardStyle,
+  CardTitle,
+  CardTitleText,
+  ContainerSafe,
+  LoadingStyle,
+  // ScrollButtonContainer,
+  // ScrollButtonLeft,
+  // ScrollButtonRigth,
+  // ScrollButtonText,
+  ScrollStyle,
+  TextNotMatch,
+} from './styles';
 
 interface PitacoMatch {
   match: Match;
@@ -106,8 +50,8 @@ interface PitacoRequest {
 let allRodadas: RodadaPitaco[] = [];
 
 export default function PitacoScreen() {
-  const { themeDark, user, championship, currentRodada } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLigth;
+  const { user, championship, currentRodada } = useAuth();
+  const { colors } = useContext(ThemeContext);
   const [loadingResponse, setLoadingResponse] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
@@ -120,8 +64,8 @@ export default function PitacoScreen() {
     Snackbar.show({
       text: message,
       duration: Snackbar.LENGTH_LONG,
-      backgroundColor: theme.textRed,
-      textColor: theme.textWhite,
+      backgroundColor: colors.textRed,
+      textColor: colors.textWhite,
       fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
@@ -213,29 +157,22 @@ export default function PitacoScreen() {
   function titleCard() {
     const date = new Date();
     return viewRodada ? (
-      <View style={[styles.cardTitle, { borderColor: theme.textGray4 }]}>
+      <CardTitle>
         <TouchableOpacity onPress={() => handleUpdateNumberRodada(-1)}>
-          <Icon name="chevron-left" size={30} color={theme.greenSecundary} />
+          <Icon name="chevron-left" size={30} color={colors.greenSecundary} />
         </TouchableOpacity>
-        <Text style={[styles.cardTitleText, { color: theme.greenPrimary }]}>
-          {numberRodada}° Rodada
-        </Text>
+        <CardTitleText>{numberRodada}° Rodada</CardTitleText>
         <TouchableOpacity onPress={() => handleUpdateNumberRodada(1)}>
-          <Icon name="chevron-right" size={30} color={theme.greenSecundary} />
+          <Icon name="chevron-right" size={30} color={colors.greenSecundary} />
         </TouchableOpacity>
-      </View>
+      </CardTitle>
     ) : (
-      <View
-        style={[
-          styles.cardTitle,
-          { justifyContent: 'center', borderColor: theme.textGray4 },
-        ]}
-      >
-        <Text style={[styles.cardTitleText, { color: theme.greenPrimary }]}>
+      <CardTitle style={{ justifyContent: 'center' }}>
+        <CardTitleText>
           Jogos de Hoje (
           {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`})
-        </Text>
-      </View>
+        </CardTitleText>
+      </CardTitle>
     );
   }
 
@@ -320,9 +257,7 @@ export default function PitacoScreen() {
     }
     return (
       <View style={{ padding: 10 }}>
-        <Text style={[styles.textNotMatch, { color: theme.textGray4 }]}>
-          Sem Jogos
-        </Text>
+        <TextNotMatch>Sem Jogos</TextNotMatch>
       </View>
     );
   }
@@ -390,8 +325,8 @@ export default function PitacoScreen() {
       Snackbar.show({
         text: 'Pitacos registrados com sucesso',
         duration: Snackbar.LENGTH_LONG,
-        backgroundColor: theme.greenPrimary,
-        textColor: theme.textWhite,
+        backgroundColor: colors.greenPrimary,
+        textColor: colors.textWhite,
         fontFamily: 'SairaSemiCondensed-Medium',
       });
     } else {
@@ -407,14 +342,13 @@ export default function PitacoScreen() {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+    <ContainerSafe>
       {loadingResponse ? <LoadingResponse /> : <View />}
       <CardTitlePage title="Pitacos encerram 2h antes do jogo" />
-      <ScrollView
-        style={styles.scroll}
+      <ScrollStyle
         refreshControl={
           <RefreshControl
-            colors={[theme.greenSecundary]}
+            colors={[colors.greenSecundary]}
             refreshing={refresh}
             onRefresh={onRefreshData}
           />
@@ -426,19 +360,19 @@ export default function PitacoScreen() {
           option={viewRodada}
           setOption={setViewRodada}
         />
-        <View style={[styles.card, { backgroundColor: theme.whitePrimary }]}>
+        <CardStyle>
           {titleCard()}
           {loading ? (
-            <View style={styles.loading}>
-              <ActivityIndicator size="large" color={theme.greenPrimary} />
-            </View>
+            <LoadingStyle>
+              <ActivityStyle size="large" />
+            </LoadingStyle>
           ) : (
             showMatchs()
           )}
-        </View>
+        </CardStyle>
         <View style={{ margin: 5 }} />
         <ButtomConfirm onPress={handleConfirm} />
-      </ScrollView>
-    </View>
+      </ScrollStyle>
+    </ContainerSafe>
   );
 }

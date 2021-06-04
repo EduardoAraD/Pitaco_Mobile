@@ -1,125 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, RefreshControl } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useAuth } from '../../contexts/auth';
+import { ThemeContext } from 'styled-components';
+import { useAuth } from '../../../contexts/auth';
 
-import Header from '../../components/HeaderComponent';
-import ItemStandingLeague from '../../components/ItemStandingLeague';
+import Header from '../../../components/HeaderComponent';
+import ItemStandingLeague from '../../../components/ItemStandingLeague';
 
-import { League } from '../../models/League';
-import { User } from '../../models/User';
-import { Point } from '../../models/Point';
+import { League } from '../../../models/League';
+import { User } from '../../../models/User';
+import { Point } from '../../../models/Point';
 
-import ThemeLigth from '../../assets/theme/light';
-import ThemeDark from '../../assets/theme/dark';
+import * as servicesLeague from '../../../services/league';
 
-import * as servicesLeague from '../../services/league';
-
-const styles = StyleSheet.create({
-  scroll: {
-    paddingHorizontal: 20,
-  },
-  viewButtomAction: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  buttomAction: {
-    height: 30,
-    width: 130,
-    marginVertical: 10,
-    borderRadius: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
-  },
-  buttomActionText: {
-    fontSize: 12,
-    fontFamily: 'SairaSemiCondensed-Light',
-  },
-  cardLeague: {
-    height: 90,
-    width: '100%',
-    flexDirection: 'row',
-    padding: 10,
-    marginVertical: 20,
-    borderRadius: 20,
-    elevation: 3,
-  },
-  cardLeagueImg: {
-    height: 70,
-    width: 70,
-  },
-  cardLeagueInfo: {
-    flex: 1,
-    justifyContent: 'space-between',
-    marginLeft: 10,
-  },
-  cardLeagueInfoDescrip: {
-    fontSize: 14,
-    fontFamily: 'SairaSemiCondensed-Light',
-  },
-  cardLeagueInfoDono: {
-    fontSize: 14,
-    fontFamily: 'SairaSemiCondensed-Bold',
-  },
-  viewPoint: {
-    marginVertical: 10,
-    width: '100%',
-    elevation: 2,
-    borderRadius: 6,
-  },
-  cardStanding: {
-    marginVertical: 20,
-    width: '100%',
-    minHeight: 120,
-    borderRadius: 20,
-    elevation: 3,
-  },
-  cardStandingTitle: {
-    height: 40,
-    paddingHorizontal: 15,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    flexDirection: 'row',
-  },
-  cardStandingTitleText: {
-    fontSize: 14,
-    fontFamily: 'SairaSemiCondensed-Medium',
-  },
-  picker: {
-    width: 100,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  contentItensPicker: {
-    position: 'absolute',
-    width: 110,
-    height: 80,
-    right: 10,
-    top: 41,
-    zIndex: 999,
-    elevation: 5,
-  },
-  itemPicker: {
-    justifyContent: 'center',
-    height: 40,
-    borderBottomWidth: 1,
-    paddingHorizontal: 4,
-  },
-});
+import {
+  ButtonAction,
+  ButtonActionText,
+  CardImgStyle,
+  CardLeagueInfo,
+  CardLeagueInfoDescrip,
+  CardLeagueInfoDono,
+  CardLeagueStyle,
+  CardStandingStyle,
+  CardStandingTitle,
+  CardStandingTitleText,
+  ContainerSafe,
+  ContentItensPicker,
+  ItemPicker,
+  PickerStyle,
+  ScrollStyle,
+  ViewButtomAction,
+  ViewPoint,
+  ActivityStyle,
+} from './styles';
 
 type ParamList = {
   LeagueScreen: {
@@ -134,8 +50,8 @@ type ParamList = {
 };
 
 export default function LeagueShow() {
-  const { themeDark, championship, currentRodada } = useAuth();
-  const theme = themeDark ? ThemeDark : ThemeLigth;
+  const { championship, currentRodada } = useAuth();
+  const { colors, title } = useContext(ThemeContext);
   const [refresh, setRefresh] = useState(false);
   const navigate = useNavigation();
   const {
@@ -159,7 +75,7 @@ export default function LeagueShow() {
       text: message,
       duration: Snackbar.LENGTH_LONG,
       backgroundColor: color,
-      textColor: theme.textWhite,
+      textColor: colors.textWhite,
       fontFamily: 'SairaSemiCondensed-Medium',
     });
   }
@@ -227,17 +143,9 @@ export default function LeagueShow() {
   function viewDono() {
     if (league.dono.name) {
       return isDono ? (
-        <Text
-          style={[styles.cardLeagueInfoDono, { color: theme.yellowPrimary }]}
-        >
-          @{league.dono.name}
-        </Text>
+        <CardLeagueInfoDono principal>@{league.dono.name}</CardLeagueInfoDono>
       ) : (
-        <Text
-          style={[styles.cardLeagueInfoDono, { color: theme.greenSecundary }]}
-        >
-          @{league.dono.name}
-        </Text>
+        <CardLeagueInfoDono>@{league.dono.name}</CardLeagueInfoDono>
       );
     }
     return <View />;
@@ -263,9 +171,9 @@ export default function LeagueShow() {
       user.email
     );
     if (error === '') {
-      messageSnackbar(success, theme.greenSecundary);
+      messageSnackbar(success, colors.greenSecundary);
     } else {
-      messageSnackbar(error, theme.textRed);
+      messageSnackbar(error, colors.textRed);
     }
   }
 
@@ -279,72 +187,43 @@ export default function LeagueShow() {
 
   function itemSelect(text: string, value: number) {
     return (
-      <TouchableOpacity
-        style={[styles.itemPicker, { borderBottomColor: theme.textGray2 }]}
-        onPress={() => updateModeClassification(value)}
-      >
-        <Text
-          style={[styles.cardStandingTitleText, { color: theme.textGray2 }]}
-        >
-          {text}
-        </Text>
-      </TouchableOpacity>
+      <ItemPicker onPress={() => updateModeClassification(value)}>
+        <CardStandingTitleText>{text}</CardStandingTitleText>
+      </ItemPicker>
     );
   }
 
   function itemsSelect() {
     return (
-      <View
-        style={[
-          styles.contentItensPicker,
-          { backgroundColor: themeDark ? theme.textGray4 : theme.whitePrimary },
-        ]}
-      >
+      <ContentItensPicker darkMode={title === 'dark'}>
         {itemSelect('Total', 1)}
         {itemSelect('Última rodada', 2)}
-      </View>
+      </ContentItensPicker>
     );
   }
 
   function viewButtomActions() {
     if (isDono) {
       return (
-        <View style={styles.viewButtomAction}>
-          <TouchableOpacity
-            style={[
-              styles.buttomAction,
-              { backgroundColor: theme.greenSecundary },
-            ]}
-            onPress={handleNavigateSolicitation}
-          >
-            <Text style={[styles.buttomActionText, { color: theme.textWhite }]}>
-              Solicitações
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.buttomAction, { backgroundColor: theme.textRed }]}
-            onPress={handleNavigateExclusion}
-          >
-            <Text style={[styles.buttomActionText, { color: theme.textWhite }]}>
-              Excluir liga
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <ViewButtomAction>
+          <ButtonAction principal onPress={handleNavigateSolicitation}>
+            <ButtonActionText>Solicitações</ButtonActionText>
+          </ButtonAction>
+          <ButtonAction onPress={handleNavigateExclusion}>
+            <ButtonActionText>Excluir liga</ButtonActionText>
+          </ButtonAction>
+        </ViewButtomAction>
       );
     }
     if (!point) {
       return (
-        <TouchableOpacity
+        <ButtonAction
+          principal
           onPress={handleParticipationLeague}
-          style={[
-            styles.buttomAction,
-            { backgroundColor: theme.greenSecundary, width: 150 },
-          ]}
+          style={{ width: 150 }}
         >
-          <Text style={[styles.buttomActionText, { color: theme.textWhite }]}>
-            Participar da Liga
-          </Text>
-        </TouchableOpacity>
+          <ButtonActionText>Participar da Liga</ButtonActionText>
+        </ButtonAction>
       );
     }
     return <View />;
@@ -352,82 +231,57 @@ export default function LeagueShow() {
 
   function viewPointUser() {
     return point ? (
-      <View style={[styles.viewPoint, { backgroundColor: theme.whitePrimary }]}>
+      <ViewPoint>
         <ItemStandingLeague position={position} isUser point={point} />
-      </View>
+      </ViewPoint>
     ) : (
       <View />
     );
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.backgroundWhite }}>
+    <ContainerSafe>
       <Header title={league.name} back border />
-      <ScrollView
-        style={styles.scroll}
+      <ScrollStyle
         refreshControl={
           <RefreshControl
-            colors={[theme.greenSecundary]}
+            colors={[colors.greenSecundary]}
             refreshing={refresh}
             onRefresh={onRefreshData}
           />
         }
       >
-        <View
-          style={[styles.cardLeague, { backgroundColor: theme.whitePrimary }]}
-        >
-          <Image
-            style={styles.cardLeagueImg}
-            resizeMode="contain"
-            source={league.logo}
-          />
-          <View style={styles.cardLeagueInfo}>
-            <Text
-              style={[styles.cardLeagueInfoDescrip, { color: theme.textGray2 }]}
-            >
-              {league.description}
-            </Text>
+        <CardLeagueStyle>
+          <CardImgStyle resizeMode="contain" source={league.logo} />
+          <CardLeagueInfo>
+            <CardLeagueInfoDescrip>{league.description}</CardLeagueInfoDescrip>
             {viewDono()}
-          </View>
-        </View>
+          </CardLeagueInfo>
+        </CardLeagueStyle>
         {viewButtomActions()}
         {viewPointUser()}
-        <View
-          style={[styles.cardStanding, { backgroundColor: theme.whitePrimary }]}
-        >
-          <View
-            style={[styles.cardStandingTitle, { borderColor: theme.textGray3 }]}
-          >
-            <Text
-              style={[styles.cardStandingTitleText, { color: theme.textGray2 }]}
-            >
+        <CardStandingStyle>
+          <CardStandingTitle>
+            <CardStandingTitleText>
               {modeClassification === 1
                 ? 'Classificação'
                 : `Classificação ${numRodada}° Rodada`}
-            </Text>
-            <TouchableOpacity
-              style={styles.picker}
-              onPress={() => setVisibleSelect(!visibleSelect)}
-            >
-              <Text
-                style={[
-                  styles.cardStandingTitleText,
-                  { color: theme.textGray2 },
-                ]}
-              >
+            </CardStandingTitleText>
+            <PickerStyle onPress={() => setVisibleSelect(!visibleSelect)}>
+              <CardStandingTitleText>
                 {modeClassification === 1 ? 'Todos' : 'Última rodada'}
-              </Text>
+              </CardStandingTitleText>
               <Icon
                 name={visibleSelect ? 'chevron-up' : 'chevron-down'}
-                color={theme.textGray2}
+                color={colors.textGray2}
                 size={20}
               />
-            </TouchableOpacity>
-          </View>
+            </PickerStyle>
+          </CardStandingTitle>
           {visibleSelect ? itemsSelect() : <View />}
           {loading ? (
             <View style={{ margin: 10, alignItems: 'center' }}>
-              <ActivityIndicator size="small" color={theme.greenPrimary} />
+              <ActivityStyle size="small" />
             </View>
           ) : (
             points.map((item, index) => (
@@ -439,8 +293,8 @@ export default function LeagueShow() {
               />
             ))
           )}
-        </View>
-      </ScrollView>
-    </View>
+        </CardStandingStyle>
+      </ScrollStyle>
+    </ContainerSafe>
   );
 }
