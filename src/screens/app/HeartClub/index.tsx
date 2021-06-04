@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ThemeContext } from 'styled-components';
 
+import { ActivityIndicator } from 'react-native';
 import SearchInput from '../../../components/SearchInput';
 
 import { Clube } from '../../../models/Clube';
@@ -11,7 +12,6 @@ import { Clube } from '../../../models/Clube';
 import { getClubes } from '../../../services/championship';
 
 import {
-  ActivityStyle,
   CardImg,
   LoadingStyle,
   CardTouch,
@@ -77,7 +77,7 @@ export default function HeartClub() {
         />
         {loading ? (
           <LoadingStyle>
-            <ActivityStyle size="large" />
+            <ActivityIndicator size="large" color={colors.greenPrimary} />
           </LoadingStyle>
         ) : (
           <ScrollStyle>

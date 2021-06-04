@@ -137,7 +137,3 @@ export const ItemPicker = styled.TouchableOpacity`
   padding-horizontal: 4px;
   border-bottom-color: ${(props) => props.theme.colors.textGray2};
 `;
-
-export const ActivityStyle = styled.ActivityIndicator`
-  color: ${(props) => props.theme.colors.greenPrimary};
-`;

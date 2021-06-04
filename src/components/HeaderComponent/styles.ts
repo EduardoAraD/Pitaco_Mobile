@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface HeaderProps {
   border: boolean;
@@ -17,4 +18,9 @@ export const HeaderTitle = styled.Text`
   font-family: SairaSemiCondensed-Bold;
   font-size: 20px;
   color: ${(props) => props.theme.colors.whitePrimary};
+`;
+
+export const IconWhite = styled(Icon)`
+  color: ${(props) => props.theme.colors.whitePrimary};
+  font-size: 30px;
 `;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, RefreshControl } from 'react-native';
+import { View, RefreshControl, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
@@ -19,7 +19,6 @@ import { Pitaco } from '../../../models/Pitaco';
 import * as servicesPitaco from '../../../services/pitaco';
 
 import {
-  ActivityStyle,
   CardStyle,
   CardTitle,
   CardTitleText,
@@ -364,7 +363,7 @@ export default function PitacoScreen() {
           {titleCard()}
           {loading ? (
             <LoadingStyle>
-              <ActivityStyle size="large" />
+              <ActivityIndicator size="large" color={colors.greenPrimary} />
             </LoadingStyle>
           ) : (
             showMatchs()

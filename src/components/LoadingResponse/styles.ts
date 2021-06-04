@@ -5,7 +5,7 @@ export const SafeLoading = styled.SafeAreaView`
   width: 100%;
   height: 100%;
   background-color: #44444477;
-  z-index: 55px;
+  z-index: 55;
 `;
 
 export const ViewAnimate = styled.View`

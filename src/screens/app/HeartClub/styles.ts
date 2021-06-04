@@ -60,7 +60,3 @@ export const LoadingStyle = styled.View`
   justify-content: center;
   align-items: center;
 `;
-
-export const ActivityStyle = styled.ActivityIndicator`
-  color: ${(props) => props.theme.colors.greenPrimary};
-`;

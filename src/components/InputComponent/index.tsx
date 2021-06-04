@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { View, Text, TextInput } from 'react-native';
 import { ThemeContext } from 'styled-components';
 
 import { Container, Input, Label } from './styles';

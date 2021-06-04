@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { ThemeContext } from 'styled-components';
 
 import { League } from '../../models/League';
 import { Point } from '../../models/Point';
@@ -38,19 +37,14 @@ export default function CardLeague({
   point,
   isClicked = true,
 }: Props) {
-  const { colors } = useContext(ThemeContext);
   const navigation = useNavigation();
 
   function viewDono() {
     if (league.dono.name) {
       return league.dono.email === user.email ? (
-        <CardInfoDono style={{ color: colors.yellowPrimary }}>
-          @{league.dono.name}
-        </CardInfoDono>
+        <CardInfoDono principal>@{league.dono.name}</CardInfoDono>
       ) : (
-        <CardInfoDono style={{ color: colors.textGray3 }}>
-          @{league.dono.name}
-        </CardInfoDono>
+        <CardInfoDono>@{league.dono.name}</CardInfoDono>
       );
     }
     return <View />;

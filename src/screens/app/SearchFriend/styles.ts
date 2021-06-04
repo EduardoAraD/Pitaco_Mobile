@@ -80,7 +80,3 @@ export const CardInfoActionButtonText = styled.Text`
   font-family: SairaSemiCondensed-Light;
   color: ${(props) => props.theme.colors.textWhite};
 `;
-
-export const ActivityStyle = styled.ActivityIndicator`
-  color: ${(props) => props.theme.colors.greenPrimary};
-`;

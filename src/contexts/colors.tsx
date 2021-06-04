@@ -42,7 +42,7 @@ export function ColorsProvider({ children }: PropsAuthProvider) {
 
   useEffect(() => {
     loadDataColor();
-  });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

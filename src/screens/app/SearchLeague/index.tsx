@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 import { ThemeContext } from 'styled-components';
@@ -13,7 +13,6 @@ import { League } from '../../../models/League';
 import { getLeaguesPage } from '../../../services/league';
 
 import {
-  ActivityStyle,
   CardImg,
   CardInfo,
   CardInfoDono,
@@ -132,7 +131,7 @@ export default function SearchLeague() {
   function renderFooter() {
     return loading ? (
       <View style={{ margin: 10, alignItems: 'center' }}>
-        <ActivityStyle size="large" />
+        <ActivityIndicator size="large" color={colors.greenPrimary} />
       </View>
     ) : (
       <View />
@@ -149,7 +148,7 @@ export default function SearchLeague() {
       />
       {loading ? (
         <LoadingStyle>
-          <ActivityStyle size="large" />
+          <ActivityIndicator size="large" color={colors.greenPrimary} />
         </LoadingStyle>
       ) : (
         <FlatStyle

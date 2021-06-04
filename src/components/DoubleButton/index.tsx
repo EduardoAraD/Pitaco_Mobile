@@ -17,11 +17,11 @@ export default function DoubleButtom({
 }: Props) {
   return (
     <ButtonsView>
-      <ButtonContainer option={option} onPress={() => setOption(false)}>
-        <ButtonText option={option}>{nameOption1}</ButtonText>
+      <ButtonContainer option={!option} left onPress={() => setOption(false)}>
+        <ButtonText option={!option}>{nameOption1}</ButtonText>
       </ButtonContainer>
-      <ButtonContainer option={!option} onPress={() => setOption(true)}>
-        <ButtonText option={!option}>{nameOption2}</ButtonText>
+      <ButtonContainer option={option} onPress={() => setOption(true)}>
+        <ButtonText option={option}>{nameOption2}</ButtonText>
       </ButtonContainer>
     </ButtonsView>
   );

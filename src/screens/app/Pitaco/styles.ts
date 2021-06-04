@@ -77,7 +77,3 @@ export const TextNotMatch = styled.Text`
   text-align: center;
   color: ${(props) => props.theme.colors.textGray4};
 `;
-
-export const ActivityStyle = styled.ActivityIndicator`
-  color: ${(props) => props.theme.colors.greenPrimary};
-`;

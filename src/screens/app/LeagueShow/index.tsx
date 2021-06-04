@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, RefreshControl } from 'react-native';
+import { View, RefreshControl, ActivityIndicator } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -34,7 +34,6 @@ import {
   ScrollStyle,
   ViewButtomAction,
   ViewPoint,
-  ActivityStyle,
 } from './styles';
 
 type ParamList = {
@@ -281,7 +280,7 @@ export default function LeagueShow() {
           {visibleSelect ? itemsSelect() : <View />}
           {loading ? (
             <View style={{ margin: 10, alignItems: 'center' }}>
-              <ActivityStyle size="small" />
+              <ActivityIndicator size="small" color={colors.greenPrimary} />
             </View>
           ) : (
             points.map((item, index) => (

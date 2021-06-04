@@ -126,10 +126,10 @@ export const RefreshStyle = styled.RefreshControl`
 
 export const IconWhite = styled(Icon)`
   color: ${(props) => props.theme.colors.whitePrimary};
-  size: 20px;
+  font-size: 20px;
 `;
 
 export const IconGray3 = styled(Icon)`
   color: ${(props) => props.theme.colors.textGray3};
-  size: 20px;
+  font-size: 20px;
 `;

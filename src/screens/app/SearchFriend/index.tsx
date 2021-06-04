@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 
 import { ThemeContext } from 'styled-components';
@@ -13,7 +13,6 @@ import { User } from '../../../models/User';
 import { addFriend, getListNotFriendsPage } from '../../../services/friend';
 
 import {
-  ActivityStyle,
   FlatStyle,
   CardImg,
   CardInfo,
@@ -131,7 +130,7 @@ export default function SearchFriend() {
   function renderFooter() {
     return loading ? (
       <View style={{ margin: 10, alignItems: 'center' }}>
-        <ActivityStyle size="large" />
+        <ActivityIndicator size="large" color={colors.greenPrimary} />
       </View>
     ) : (
       <View />

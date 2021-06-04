@@ -42,7 +42,7 @@ export const ButtomStyle = styled.TouchableOpacity`
 export const TextButtom = styled.Text`
   font-size: 12px;
   color: ${(props) => props.theme.colors.textWhite};
-  fontfamily: SairaSemiCondensed-Medium;
+  font-family: SairaSemiCondensed-Medium;
 `;
 
 export const ViewButtonStyle = styled.View`
@@ -77,5 +77,5 @@ export const CardText = styled.Text`
 export const TextDefault = styled.Text`
   font-size: 12px;
   color: ${(props) => props.theme.colors.textGray3};
-  fontfamily: SairaSemiCondensed-Medium;
+  font-family: SairaSemiCondensed-Medium;
 `;

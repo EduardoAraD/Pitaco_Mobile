@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 
+interface Props {
+  principal?: boolean;
+}
+
 export const CardTouch = styled.TouchableOpacity`
   height: 70px;
   width: 100%;
@@ -27,11 +31,16 @@ export const CardInfoView = styled.View`
 export const CardInfoTitle = styled.Text`
   font-size: 15px;
   font-family: SairaSemiCondensed-Bold;
+  color: ${(props) => props.theme.colors.greenPrimary};
 `;
 
-export const CardInfoDono = styled.Text`
+export const CardInfoDono = styled.Text<Props>`
   font-size: 10px;
   font-family: SairaSemiCondensed-Light;
+  color: ${(props) =>
+    props.principal
+      ? props.theme.colors.yellowPrimary
+      : props.theme.colors.textGray3};
 `;
 
 export const CardInfoUserView = styled.View`
